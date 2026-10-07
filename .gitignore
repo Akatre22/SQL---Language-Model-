@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Large checkpoints / model weights (uncomment if you want to track them via Git LFS instead)
+# *.pt
+# *.bin
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

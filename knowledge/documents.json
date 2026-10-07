@@ -1,0 +1,3494 @@
+[
+  {
+    "id": "DOC-ROADMAP-CORE",
+    "domain": "sql",
+    "topic": "roadmap",
+    "title": "Complete SQL Learning Roadmap: From Beginner to Advanced Architect",
+    "tags": [
+      "roadmap",
+      "road map",
+      "learning path",
+      "learn sql",
+      "how to learn",
+      "study plan",
+      "syllabus",
+      "curriculum",
+      "beginner",
+      "where to start",
+      "practice guide",
+      "write sequence to learn sql",
+      "learning sequence"
+    ],
+    "content": "A comprehensive 4-stage pedagogical roadmap for mastering SQL:\n\n1) Stage 1 — Fundamentals (Syntax & Foundations):\n- Relational data model: Tables, rows, columns, data types, constraints (PK, FK, UNIQUE, NOT NULL, CHECK).\n- Basic querying: SELECT, projection, arithmetic, DISTINCT, column/table aliasing (AS).\n- Filtering: WHERE clause with comparison operators (=, !=, <, >, <=, >=), logical operators (AND, OR, NOT), IN, BETWEEN, LIKE, IS NULL / IS NOT NULL.\n- Sorting & Limiting: ORDER BY (ASC/DESC, NULLS FIRST/LAST), LIMIT, OFFSET, TOP, FETCH FIRST n ROWS ONLY.\n\n2) Stage 2 — Intermediate (Data Analysis & Manipulation):\n- Relational Joins: INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN, CROSS JOIN, Self Joins, Anti-Joins.\n- Grouping & Aggregations: COUNT, SUM, AVG, MIN, MAX, GROUP BY, HAVING clause, conditional aggregation.\n- Subqueries: Scalar subqueries, multi-row subqueries (IN, ANY, ALL), correlated subqueries (EXISTS / NOT EXISTS).\n- Set Theory: UNION, UNION ALL, INTERSECT, EXCEPT / MINUS.\n- Conditional Logic: Simple and Searched CASE WHEN ... THEN ... ELSE ... END expressions, COALESCE, NULLIF.\n- DDL & DML: CREATE TABLE, ALTER TABLE, DROP TABLE, TRUNCATE, INSERT INTO, UPDATE, DELETE.\n\n3) Stage 3 — Advanced (Analytical Engineering & Complex Logic):\n- Window Functions: ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE(), LAG(), LEAD(), FIRST_VALUE(), LAST_VALUE().\n- Window Framing: ROWS vs RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW.\n- Common Table Expressions (CTEs): Non-recursive CTEs and Recursive CTEs (Hierarchical trees, Gaps & Islands).\n- Semi-structured data: JSON extraction, parsing JSON arrays, XML manipulation.\n- Date & Time mastery: DATE_TRUNC, EXTRACT, INTERVAL arithmetic, timezone handling.\n\n4) Stage 4 — Database Internals & Performance Tuning (Senior / Architect):\n- Indexing internals: B-Tree, Hash, GIN, GiST, BRIN, Covering indexes (INCLUDE), Partial/Filtered indexes.\n- Query optimization: EXPLAIN / EXPLAIN ANALYZE execution plans, SARGable queries, eliminating sequential scans.\n- Concurrency & Transactions: ACID properties, Isolation levels (Read Committed, Repeatable Read, Serializable), MVCC, WAL, Deadlock prevention.\n- Database Normalization: 1NF, 2NF, 3NF, BCNF, Star & Snowflake schemas.\n- Stored Procedures, UDFs, Triggers, Views, and Materialized Views.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-PRACTICE-TOPICS",
+    "domain": "sql",
+    "topic": "practice_topics",
+    "title": "SQL Practice Topics: Core Skills to Build Hands-On Mastery",
+    "tags": [
+      "practice topics",
+      "topics to practice",
+      "sql topics",
+      "list of topics",
+      "practice",
+      "interview questions",
+      "checklist",
+      "exercises",
+      "topic of sql to start practice"
+    ],
+    "content": "High-yield SQL topics to practice systematically for interviews and production data projects:\n\n1) Multi-Table Join Scenarios:\n- Joining 3+ tables with business conditions.\n- Anti-joins: Finding rows in Table A with no matching rows in Table B using LEFT JOIN ... WHERE right.id IS NULL vs NOT EXISTS.\n- Self-joins: Finding employees with their direct managers or finding overlapping date ranges.\n\n2) Aggregation with Complex Grouping:\n- Finding top N categories by sales volume using HAVING.\n- Pivoting data using conditional aggregation: SUM(CASE WHEN quarter = 'Q1' THEN revenue ELSE 0 END).\n- Advanced aggregation: GROUPING SETS, ROLLUP, CUBE for multi-dimensional sub-totals.\n\n3) Advanced Analytical Window Queries:\n- Top 3 highest-earning employees in each department using DENSE_RANK().\n- Month-over-Month (MoM) revenue growth: ((rev - LAG(rev)) / LAG(rev)) * 100.\n- Running cumulative totals and 7-day rolling moving averages.\n\n4) Recursive CTEs & Graph Traversal:\n- Building organization hierarchy paths: Employee -> Manager -> VP -> CEO.\n- Generating continuous number or date sequences to identify missing dates (Gaps & Islands).\n\n5) Performance & Indexing Scenarios:\n- Rewriting non-SARGable queries (e.g. `WHERE YEAR(created_at) = 2024` -> `WHERE created_at >= '2024-01-01' AND created_at < '2025-01-01'`).\n- Evaluating query plans with EXPLAIN ANALYZE to identify sequential scans vs index seeks.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-INTERVIEW-CHEATSHEET",
+    "domain": "sql",
+    "topic": "practice_topics",
+    "title": "SQL Technical Interview Cheatsheet: Rapid Concept Review",
+    "tags": [
+      "cheatsheet",
+      "interview cheatsheet",
+      "rapid fire sql",
+      "sql interview tips",
+      "quick review"
+    ],
+    "content": "Key SQL interview concepts and their core definitions:\n\n1) Query Execution Order:\nFROM -> ON -> JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY -> LIMIT / OFFSET.\n\n2) WHERE vs HAVING:\nWHERE filters individual rows before aggregation; HAVING filters aggregated groups after GROUP BY.\n\n3) UNION vs UNION ALL:\nUNION removes duplicates by performing an internal distinct sort; UNION ALL simply appends results and is much faster.\n\n4) DELETE vs TRUNCATE vs DROP:\n- DELETE: DML statement, row-by-row deletion, fully logged, triggers fire, can be rolled back.\n- TRUNCATE: DDL statement, deallocates data pages, resets auto-increment IDs, minimal logging, faster, no triggers.\n- DROP: DDL statement, completely removes the table definition, data, and indexes from database catalog.\n\n5) Clustered vs Non-Clustered Index:\n- Clustered: Defines physical ordering of rows in the data pages (only 1 per table).\n- Non-Clustered: Separate B-Tree structure storing index keys with pointers (row IDs) to the data rows.\n\n6) Primary Key vs Unique Key:\n- Primary Key: Uniquely identifies each row, cannot contain NULLs, only one PK per table.\n- Unique Key: Enforces uniqueness across rows, allows one (or multiple depending on dialect) NULL value.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-EXECUTION-ORDER",
+    "domain": "sql",
+    "topic": "execution_order",
+    "title": "Logical SQL Query Execution Order Explained",
+    "tags": [
+      "execution order",
+      "order of execution",
+      "sql execution order",
+      "query processing order",
+      "how sql runs",
+      "execution pipeline"
+    ],
+    "content": "Relational database engines process SQL clauses in a strict logical order that differs from written syntax:\n\n1) FROM: Database identifies source tables and executes Cartesian products.\n2) ON: Evaluates join conditions between tables.\n3) JOIN: Performs table joins (INNER, LEFT, RIGHT, FULL OUTER, CROSS).\n4) WHERE: Filters base rows matching Boolean filter predicates.\n5) GROUP BY: Collapses remaining rows into aggregated buckets by group keys.\n6) HAVING: Filters aggregated buckets based on aggregate function conditions.\n7) SELECT: Evaluates expressions, column projections, and window functions.\n8) DISTINCT: Eliminates duplicate row projections across selected columns.\n9) ORDER BY: Sorts the final result set by specified columns or expressions.\n10) LIMIT / OFFSET (FETCH): Applies pagination and caps the number of output rows.\n\nWhy This Matters:\n- You cannot use a column alias defined in SELECT inside the WHERE clause because WHERE executes before SELECT.\n- You can use column aliases in ORDER BY because ORDER BY executes after SELECT.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-CLAUSE-WHERE-VS-HAVING",
+    "domain": "sql",
+    "topic": "clauses",
+    "title": "WHERE vs HAVING Clause: Detailed Comparison & Architectural Differences",
+    "tags": [
+      "where vs having",
+      "difference between where and having",
+      "having vs where",
+      "where and having clause",
+      "filtering before after aggregation"
+    ],
+    "content": "Comparison of WHERE and HAVING clauses in relational SQL:\n\n1) Execution Timing:\n- WHERE executes BEFORE grouping and aggregation. It filters base table rows.\n- HAVING executes AFTER the GROUP BY phase. It filters aggregated group records.\n\n2) Aggregation Functions:\n- WHERE cannot contain aggregate functions like `SUM()`, `AVG()`, `COUNT()`. (e.g. `WHERE COUNT(*) > 5` causes a syntax error).\n- HAVING is specifically designed to filter on aggregate functions (e.g. `HAVING COUNT(*) > 5`).\n\n3) Index Usage:\n- WHERE can utilize B-Tree indexes on filtered columns to avoid full table scans.\n- HAVING operates on computed aggregate buffers in memory/tempdb after grouping.\n\n```sql\n-- Correct Usage:\nSELECT department_id, COUNT(*) AS emp_count, AVG(salary) AS avg_sal\nFROM employees\nWHERE status = 'ACTIVE'                -- Row-level filter (WHERE)\nGROUP BY department_id\nHAVING AVG(salary) > 75000;            -- Aggregate filter (HAVING)\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-CLAUSE-LIMIT-OFFSET-TOP",
+    "domain": "sql",
+    "topic": "pagination",
+    "title": "LIMIT, OFFSET, TOP, and FETCH FIRST: Dialect Differences & Pagination",
+    "tags": [
+      "limit",
+      "offset",
+      "top",
+      "fetch first",
+      "limit vs top",
+      "pagination",
+      "keyset pagination"
+    ],
+    "content": "Methods to restrict output row counts and paginate results across SQL dialects:\n\n1) PostgreSQL, MySQL, SQLite:\n```sql\nSELECT emp_name, salary FROM employees ORDER BY salary DESC LIMIT 10 OFFSET 20;\n```\n\n2) Microsoft SQL Server (T-SQL):\n```sql\n-- Legacy Top\nSELECT TOP 10 emp_name, salary FROM employees ORDER BY salary DESC;\n\n-- ANSI SQL:2008 Standard in modern T-SQL\nSELECT emp_name, salary FROM employees ORDER BY salary DESC\nOFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY;\n```\n\n3) Oracle Database:\n```sql\nSELECT emp_name, salary FROM employees ORDER BY salary DESC\nFETCH FIRST 10 ROWS ONLY;\n```\n\nPerformance Note on Deep Pagination:\nUsing `OFFSET 1000000` forces the database engine to read and discard 1 million rows. For massive tables, use **Keyset Pagination (Seek Method)**:\n```sql\nSELECT id, emp_name, salary FROM employees\nWHERE id > :last_seen_id\nORDER BY id ASC LIMIT 10;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-CLAUSE-QUALIFY",
+    "domain": "sql",
+    "topic": "clauses",
+    "title": "QUALIFY Clause: Filtering Window Function Results Directly",
+    "tags": [
+      "qualify",
+      "qualify clause",
+      "filter window function",
+      "snowflake qualify",
+      "teradata qualify",
+      "databricks qualify"
+    ],
+    "content": "The QUALIFY clause filters results of Window Functions directly without requiring an intermediate CTE or subquery:\n\nSupported Dialects: Snowflake, Google BigQuery, Databricks SQL, Teradata, DuckDB.\n\nStandard SQL without QUALIFY (requires Subquery or CTE):\n```sql\nWITH RankedEmployees AS (\n    SELECT emp_name, department_id, salary,\n           DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) as rnk\n    FROM employees\n)\nSELECT * FROM RankedEmployees WHERE rnk = 1;\n```\n\nWith QUALIFY (Clean & Direct):\n```sql\nSELECT emp_name, department_id, salary\nFROM employees\nQUALIFY DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) = 1;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-JOIN-MASTER-OVERVIEW",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "Master Guide to Relational Joins: Mechanics, Types, and Venn Diagrams",
+    "tags": [
+      "joins",
+      "join",
+      "inner join",
+      "left join",
+      "right join",
+      "full outer join",
+      "cross join",
+      "self join",
+      "relational joins"
+    ],
+    "content": "Relational joins combine columns from one or more tables based on related keys:\n\n1) INNER JOIN: Returns rows when there is a match in BOTH tables.\n2) LEFT (OUTER) JOIN: Returns all rows from left table, with matching rows from right table (or NULL if no match).\n3) RIGHT (OUTER) JOIN: Returns all rows from right table, with matching rows from left table (or NULL if no match).\n4) FULL (OUTER) JOIN: Returns all rows when there is a match in either table (combines LEFT and RIGHT).\n5) CROSS JOIN: Produces a Cartesian product (every row in table A paired with every row in table B; $M \\times N$ rows).\n6) SELF JOIN: Joins a table to itself to compare rows within the same relation (e.g. employee-to-manager hierarchy).\n7) ANTI-JOIN: Returns rows from left table where NO matching row exists in right table (`LEFT JOIN ... WHERE right.key IS NULL`).\n8) SEMI-JOIN: Returns rows from left table that match at least one row in right table without duplicating left rows (`WHERE EXISTS (...)`).",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-JOIN-INNER-VS-LEFT",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "INNER JOIN vs LEFT JOIN: Behavioral Differences & Nullability",
+    "tags": [
+      "inner join vs left join",
+      "difference between inner and left join",
+      "left join vs inner join",
+      "when to use inner vs left join"
+    ],
+    "content": "Comparison of INNER JOIN and LEFT JOIN:\n\n1) INNER JOIN:\n- Returns ONLY rows where the join predicate evaluates to TRUE in both tables.\n- Discards unmatched rows from both sides.\n- Use when related foreign key data is strictly required.\n\n```sql\n-- Returns only employees assigned to an active department\nSELECT e.emp_name, d.department_name\nFROM employees e\nINNER JOIN departments d ON e.department_id = d.department_id;\n```\n\n2) LEFT JOIN (LEFT OUTER JOIN):\n- Preserves ALL rows from the left table regardless of whether a match exists in the right table.\n- Populates right table columns with `NULL` when no match is found.\n- Use when keeping parent/primary records is mandatory even if child/optional records are missing.\n\n```sql\n-- Returns ALL employees, showing NULL for those without a department\nSELECT e.emp_name, COALESCE(d.department_name, 'Unassigned') AS department_name\nFROM employees e\nLEFT JOIN departments d ON e.department_id = d.department_id;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-JOIN-ANTI-JOIN-SEMI-JOIN",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "Anti-Joins and Semi-Joins: Patterns, Syntax, and Optimization",
+    "tags": [
+      "anti join",
+      "semi join",
+      "not exists vs left join null",
+      "exists vs in",
+      "find unmatched rows"
+    ],
+    "content": "Anti-Joins and Semi-Joins are core relational patterns for set matching:\n\n1) Anti-Join (Find records in A that have NO match in B):\n- Approach 1: `NOT EXISTS` (Recommended for performance and NULL safety):\n```sql\nSELECT c.customer_id, c.customer_name\nFROM customers c\nWHERE NOT EXISTS (\n    SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id\n);\n```\n- Approach 2: `LEFT JOIN ... WHERE right.id IS NULL`:\n```sql\nSELECT c.customer_id, c.customer_name\nFROM customers c\nLEFT JOIN orders o ON c.customer_id = o.customer_id\nWHERE o.order_id IS NULL;\n```\n\n2) Semi-Join (Find records in A that have AT LEAST ONE match in B, without multiplying rows):\n- Using `EXISTS`:\n```sql\nSELECT c.customer_id, c.customer_name\nFROM customers c\nWHERE EXISTS (\n    SELECT 1 FROM orders o WHERE o.customer_id = c.customer_id AND o.total_amount > 1000\n);\n```\nNote: An `INNER JOIN` might duplicate customer rows if a customer has multiple orders > $1000. `EXISTS` prevents row duplication.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-JOIN-LATERAL-CROSS-APPLY",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "LATERAL Joins and CROSS APPLY: Row-by-Row Correlated Joins",
+    "tags": [
+      "lateral join",
+      "cross apply",
+      "outer apply",
+      "correlated join",
+      "postgres lateral",
+      "sql server cross apply"
+    ],
+    "content": "LATERAL joins (PostgreSQL, MySQL 8.0.14+, Oracle) and CROSS APPLY (SQL Server, Oracle) allow subqueries in the FROM clause to reference columns from preceding tables:\n\n1) Problem Solved: Standard joins cannot pass a column from the left table into a subquery inside the join clause.\n\n2) PostgreSQL / MySQL / Oracle syntax (`CROSS JOIN LATERAL`):\n```sql\n-- For each customer, get their top 2 most recent orders\nSELECT c.customer_id, c.customer_name, o.order_id, o.order_date, o.total_amount\nFROM customers c\nCROSS JOIN LATERAL (\n    SELECT order_id, order_date, total_amount\n    FROM orders\n    WHERE customer_id = c.customer_id\n    ORDER BY order_date DESC\n    LIMIT 2\n) o;\n```\n\n3) SQL Server T-SQL syntax (`CROSS APPLY`):\n```sql\nSELECT c.customer_id, c.customer_name, o.order_id, o.order_date, o.total_amount\nFROM customers c\nCROSS APPLY (\n    SELECT TOP 2 order_id, order_date, total_amount\n    FROM orders\n    WHERE customer_id = c.customer_id\n    ORDER BY order_date DESC\n) o;\n```\nNote: Use `LEFT JOIN LATERAL ... ON TRUE` or `OUTER APPLY` to preserve customers who have 0 orders.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-WINDOW-OVERVIEW",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "Mastering SQL Window Functions: OVER, PARTITION BY, and ORDER BY",
+    "tags": [
+      "window functions",
+      "windows function",
+      "over clause",
+      "partition by",
+      "analytical functions",
+      "running total",
+      "moving average"
+    ],
+    "content": "Window functions perform calculations across a set of table rows related to the current row without collapsing them into a single row (unlike GROUP BY):\n\nCore Syntax Structure:\n```sql\nFUNCTION() OVER (\n    PARTITION BY partition_column\n    ORDER BY sort_column ASC/DESC\n    ROWS/RANGE BETWEEN frame_start AND frame_end\n)\n```\n\nKey Components:\n1) `PARTITION BY`: Divides rows into logical groups/windows (like GROUP BY, but preserves individual row granularity).\n2) `ORDER BY`: Defines the logical sort order within each partition.\n3) Frame Specification (`ROWS` or `RANGE`): Determines the exact subset of rows included in the window calculation relative to current row.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-WINDOW-RANK-DENSE-ROWNUM",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "ROW_NUMBER vs RANK vs DENSE_RANK: Comprehensive Comparison",
+    "tags": [
+      "row_number",
+      "rank",
+      "dense_rank",
+      "row_number vs rank vs dense_rank",
+      "ranking functions",
+      "tie breaking in sql",
+      "give me sql query to get row number"
+    ],
+    "content": "Comparison of ranking window functions when handling tie values (e.g. salaries: [1000, 900, 900, 800]):\n\n1) `ROW_NUMBER()`:\n- Assigns a unique sequential integer to every row regardless of duplicate values.\n- Ties are broken arbitrarily (unless additional ORDER BY tie-breakers are provided).\n- Output: `1, 2, 3, 4`\n\n2) `RANK()`:\n- Assigns the same rank to duplicate values, but SKIPS subsequent ranks to preserve absolute rank counts.\n- Output: `1, 2, 2, 4` (Notice rank 3 is skipped).\n\n3) `DENSE_RANK()`:\n- Assigns the same rank to duplicate values WITHOUT skipping numbers.\n- Output: `1, 2, 2, 3` (Dense sequence).\n\n```sql\nSELECT emp_name, department_id, salary,\n       ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) as row_num,\n       RANK()       OVER (PARTITION BY department_id ORDER BY salary DESC) as rnk,\n       DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) as dense_rnk\nFROM employees;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-WINDOW-NTILE",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "NTILE Function: Bucket Distribution, Quartiles, and Deciles",
+    "tags": [
+      "ntile",
+      "ntile function",
+      "quartiles",
+      "deciles",
+      "percentile buckets",
+      "dividing rows into buckets",
+      "ntile in sql",
+      "explain me ntile in detail"
+    ],
+    "content": "The `NTILE(n)` window function divides ordered rows in a partition into `n` approximately equal-sized buckets/groups:\n\nHow it Works:\n- Assigns a bucket number from 1 to `n` to each row.\n- If the total row count is not evenly divisible by `n`, the extra rows are distributed starting from bucket 1 downwards.\n\nCommon Use Cases:\n- Quartiles: `NTILE(4)` (Top 25%, 50%, 75%, 100%).\n- Deciles: `NTILE(10)` (Customer segmentation).\n- Median splitting: `NTILE(2)`.\n\n```sql\n-- Segment customers into 4 spending quartiles\nSELECT customer_id, total_spend,\n       NTILE(4) OVER (ORDER BY total_spend DESC) AS spending_quartile\nFROM customer_analytics;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-WINDOW-LAG-LEAD",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "LAG and LEAD: Time Series, Offsets, and Period-over-Period Calculations",
+    "tags": [
+      "lag",
+      "lead",
+      "lag and lead",
+      "previous row",
+      "next row",
+      "month over month",
+      "growth rate",
+      "time series"
+    ],
+    "content": "`LAG()` and `LEAD()` access values from previous or following rows within a partition without needing a self-join:\n\nSyntax:\n`LAG(column, offset, default_value) OVER (PARTITION BY ... ORDER BY ...)`\n\n1) `LAG(val, 1, 0)`: Accesses the value of `val` from 1 row before current row.\n2) `LEAD(val, 1, 0)`: Accesses the value of `val` from 1 row after current row.\n\n```sql\n-- Calculate Month-over-Month Revenue Growth\nSELECT\n    sales_month,\n    revenue,\n    LAG(revenue, 1) OVER (ORDER BY sales_month) AS prev_month_revenue,\n    ROUND(((revenue - LAG(revenue, 1) OVER (ORDER BY sales_month)) /\n           LAG(revenue, 1) OVER (ORDER BY sales_month)) * 100.0, 2) AS mom_growth_pct\nFROM monthly_sales;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-WINDOW-FRAMING-ROWS-RANGE",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "Window Framing: ROWS vs RANGE BETWEEN Specification",
+    "tags": [
+      "window framing",
+      "rows between",
+      "range between",
+      "unbounded preceding",
+      "current row",
+      "moving average frame",
+      "running total frame"
+    ],
+    "content": "Window framing specifies the exact boundaries of rows evaluated by aggregate window functions:\n\n1) `ROWS BETWEEN`:\n- Evaluates physical row counts.\n- `ROWS BETWEEN 2 PRECEDING AND CURRENT ROW`: Current row + previous 2 physical rows (3-row rolling moving average).\n- `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW`: Running cumulative total from the start of the partition.\n\n2) `RANGE BETWEEN`:\n- Evaluates logical value boundaries (treats rows with duplicate ORDER BY keys identically).\n- Default behavior if frame is omitted with ORDER BY: `RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` (Watch out: Duplicate values will sum together simultaneously!).\n\n```sql\n-- 7-Day Moving Average of Sales\nSELECT sale_date, daily_amount,\n       AVG(daily_amount) OVER (\n           ORDER BY sale_date\n           ROWS BETWEEN 6 PRECEDING AND CURRENT ROW\n       ) AS moving_avg_7d\nFROM daily_revenue;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-CTE-OVERVIEW",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Common Table Expressions (CTEs): WITH Clause, Syntax, and Readability",
+    "tags": [
+      "cte",
+      "ctes",
+      "common table expression",
+      "with clause",
+      "how to write cte",
+      "nested query vs cte",
+      "subquery vs cte",
+      "what is cte and how to write cte query"
+    ],
+    "content": "A Common Table Expression (CTE) is a temporary named result set defined within the execution scope of a single `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement:\n\nSyntax:\n```sql\nWITH HighValueCustomers AS (\n    SELECT customer_id, SUM(order_total) AS lifetime_value\n    FROM orders\n    GROUP BY customer_id\n    HAVING SUM(order_total) >= 10000\n),\nCustomerRegions AS (\n    SELECT customer_id, region, country\n    FROM customers\n)\nSELECT h.customer_id, r.region, h.lifetime_value\nFROM HighValueCustomers h\nJOIN CustomerRegions r ON h.customer_id = r.customer_id\nORDER BY h.lifetime_value DESC;\n```\n\nAdvantages over Subqueries:\n1) Readability: Organizes query logic sequentially from top to bottom.\n2) Reusability: A single CTE can be referenced multiple times within the same query.\n3) Recursion: Supports recursive queries for hierarchical tree graphs.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-CTE-RECURSIVE-HIERARCHY",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Recursive CTEs: Traversing Hierarchies, Org Charts, and Graphs",
+    "tags": [
+      "recursive cte",
+      "with recursive",
+      "hierarchy",
+      "org chart",
+      "manager employee tree",
+      "graph traversal",
+      "tree traversal"
+    ],
+    "content": "Recursive CTEs repeatedly execute an initial query (anchor member) and union it with a recursive query (recursive member) until no new rows are returned:\n\nStandard 3-Part Structure:\n1) **Anchor Member**: Base query returning top-level nodes (e.g. CEO where `manager_id IS NULL`).\n2) **UNION ALL**: Combines anchor and recursive steps.\n3) **Recursive Member**: Joins the CTE back to the base table to fetch next child levels, with a termination condition.\n\n```sql\n-- Traversal of Employee-to-Manager Organizational Hierarchy\nWITH RECURSIVE OrgHierarchy AS (\n    -- 1. Anchor: Top-level executives\n    SELECT emp_id, emp_name, manager_id, 1 AS level, CAST(emp_name AS VARCHAR(1000)) AS path\n    FROM employees\n    WHERE manager_id IS NULL\n\n    UNION ALL\n\n    -- 2. Recursive: Subordinates\n    SELECT e.emp_id, e.emp_name, e.manager_id, o.level + 1, CAST(o.path || ' -> ' || e.emp_name AS VARCHAR(1000))\n    FROM employees e\n    INNER JOIN OrgHierarchy o ON e.manager_id = o.emp_id\n)\nSELECT emp_id, emp_name, level, path\nFROM OrgHierarchy\nORDER BY level, emp_id;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-PATTERN-GAPS-AND-ISLANDS",
+    "domain": "sql",
+    "topic": "patterns",
+    "title": "Gaps and Islands Problem: Identification and Solution Patterns",
+    "tags": [
+      "gaps and islands",
+      "consecutive dates",
+      "find gaps",
+      "find islands",
+      "streaks in sql",
+      "consecutive sequences"
+    ],
+    "content": "The 'Gaps and Islands' problem is a classic SQL challenge involving consecutive sequence analysis:\n- **Islands**: Contiguous ranges of consecutive numbers or dates (e.g. customer login streaks).\n- **Gaps**: Missing ranges between sequences.\n\nThe Difference-of-Row-Numbers Pattern (DENSE_RANK Technique):\nSubtracting a sequential row number (`ROW_NUMBER()`) from a sequential sequence value yields a **constant group identifier** for contiguous rows!\n\n```sql\n-- Find consecutive login streaks for users\nWITH NumberedLogins AS (\n    SELECT user_id, login_date,\n           ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY login_date) AS rn,\n           login_date - CAST(ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY login_date) AS INT) AS island_group\n    FROM (SELECT DISTINCT user_id, login_date FROM user_logins) t\n)\nSELECT user_id,\n       MIN(login_date) AS streak_start,\n       MAX(login_date) AS streak_end,\n       COUNT(*) AS streak_length_days\nFROM NumberedLogins\nGROUP BY user_id, island_group\nHAVING COUNT(*) >= 3;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-PATTERN-PIVOT-UNPIVOT",
+    "domain": "sql",
+    "topic": "patterns",
+    "title": "PIVOT and UNPIVOT: Transforming Rows to Columns and Columns to Rows",
+    "tags": [
+      "pivot",
+      "unpivot",
+      "rows to columns",
+      "columns to rows",
+      "conditional aggregation pivot",
+      "crosstab"
+    ],
+    "content": "Transforming relational rows into columns (pivoting) and columns into rows (unpivoting):\n\n1) Cross-Dialect Pivoting via Conditional Aggregation (Standard SQL):\n```sql\nSELECT\n    department_id,\n    SUM(CASE WHEN job_title = 'Engineer' THEN salary ELSE 0 END) AS engineer_salary,\n    SUM(CASE WHEN job_title = 'Manager'  THEN salary ELSE 0 END) AS manager_salary,\n    SUM(CASE WHEN job_title = 'Analyst'  THEN salary ELSE 0 END) AS analyst_salary\nFROM employees\nGROUP BY department_id;\n```\n\n2) Native PIVOT clause (SQL Server / Oracle / Snowflake):\n```sql\nSELECT * FROM (\n    SELECT department_id, job_title, salary FROM employees\n) src\nPIVOT (\n    SUM(salary) FOR job_title IN ([Engineer], [Manager], [Analyst])\n) pvt;\n```\n\n3) UNPIVOT / CROSS JOIN LATERAL (Columns to Rows):\n```sql\nSELECT department_id, job_title, salary\nFROM employee_summary\nCROSS JOIN LATERAL (\n    VALUES ('Engineer', engineer_salary), ('Manager', manager_salary)\n) AS v(job_title, salary);\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-PATTERN-TOP-N-PER-GROUP",
+    "domain": "sql",
+    "topic": "patterns",
+    "title": "Top N Records Per Group: Patterns, Tradeoffs, and Window Ranking",
+    "tags": [
+      "top n per group",
+      "top 3 highest salaried per department",
+      "top n records",
+      "highest salary by department",
+      "group top n",
+      "sql query to get top 5 highest salaried employee"
+    ],
+    "content": "How to retrieve the top $N$ records within each category/group efficiently:\n\nRecommended Pattern (using `DENSE_RANK()` inside a CTE):\n```sql\nWITH RankedEmployees AS (\n    SELECT emp_id, emp_name, department_id, salary,\n           DENSE_RANK() OVER (\n               PARTITION BY department_id\n               ORDER BY salary DESC\n           ) AS rank_in_dept\n    FROM employees\n)\nSELECT emp_id, emp_name, department_id, salary, rank_in_dept\nFROM RankedEmployees\nWHERE rank_in_dept <= 3\nORDER BY department_id, rank_in_dept;\n```\n\nWhy NOT `LIMIT` in subquery:\nStandard `LIMIT` restricts total output across the whole table, not per partition. Window functions partition and rank independently per group.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-OPT-SARGABLE",
+    "domain": "sql",
+    "topic": "optimization",
+    "title": "SARGable Predicates: Writing High-Performance Index-Friendly WHERE Clauses",
+    "tags": [
+      "sargable",
+      "sargable queries",
+      "search argument able",
+      "index seek vs scan",
+      "slow where clause",
+      "function on column"
+    ],
+    "content": "A SARGable query (Search Argument Able) is formatted so the Cost-Based Optimizer can utilize index seek operations rather than performing a full table scan:\n\nNon-SARGable Anti-Patterns vs SARGable Corrections:\n\n1) Date Functions wrapping indexed columns:\n- ❌ Non-SARGable: `WHERE YEAR(order_date) = 2024`\n- ✅ SARGable: `WHERE order_date >= '2024-01-01' AND order_date < '2025-01-01'`\n\n2) String Wildcard Prefix:\n- ❌ Non-SARGable: `WHERE customer_name LIKE '%Smith'` (forces full scan)\n- ✅ SARGable: `WHERE customer_name LIKE 'Smith%'` (uses B-Tree index prefix seek)\n\n3) Mathematical functions on columns:\n- ❌ Non-SARGable: `WHERE salary * 1.10 > 50000`\n- ✅ SARGable: `WHERE salary > 50000 / 1.10`\n\n4) String Concatenation:\n- ❌ Non-SARGable: `WHERE first_name || ' ' || last_name = 'John Doe'`\n- ✅ SARGable: `WHERE first_name = 'John' AND last_name = 'Doe'`",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-OPT-INDEX-TYPES",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Database Index Architecture: B-Tree, Hash, Clustered, and Covering Indexes",
+    "tags": [
+      "indexes",
+      "b-tree index",
+      "hash index",
+      "clustered index",
+      "non clustered index",
+      "covering index",
+      "include index",
+      "composite index"
+    ],
+    "content": "Overview of relational database index types and physical structures:\n\n1) B-Tree Index (Balanced Tree):\n- Default general-purpose index in almost all RDBMS (PostgreSQL, MySQL, Oracle, SQL Server).\n- Supports equality (`=`), range queries (`<, <=, >, >=, BETWEEN`), sorting (`ORDER BY`), and prefix matching (`LIKE 'ABC%'`).\n- Time complexity: $O(\\log N)$.\n\n2) Clustered Index vs Non-Clustered Index:\n- **Clustered Index**: The leaf level IS the actual data page. Table rows are physically stored on disk in the index sort order. Only 1 clustered index can exist per table.\n- **Non-Clustered Index**: Separate B-tree where leaf nodes contain pointers (Row IDs or Clustered Key) to the data page.\n\n3) Covering Index (`INCLUDE` Clause):\n- Contains all columns referenced in the query (SELECT, WHERE, JOIN), enabling an **Index-Only Scan** without touching base table pages (eliminates heap lookup/bookmark lookup).\n```sql\nCREATE INDEX idx_orders_covering ON orders (customer_id, status) INCLUDE (total_amount, order_date);\n```\n\n4) Composite Index (Multi-Column) & Left-to-Right Rule:\n- An index on `(A, B, C)` can serve queries on `(A)`, `(A, B)`, and `(A, B, C)`, but CANNOT serve queries on `(B)` or `(C)` alone.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-OPT-JOIN-ALGORITHMS",
+    "domain": "sql",
+    "topic": "optimization",
+    "title": "Internal Join Algorithms: Nested Loop, Hash Join, and Merge Join",
+    "tags": [
+      "join algorithms",
+      "nested loop join",
+      "hash join",
+      "merge join",
+      "sort merge join",
+      "explain plan joins"
+    ],
+    "content": "How database query engines execute joins internally under the hood:\n\n1) Nested Loop Join:\n- For each outer row, the engine scans/seeks the inner table.\n- Best when outer table is small and inner table has a fast index on join column.\n- Time complexity: $O(M \\times \\log N)$ with index.\n\n2) Hash Join:\n- Builds an in-memory hash table on the smaller table, then streams the larger table to probe hash matches.\n- Best for large unindexed datasets with equality join predicates (`ON a.id = b.id`).\n- High memory usage; spills to disk (tempdb) if hash table exceeds `work_mem`.\n\n3) Merge Join (Sort-Merge Join):\n- Both inputs must be pre-sorted on join key. Scans both inputs in lockstep like a zipper.\n- Optimal for massive pre-sorted or indexed datasets.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-TXN-ACID-PROPERTIES",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "ACID Properties in Relational Databases Explained",
+    "tags": [
+      "acid",
+      "acid properties",
+      "atomicity",
+      "consistency",
+      "isolation",
+      "durability",
+      "transactions"
+    ],
+    "content": "The 4 pillars of database transaction reliability (ACID):\n\n1) **Atomicity (All or Nothing)**:\n- Every SQL statement in a transaction is treated as a single indivisible unit. If any statement fails, the entire transaction rolls back (`ROLLBACK`).\n\n2) **Consistency (Rules & Invariants Preserved)**:\n- Database transitions strictly from one valid state to another, upholding all constraints (PK, FK, CHECK, triggers).\n\n3) **Isolation (Concurrent Independence)**:\n- Concurrent transactions execute without interfering with one another's intermediate states (governed by Isolation Levels).\n\n4) **Durability (Committed Changes Persist)**:\n- Once a transaction commits (`COMMIT`), its data updates survive system crashes and power failures via Write-Ahead Logging (WAL) and disk flush.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-TXN-ISOLATION-LEVELS",
+    "domain": "sql",
+    "topic": "locks_concurrency",
+    "title": "Transaction Isolation Levels: Phenomena, Dirty Reads, and Serialization",
+    "tags": [
+      "isolation levels",
+      "dirty read",
+      "non repeatable read",
+      "phantom read",
+      "read committed",
+      "repeatable read",
+      "serializable"
+    ],
+    "content": "ANSI SQL Transaction Isolation Levels and concurrency phenomena:\n\nPhenomena:\n- **Dirty Read**: Reading uncommitted changes made by another transaction.\n- **Non-Repeatable Read**: Re-reading the same row within a transaction returns altered values because another transaction committed an update.\n- **Phantom Read**: Re-running a range query returns newly inserted/deleted rows committed by another transaction.\n\nIsolation Level Matrix:\n| Isolation Level | Dirty Read | Non-Repeatable Read | Phantom Read |\n| :--- | :---: | :---: | :---: |\n| **Read Uncommitted** | Possible | Possible | Possible |\n| **Read Committed** (Default in PG/Oracle/SQL Server) | ❌ Prevented | Possible | Possible |\n| **Repeatable Read** (Default in MySQL InnoDB) | ❌ Prevented | ❌ Prevented | Possible (or MVCC prevented) |\n| **Serializable** (Highest Isolation) | ❌ Prevented | ❌ Prevented | ❌ Prevented |\n\n```sql\nSET TRANSACTION ISOLATION LEVEL REPEATABLE READ;\nBEGIN TRANSACTION;\n-- Queries execute with snapshot consistency\nCOMMIT;\n```",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-TXN-MVCC-AND-LOCKS",
+    "domain": "sql",
+    "topic": "locks_concurrency",
+    "title": "MVCC (Multi-Version Concurrency Control) and Database Locks",
+    "tags": [
+      "mvcc",
+      "multi version concurrency control",
+      "database locks",
+      "shared lock",
+      "exclusive lock",
+      "deadlock",
+      "row level locking"
+    ],
+    "content": "How modern database systems achieve high concurrency without blocking reads:\n\n1) MVCC (Multi-Version Concurrency Control):\n- \"Readers do not block writers, and writers do not block readers.\"\n- Implemented in PostgreSQL, MySQL InnoDB, Oracle, and SQL Server RCSI.\n- Creates snapshot row versions with transaction IDs (`xmin`/`xmax`). A SELECT query reads the snapshot corresponding to its transaction start time.\n\n2) Lock Types:\n- **Shared Lock (S-Lock)**: Acquired for reading; multiple transactions can hold shared locks simultaneously.\n- **Exclusive Lock (X-Lock)**: Acquired for writing/modifying (`UPDATE`, `DELETE`, `INSERT`); blocks all other readers and writers.\n- **Intent Locks (IS, IX)**: Table-level markers indicating row-level lock intentions.\n\n3) Deadlocks:\n- Occurs when Transaction A holds Lock 1 and waits for Lock 2, while Transaction B holds Lock 2 and waits for Lock 1.\n- The database deadlock detector automatically detects cyclic wait graphs and aborts one transaction as a victim.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-NORM-1NF-2NF-3NF-BCNF",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Database Normalization: 1NF, 2NF, 3NF, and BCNF Explained with Examples",
+    "tags": [
+      "normalization",
+      "1nf",
+      "2nf",
+      "3nf",
+      "bcnf",
+      "database normalization",
+      "normal forms",
+      "boyce codd",
+      "difference between 1nf 2nf 3nf and bcnf"
+    ],
+    "content": "Database Normalization organizes tables to reduce data redundancy and prevent insertion, update, and deletion anomalies:\n\n1) First Normal Form (1NF):\n- Each column must contain atomic (indivisible) values.\n- No repeating groups or arrays stored in a single cell.\n- Every row must be uniquely identifiable with a primary key.\n\n2) Second Normal Form (2NF):\n- Must be in 1NF.\n- Eliminate partial dependency: Every non-key attribute must depend on the WHOLE primary key (relevant when PK is composite).\n\n3) Third Normal Form (3NF):\n- Must be in 2NF.\n- Eliminate transitive dependency: Non-key attributes must depend directly on the primary key, NOT on other non-key attributes (\"Every attribute must depend on the key, the whole key, and nothing but the key, so help me Codd\").\n\n4) Boyce-Codd Normal Form (BCNF):\n- Stricter version of 3NF.\n- For every functional dependency $X \\rightarrow Y$, $X$ must be a superkey.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-OBJ-SP-VS-UDF",
+    "domain": "sql",
+    "topic": "stored_procedures",
+    "title": "Stored Procedures vs User-Defined Functions (UDF): Architectural Comparison",
+    "tags": [
+      "stored procedure",
+      "storeprocedure",
+      "sp",
+      "udf",
+      "user defined function",
+      "stored procedure vs function",
+      "sp vs udf",
+      "help me to learn storeprocedure",
+      "what is storeprocedure"
+    ],
+    "content": "Comprehensive comparison between Stored Procedures (SP) and User-Defined Functions (UDF):\n\n1) Stored Procedure (SP):\n- Executed via `CALL sp_name(params)` or `EXEC sp_name`.\n- Can execute DML statements (`INSERT`, `UPDATE`, `DELETE`), DDL, and control transactions (`COMMIT`, `ROLLBACK`).\n- Can return zero, one, or multiple result sets.\n- CANNOT be called directly inside a `SELECT` query statement.\n\n```sql\n-- PostgreSQL Stored Procedure with Transaction Management\nCREATE OR REPLACE PROCEDURE transfer_funds(sender_id INT, receiver_id INT, amount NUMERIC)\nLANGUAGE plpgsql\nAS $$\nBEGIN\n    UPDATE accounts SET balance = balance - amount WHERE account_id = sender_id;\n    UPDATE accounts SET balance = balance + amount WHERE account_id = receiver_id;\n    COMMIT;\nEND;\n$$;\n\n-- Invocation:\nCALL transfer_funds(101, 202, 500.00);\n```\n\n2) User-Defined Function (UDF):\n- Executed inside SQL expressions (e.g. `SELECT fn_calculate_tax(salary) FROM employees`).\n- Must return a single scalar value or a table (Table-Valued Function TVF).\n- CANNOT execute transaction controls (`COMMIT`/`ROLLBACK`) or modify database state in analytical calls.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-OBJ-VIEWS-VS-MATERIALIZED",
+    "domain": "sql",
+    "topic": "views",
+    "title": "Standard Views vs Materialized Views: Storage, Performance, and Refresh",
+    "tags": [
+      "views",
+      "materialized views",
+      "view vs materialized view",
+      "virtual tables",
+      "refresh materialized view",
+      "indexed views"
+    ],
+    "content": "Comparison of Standard Views and Materialized Views:\n\n1) Standard View (Virtual Table):\n- Does NOT store physical data on disk.\n- Acts as a saved SQL query. Whenever queried, the database dynamically expands the view definition and executes the underlying SQL query.\n- Always returns real-time data with zero storage overhead, but re-computes expensive joins on every call.\n\n```sql\nCREATE VIEW active_customer_orders AS\nSELECT c.customer_id, c.customer_name, o.order_id, o.total_amount\nFROM customers c\nJOIN orders o ON c.customer_id = o.customer_id\nWHERE o.status = 'COMPLETED';\n```\n\n2) Materialized View (Physically Persisted):\n- Executes query once and stores the physical result set on disk as a table with its own indexes.\n- Instant query response for complex analytical aggregations.\n- Data can become stale until refreshed (`REFRESH MATERIALIZED VIEW CONCURRENTLY view_name;`).",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-DIALECT-STRING-FUNCTIONS",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "SQL Dialect Matrix: String Concatenation and Substring Across Databases",
+    "tags": [
+      "sql dialects",
+      "string concatenation",
+      "concat in postgres mysql oracle sqlserver",
+      "dialect differences",
+      "cross database sql"
+    ],
+    "content": "String manipulation syntax across the top relational database engines:\n\n1) String Concatenation:\n- **PostgreSQL / Oracle / SQLite**: `first_name || ' ' || last_name`\n- **MySQL**: `CONCAT(first_name, ' ', last_name)`\n- **SQL Server (T-SQL)**: `first_name + ' ' + last_name` or `CONCAT(first_name, ' ', last_name)`\n\n2) String Length:\n- **PostgreSQL / MySQL / Oracle**: `LENGTH(col)` or `CHAR_LENGTH(col)`\n- **SQL Server**: `LEN(col)`\n\n3) Substrings:\n- **PostgreSQL / MySQL / Oracle / SQLite**: `SUBSTRING(col FROM 1 FOR 5)` or `SUBSTR(col, 1, 5)`\n- **SQL Server**: `SUBSTRING(col, 1, 5)`",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-DIALECT-DATE-FUNCTIONS",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "SQL Dialect Matrix: Date & Time Manipulation Across Databases",
+    "tags": [
+      "date functions",
+      "current date",
+      "date trunc",
+      "dateadd",
+      "datediff",
+      "postgres date vs sql server date"
+    ],
+    "content": "Date and time arithmetic syntax across database platforms:\n\n1) Current Timestamp:\n- **ANSI SQL / PostgreSQL**: `CURRENT_TIMESTAMP` or `NOW()`\n- **MySQL**: `NOW()` or `CURRENT_TIMESTAMP`\n- **SQL Server**: `GETDATE()` or `SYSDATETIME()`\n- **Oracle**: `SYSDATE` or `CURRENT_TIMESTAMP`\n- **SQLite**: `datetime('now')`\n\n2) Date Truncation (e.g. Month Start):\n- **PostgreSQL**: `DATE_TRUNC('month', order_date)`\n- **MySQL**: `DATE_FORMAT(order_date, '%Y-%m-01')`\n- **SQL Server**: `DATETRUNC(month, order_date)` or `DATEFROMPARTS(YEAR(d), MONTH(d), 1)`\n- **Oracle**: `TRUNC(order_date, 'MM')`\n\n3) Date Difference:\n- **PostgreSQL**: `end_date - start_date` (returns integer days) or `AGE(end_date, start_date)`\n- **SQL Server**: `DATEDIFF(day, start_date, end_date)`\n- **MySQL**: `DATEDIFF(end_date, start_date)`",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-DDL-DML-TCL-DCL",
+    "domain": "sql",
+    "topic": "ddl_dml",
+    "title": "SQL Sub-Languages Explained: DDL, DML, DQL, TCL, and DCL",
+    "tags": [
+      "ddl",
+      "dml",
+      "dql",
+      "tcl",
+      "dcl",
+      "difference between ddl and dml",
+      "sub languages of sql",
+      "sql categories"
+    ],
+    "content": "Relational SQL commands are divided into 5 standardized sub-languages:\n\n1) **DQL (Data Query Language)**:\n- Commands used to retrieve data from tables: `SELECT`.\n\n2) **DML (Data Manipulation Language)**:\n- Commands that modify data records (row-level changes): `INSERT`, `UPDATE`, `DELETE`, `MERGE`.\n\n3) **DDL (Data Definition Language)**:\n- Commands that define and modify schema objects: `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `RENAME`.\n- Implicitly commits active transactions in most systems.\n\n4) **TCL (Transaction Control Language)**:\n- Commands that manage transactional integrity: `COMMIT`, `ROLLBACK`, `SAVEPOINT`.\n\n5) **DCL (Data Control Language)**:\n- Commands that manage security and access permissions: `GRANT`, `REVOKE`.",
+    "source": "Master SQL Knowledge Base"
+  },
+  {
+    "id": "DOC-SQL-ROADMAP",
+    "domain": "sql",
+    "topic": "roadmap",
+    "title": "Complete SQL Learning Roadmap & Step-by-Step Study Guide",
+    "tags": [
+      "roadmap",
+      "road map",
+      "learning path",
+      "learn sql",
+      "how to learn",
+      "study plan",
+      "syllabus",
+      "curriculum",
+      "beginner",
+      "where to start",
+      "practice guide",
+      "write sequence to learn sql",
+      "learning sequence"
+    ],
+    "content": "A structured step-by-step roadmap to master SQL from absolute beginner to senior database engineer:\n\n1) Phase 1 — SQL Fundamentals (Beginner):\n- Relational concepts: Tables, Rows, Columns, Primary Keys, Foreign Keys.\n- Basic queries: SELECT, DISTINCT, WHERE, AND/OR/NOT, IN, BETWEEN, LIKE, IS NULL.\n- Sorting & Limiting: ORDER BY, LIMIT, OFFSET, TOP.\n- Basic calculations: COUNT, SUM, AVG, MIN, MAX.\n\n2) Phase 2 — Intermediate SQL (Data Analysis & Manipulation):\n- Table Joins: INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN, CROSS JOIN, Self Joins.\n- Aggregations: GROUP BY, HAVING clause, COUNT(DISTINCT).\n- Subqueries: Scalar subqueries, multi-row subqueries (IN, ANY, ALL), correlated subqueries (EXISTS).\n- Set Operations: UNION, UNION ALL, INTERSECT, EXCEPT.\n- Conditional logic: CASE WHEN ... THEN ... ELSE ... END.\n- DDL & DML: CREATE TABLE, ALTER TABLE, DROP TABLE, INSERT, UPDATE, DELETE, TRUNCATE.\n\n3) Phase 3 — Advanced SQL (Analytics & Data Engineering):\n- Window Functions: ROW_NUMBER(), RANK(), DENSE_RANK(), NTILE(), LAG(), LEAD(), Cumulative Running Totals, Moving Averages.\n- Common Table Expressions (CTEs): Non-recursive CTEs and Recursive CTEs for hierarchical tree structures.\n- Date & Time manipulation: DATE_TRUNC, EXTRACT, INTERVAL arithmetic, timezone handling.\n- String & Regex functions: CONCAT, SUBSTRING, COALESCE, NULLIF, regex matching.\n\n4) Phase 4 — Database Internals & Performance Tuning (Expert):\n- Indexing Strategies: B-Tree, Hash, Composite Indexes, Covering Indexes (INCLUDE), Clustered vs Non-Clustered.\n- Query Optimization: EXPLAIN / EXPLAIN ANALYZE execution plans, SARGable predicates, eliminating full table scans.\n- Database Objects: Stored Procedures (SP), User-Defined Functions (UDF), Standard Views, Materialized Views, Triggers.\n- Concurrency & Transactions: ACID properties, isolation levels (Read Committed, Repeatable Read, Serializable), locking mechanisms.\n- Database Normalization: 1NF, 2NF, 3NF, BCNF, denormalization tradeoffs.",
+    "source": "Master SQL Engineering Roadmap"
+  },
+  {
+    "id": "DOC-SQL-PRACTICE-TOPICS",
+    "domain": "sql",
+    "topic": "practice_topics",
+    "title": "Essential SQL Topics & Practice Checklist for Interviews & Projects",
+    "tags": [
+      "practice topics",
+      "topics to practice",
+      "sql topics",
+      "list of topics",
+      "practice",
+      "interview questions",
+      "checklist",
+      "exercises",
+      "topic of sql to start practice"
+    ],
+    "content": "Top SQL topics to practice systematically for real-world mastery and technical interviews:\n\n1) Filtering & Basic Retrieval:\n- Filtering with multiple AND/OR logic, NOT IN with NULL caveats, wildcard search with LIKE '%abc%'.\n- Handling NULL values properly with IS NULL / IS NOT NULL and COALESCE().\n\n2) Relational Joins:\n- Joining 3+ tables with foreign keys.\n- Identifying missing records using LEFT JOIN ... WHERE right.id IS NULL (Anti-Join).\n- Many-to-many relationship queries using associative junction tables.\n\n3) Aggregation & Group Filtering:\n- Calculating metrics grouped by multiple columns.\n- Filtering aggregated groups using HAVING (e.g. customers with total spend > $10,000).\n- Conditional aggregation using SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END).\n\n4) Subqueries & Set Theory:\n- Correlated subqueries: finding employees earning more than their department average.\n- EXISTS vs IN performance on large datasets.\n- Combining result sets using UNION vs UNION ALL.\n\n5) Window Functions:\n- Top N records per category using ROW_NUMBER() or DENSE_RANK() with PARTITION BY.\n- Calculating Month-over-Month growth rate using (current_month - LAG(current_month, 1)) / LAG(current_month, 1).\n- Running cumulative totals using SUM(amount) OVER (ORDER BY date ROWS UNBOUNDED PRECEDING).\n\n6) CTEs & Hierarchies:\n- Refactoring complex nested subqueries into readable WITH clauses.\n- Querying organizational manager-employee hierarchies using WITH RECURSIVE.\n\n7) Schema Design & Optimization:\n- Designing tables with PRIMARY KEY, FOREIGN KEY (ON DELETE CASCADE), UNIQUE, and CHECK constraints.\n- Creating B-Tree indexes on filtered and joined columns.\n- Analyzing EXPLAIN output to verify index usage.",
+    "source": "SQL Practice & Interview Guide"
+  },
+  {
+    "id": "DOC-SQL-INTERVIEW-CHEATSHEET",
+    "domain": "sql",
+    "topic": "practice_topics",
+    "title": "SQL Interview Cheatsheet: Top 25 Rapid-Fire Architectural Concepts",
+    "tags": [
+      "cheatsheet",
+      "interview cheatsheet",
+      "rapid fire sql",
+      "sql interview tips",
+      "quick review"
+    ],
+    "content": "Quick architectural reference for technical SQL interviews:\n\n1) Execution Order: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY -> LIMIT.\n2) WHERE vs HAVING: WHERE filters rows before grouping; HAVING filters aggregated buckets.\n3) UNION vs UNION ALL: UNION removes duplicates (slow sort); UNION ALL concatenates (fast).\n4) DELETE vs TRUNCATE: DELETE is DML (logged per row, rollbackable); TRUNCATE is DDL (deallocates pages, resets identity).\n5) Clustered vs Non-Clustered Index: Clustered determines physical table sort order (1 per table); Non-clustered is a secondary pointer tree.\n6) SARGable: Avoid wrapping columns in functions inside WHERE (e.g. use `date >= '2025-01-01'` instead of `YEAR(date) = 2025`).\n7) Stored Procedure vs Function: Procedure uses CALL, executes DML, manages transactions; Function uses SELECT, returns a value, no transactions.",
+    "source": "SQL Interview Master Guide"
+  },
+  {
+    "id": "DOC-SQL-BEGINNER-GUIDE",
+    "domain": "sql",
+    "topic": "roadmap",
+    "title": "SQL Beginner Guide: Relational Model, Tables, Rows, and Data Types",
+    "tags": [
+      "beginner guide",
+      "sql for beginners",
+      "relational model",
+      "tables rows columns",
+      "what is sql"
+    ],
+    "content": "An introduction to relational database systems for beginners:\n\n1) Relational Database Concepts: Data is organized into structured two-dimensional tables (relations) comprising rows (records/tuples) and columns (attributes/fields).\n2) Primary Key: Ensures every row has a unique identifier.\n3) Foreign Key: Establishes connections between related tables (e.g. linking order records to customer records).\n4) Declarative Nature: In SQL, you declare WHAT data you want, and the database query engine determines HOW to retrieve it efficiently.",
+    "source": "SQL Beginner Handbook"
+  },
+  {
+    "id": "DOC-SQL-PERFORMANCE-CHECKLIST",
+    "domain": "sql",
+    "topic": "optimization",
+    "title": "Production SQL Performance Optimization Checklist",
+    "tags": [
+      "performance checklist",
+      "optimization checklist",
+      "slow query checklist",
+      "tuning guide"
+    ],
+    "content": "10-point checklist for auditing and accelerating slow production SQL queries:\n\n1) Eliminate SELECT * — Project only required columns to reduce memory buffer usage.\n2) Check SARGability — Ensure WHERE predicates do not wrap indexed columns in functions.\n3) Verify Index Usage — Run EXPLAIN ANALYZE to ensure Index Seeks instead of Sequential Table Scans.\n4) Avoid Redundant Sorting — Use UNION ALL instead of UNION when duplicates are impossible.\n5) Replace Correlated Subqueries — Refactor into JOINs or CTEs with window functions where applicable.\n6) Check Join Key Data Types — Mismatched join types prevent index usage (e.g. INT vs VARCHAR).\n7) Filter Early — Apply WHERE filters before joining large intermediate tables.\n8) Use Keyset Pagination — Replace deep `OFFSET 1000000` with `WHERE id > last_seen_id`.\n9) Update Statistics — Ensure the Cost-Based Optimizer has fresh table statistics (`ANALYZE table`).\n10) Add Covering Indexes — Use `INCLUDE` to create Index-Only Scans for high-frequency queries.",
+    "source": "Database Performance Tuning"
+  },
+  {
+    "id": "DOC-SQL-SELECT-DEEP",
+    "domain": "sql",
+    "topic": "clauses",
+    "title": "SELECT Statement: Projection, Mathematical Expressions, and Aliasing",
+    "tags": [
+      "select",
+      "select statement",
+      "column projection",
+      "aliasing",
+      "as keyword",
+      "select columns"
+    ],
+    "content": "The SELECT statement specifies the column projections and scalar calculations returned by a query:\n\n1) Column Projection: Project specific columns to reduce I/O.\n2) Aliasing (AS): Rename columns or table references.\n3) Expressions: Compute mathematical, string, or conditional expressions inline.\n\n```sql\nSELECT emp_id, first_name || ' ' || last_name AS full_name, salary * 1.10 AS next_year_salary FROM employees;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DISTINCT-DEEP",
+    "domain": "sql",
+    "topic": "clauses",
+    "title": "SELECT DISTINCT: Multi-Column Deduplication and Execution Cost",
+    "tags": [
+      "distinct",
+      "select distinct",
+      "deduplication",
+      "unique rows",
+      "eliminate duplicates"
+    ],
+    "content": "SELECT DISTINCT removes duplicate rows across all projected columns:\n\n1) Multi-Column Scope: Uniqueness is evaluated across the combined tuple of all SELECT columns.\n2) Cost: Incurs an implicit sorting or hashing step in memory/tempdb.\n\n```sql\nSELECT DISTINCT department_id, job_title FROM employees;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-WHERE-DEEP",
+    "domain": "sql",
+    "topic": "filtering",
+    "title": "WHERE Clause: Row-Level Filtering, Predicates, and Comparison Operators",
+    "tags": [
+      "where",
+      "where clause",
+      "row filtering",
+      "predicates",
+      "filter rows",
+      "comparison operators"
+    ],
+    "content": "WHERE filters individual table records before grouping and aggregation:\n\n1) Operators: `=`, `<>`, `!=`, `<`, `<=`, `>`, `>=`, `BETWEEN`, `IN`, `LIKE`, `IS NULL`.\n2) Logical Combining: `AND`, `OR`, `NOT`.\n\n```sql\nSELECT * FROM orders WHERE status = 'COMPLETED' AND total_amount >= 500;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-AND-OR-NOT-DEEP",
+    "domain": "sql",
+    "topic": "filtering",
+    "title": "Boolean Logic: AND, OR, NOT Precedence and Parentheses Grouping",
+    "tags": [
+      "and",
+      "or",
+      "not",
+      "boolean logic",
+      "operator precedence",
+      "compound conditions"
+    ],
+    "content": "Boolean operator precedence rules:\n\n1) Hierarchy: `NOT` evaluates first, `AND` second, `OR` third.\n2) Always use parentheses `()` to avoid logic bugs with mixed `AND` / `OR` conditions.\n\n```sql\nSELECT * FROM accounts WHERE (account_type = 'PREMIUM' OR balance > 50000) AND is_active = TRUE;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-IN-NOT-IN",
+    "domain": "sql",
+    "topic": "filtering",
+    "title": "IN and NOT IN Operators: List Membership and the NULL Trap",
+    "tags": [
+      "in",
+      "not in",
+      "in operator",
+      "not in operator",
+      "null in not in",
+      "membership test"
+    ],
+    "content": "IN tests if a value matches any element in a list or subquery:\n\n1) NOT IN with NULLs: If the subquery contains ANY NULL, `NOT IN` returns 0 rows (evaluates to UNKNOWN). Use `NOT EXISTS` or filter `WHERE col IS NOT NULL`.\n\n```sql\nSELECT * FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders WHERE customer_id IS NOT NULL);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-BETWEEN-DEEP",
+    "domain": "sql",
+    "topic": "filtering",
+    "title": "BETWEEN Operator: Inclusive Range Filtering on Numbers and Dates",
+    "tags": [
+      "between",
+      "between operator",
+      "inclusive range",
+      "not between",
+      "date ranges"
+    ],
+    "content": "BETWEEN tests whether a value falls within an inclusive boundary ($low \\le val \\le high$):\n\n1) Inclusivity: Both boundary values are included.\n2) Timestamp Caution: For timestamps, use `>= '2025-01-01' AND < '2025-02-01'` to avoid missing partial days.\n\n```sql\nSELECT * FROM products WHERE unit_price BETWEEN 50 AND 200;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-LIKE-WILDCARDS",
+    "domain": "sql",
+    "topic": "filtering",
+    "title": "LIKE, ILIKE and Wildcards (%, _) with ESCAPE Sequences",
+    "tags": [
+      "like",
+      "ilike",
+      "wildcards",
+      "pattern matching",
+      "case insensitive like",
+      "percent wildcard",
+      "underscore wildcard"
+    ],
+    "content": "Text pattern matching:\n\n1) `%`: Matches zero or more characters.\n2) `_`: Matches exactly one character.\n3) `ILIKE`: Case-insensitive matching (PostgreSQL).\n4) Indexing: SARGable prefix search (`LIKE 'abc%'`) uses B-Tree indexes; leading wildcards (`LIKE '%abc'`) force full table scans.\n\n```sql\nSELECT * FROM employees WHERE email LIKE '%@company.com';\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-IS-NULL-DEEP",
+    "domain": "sql",
+    "topic": "null_handling",
+    "title": "IS NULL and IS NOT NULL: Three-Valued Logic and Predicate Evaluation",
+    "tags": [
+      "is null",
+      "is not null",
+      "null check",
+      "null comparison",
+      "three valued logic"
+    ],
+    "content": "NULL represents missing or unknown information:\n\n1) Rule: Never use `= NULL` or `!= NULL` (always evaluates to UNKNOWN). Use `IS NULL` or `IS NOT NULL`.\n\n```sql\nSELECT emp_name FROM employees WHERE manager_id IS NULL;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ORDER-BY-DEEP",
+    "domain": "sql",
+    "topic": "sorting",
+    "title": "ORDER BY Clause: Multi-Column Sorting, ASC/DESC, and NULLS FIRST/LAST",
+    "tags": [
+      "order by",
+      "sorting",
+      "asc",
+      "desc",
+      "nulls first",
+      "nulls last",
+      "sort order"
+    ],
+    "content": "ORDER BY sorts query result rows:\n\n1) Direction: `ASC` (default) or `DESC`.\n2) Multi-Column: Evaluated left-to-right.\n3) NULL Ordering: Control NULL placement using `NULLS FIRST` or `NULLS LAST`.\n\n```sql\nSELECT emp_name, department_id, salary FROM employees ORDER BY department_id ASC, salary DESC NULLS LAST;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-LIMIT-OFFSET-DEEP",
+    "domain": "sql",
+    "topic": "pagination",
+    "title": "LIMIT and OFFSET: Pagination Mechanics and Keyset Pagination",
+    "tags": [
+      "limit",
+      "offset",
+      "pagination",
+      "limit offset",
+      "keyset pagination",
+      "page size"
+    ],
+    "content": "LIMIT and OFFSET paginate query rows:\n\n1) Mechanics: `LIMIT n OFFSET m` skips `m` rows and returns `n` rows.\n2) Keyset Optimization: Avoid deep `OFFSET 1000000` by filtering on indexed IDs: `WHERE id > last_id ORDER BY id ASC LIMIT 10`.\n\n```sql\nSELECT * FROM products ORDER BY product_id ASC LIMIT 20 OFFSET 40;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CASE-WHEN-DEEP",
+    "domain": "sql",
+    "topic": "conditional_logic",
+    "title": "CASE WHEN: Searched CASE, Simple CASE, and Conditional Aggregation",
+    "tags": [
+      "case when",
+      "case expression",
+      "if else in sql",
+      "conditional logic",
+      "searched case",
+      "simple case"
+    ],
+    "content": "CASE WHEN provides conditional IF-THEN-ELSE evaluation:\n\n1) Searched CASE: Evaluates boolean expressions in order.\n2) Placement: Usable in SELECT, WHERE, ORDER BY, and inside aggregates for pivoting.\n\n```sql\nSELECT emp_name, salary, CASE WHEN salary >= 80000 THEN 'Senior' ELSE 'Junior' END AS seniority_tier FROM employees;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-COALESCE-DEEP",
+    "domain": "sql",
+    "topic": "null_handling",
+    "title": "COALESCE: Fallback Selection and Short-Circuiting",
+    "tags": [
+      "coalesce",
+      "null replacement",
+      "coalesce function",
+      "fallback values",
+      "default value for null"
+    ],
+    "content": "COALESCE evaluates arguments left-to-right and returns the first non-NULL expression:\n\n```sql\nSELECT customer_id, COALESCE(phone, mobile, email, 'No Contact') AS primary_contact FROM customers;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-NULLIF-DEEP",
+    "domain": "sql",
+    "topic": "null_handling",
+    "title": "NULLIF: Preventing Division by Zero and Blank Value Handling",
+    "tags": [
+      "nullif",
+      "division by zero",
+      "nullif function",
+      "prevent divide by zero",
+      "empty string to null"
+    ],
+    "content": "NULLIF(a, b) returns NULL if a = b; otherwise returns a:\n\n1) Division Safety: `total_cost / NULLIF(item_count, 0)` returns NULL instead of throwing a divide-by-zero exception.\n\n```sql\nSELECT dept_id, revenue / NULLIF(headcount, 0) AS revenue_per_head FROM departments;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CAST-CONVERT-DEEP",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "CAST and CONVERT: Explicit Data Type Conversion Syntax",
+    "tags": [
+      "cast",
+      "convert",
+      "type casting",
+      "data type conversion",
+      "cast syntax",
+      "convert syntax"
+    ],
+    "content": "Type conversion operators in SQL:\n\n1) ANSI CAST: `CAST(val AS target_type)`.\n2) PostgreSQL shorthand: `val::target_type`.\n3) SQL Server: `CONVERT(target_type, val, [style])`.\n\n```sql\nSELECT CAST('2025-01-01' AS DATE), CAST(150.5 AS INT);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-EXECUTION-ORDER-DEEP",
+    "domain": "sql",
+    "topic": "execution_order",
+    "title": "Logical SQL Query Processing & Execution Sequence",
+    "tags": [
+      "execution order",
+      "query processing order",
+      "logical order",
+      "sql order of execution",
+      "how sql executes",
+      "processing sequence",
+      "what is execution order in sql"
+    ],
+    "content": "The 8-step logical execution order of SQL queries:\n\n1. FROM & JOIN\n2. WHERE\n3. GROUP BY\n4. HAVING\n5. SELECT\n6. DISTINCT\n7. ORDER BY\n8. LIMIT / OFFSET\n\n💡 Consequence: Aliases created in SELECT cannot be used in WHERE because WHERE executes in Step 2 before SELECT in Step 5.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-INNER-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "INNER JOIN: Syntax, Equi-Joins, and Multi-Table Join Paths",
+    "tags": [
+      "inner join",
+      "equi join",
+      "non equi join",
+      "join tables",
+      "inner join syntax"
+    ],
+    "content": "INNER JOIN returns rows where matching keys exist in both tables:\n\n```sql\nSELECT e.emp_name, d.dept_name FROM employees e INNER JOIN departments d ON e.department_id = d.department_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-LEFT-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "LEFT JOIN: Preserving Left Records, Outer Matches, and NULL Filters",
+    "tags": [
+      "left join",
+      "left outer join",
+      "outer join",
+      "preserve left table",
+      "left join syntax"
+    ],
+    "content": "LEFT JOIN returns all rows from the left table with matched right rows (or NULL if unmatched):\n\n```sql\nSELECT c.first_name, o.order_id FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-RIGHT-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "RIGHT JOIN: Preserving Right Records and Left Join Equivalence",
+    "tags": [
+      "right join",
+      "right outer join",
+      "right join syntax",
+      "right vs left join"
+    ],
+    "content": "RIGHT JOIN preserves all right table rows. `A RIGHT JOIN B` is equivalent to `B LEFT JOIN A`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-FULL-OUTER-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "FULL OUTER JOIN: Complete Bidirectional Outer Joins",
+    "tags": [
+      "full outer join",
+      "full join",
+      "outer join",
+      "full outer join syntax",
+      "bidirectional join"
+    ],
+    "content": "FULL OUTER JOIN combines LEFT and RIGHT outer joins, returning all rows from both tables filled with NULLs where unmatched.\n\n```sql\nSELECT e.emp_name, d.dept_name FROM employees e FULL OUTER JOIN departments d ON e.department_id = d.department_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-CROSS-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "CROSS JOIN: Cartesian Products ($M \\times N$) and Matrix Generation",
+    "tags": [
+      "cross join",
+      "cartesian product",
+      "cross join syntax",
+      "matrix generation",
+      "all combinations"
+    ],
+    "content": "CROSS JOIN pairs every left row with every right row ($M \\times N$ rows). Used for calendar matrices and permutations.\n\n```sql\nSELECT p.product_name, s.size_label FROM products p CROSS JOIN product_sizes s;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-NATURAL",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "NATURAL JOIN: Implicit Join by Matching Column Names & Risks",
+    "tags": [
+      "natural join",
+      "implicit join",
+      "natural join syntax",
+      "natural join risks"
+    ],
+    "content": "NATURAL JOIN automatically joins tables on all columns sharing identical names. Incurring high maintenance risk if column names change; explicit `ON` clauses are strongly preferred in production.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-SELF-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "SELF JOIN: Joining a Table to Itself for Hierarchies and Graph Edges",
+    "tags": [
+      "self join",
+      "joining table to itself",
+      "manager employee join",
+      "table alias self join"
+    ],
+    "content": "SELF JOIN joins a table with itself using distinct aliases:\n\n```sql\nSELECT e.emp_name AS employee, m.emp_name AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.emp_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-ANTI-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "ANTI-JOIN: Finding Unmatched Rows via LEFT JOIN IS NULL and NOT EXISTS",
+    "tags": [
+      "anti join",
+      "anti-join",
+      "unmatched rows",
+      "left join where null",
+      "not exists anti join",
+      "find missing records"
+    ],
+    "content": "ANTI-JOIN returns left rows with NO matching right rows:\n\n```sql\nSELECT c.customer_id FROM customers c LEFT JOIN orders o ON c.customer_id = o.customer_id WHERE o.customer_id IS NULL;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-SEMI-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "SEMI-JOIN: Existence Filtering via EXISTS without Multiplying Rows",
+    "tags": [
+      "semi join",
+      "semi-join",
+      "exists semi join",
+      "filter without duplicate rows",
+      "in semi join"
+    ],
+    "content": "SEMI-JOIN checks existence in a secondary table without duplicating left rows:\n\n```sql\nSELECT * FROM departments d WHERE EXISTS (SELECT 1 FROM employees e WHERE e.department_id = d.department_id);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-LATERAL-DEEP",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "LATERAL JOIN & CROSS APPLY: Correlated Table Expressions in FROM",
+    "tags": [
+      "lateral join",
+      "cross apply",
+      "outer apply",
+      "lateral",
+      "correlated from clause"
+    ],
+    "content": "LATERAL (or CROSS APPLY) allows a subquery in FROM to reference preceding columns (for-each evaluation):\n\n```sql\nSELECT c.customer_id, o.total_amount FROM customers c CROSS JOIN LATERAL (SELECT total_amount FROM orders WHERE customer_id = c.customer_id ORDER BY order_date DESC LIMIT 1) o;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOINS-OUTER-APPLY",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "OUTER APPLY: Left Outer Correlated Subqueries in SQL Server / Oracle",
+    "tags": [
+      "outer apply",
+      "cross apply vs outer apply",
+      "left join lateral",
+      "outer apply syntax"
+    ],
+    "content": "OUTER APPLY functions like a LEFT JOIN to a correlated table expression, preserving outer rows even if the inner subquery returns 0 rows.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-NON-EQUI-JOIN",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "Non-Equi Joins: Range Joins, Inequality Joins, and Banding",
+    "tags": [
+      "non equi join",
+      "range join",
+      "between join",
+      "inequality join",
+      "salary grade join"
+    ],
+    "content": "Non-equi joins join tables using `<`, `<=`, `>`, `>=`, or `BETWEEN`:\n\n```sql\nSELECT e.emp_name, e.salary, g.grade_level FROM employees e JOIN salary_grades g ON e.salary BETWEEN g.min_salary AND g.max_salary;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JOIN-ALGORITHMS",
+    "domain": "sql",
+    "topic": "joins",
+    "title": "Join Physical Algorithms: Nested Loops, Hash Join, and Merge Join",
+    "tags": [
+      "join algorithms",
+      "nested loop join",
+      "hash join",
+      "merge join",
+      "physical join operators"
+    ],
+    "content": "Database physical join algorithms:\n\n1) Nested Loops: Iterates outer rows and performs index seek on inner table. Best for small outer sets.\n2) Hash Join: Builds hash table of smaller table in memory and scans larger table. Best for large unsorted sets.\n3) Merge Join: Merges two pre-sorted inputs. Extremely fast when inputs are already sorted by join key.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SET-OPERATIONS-DEEP",
+    "domain": "sql",
+    "topic": "set_operations",
+    "title": "SQL Set Operations: UNION, UNION ALL, INTERSECT, and EXCEPT",
+    "tags": [
+      "set operations",
+      "union",
+      "union all",
+      "intersect",
+      "except",
+      "minus",
+      "union vs union all"
+    ],
+    "content": "Set operations combine rows from compatible SELECT queries:\n\n1) UNION: Eliminates duplicates.\n2) UNION ALL: Retains all duplicates with maximum speed.\n3) INTERSECT: Returns common rows.\n4) EXCEPT: Returns rows in query 1 not in query 2.\n\n```sql\nSELECT city FROM customers UNION ALL SELECT city FROM suppliers;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SET-RULES",
+    "domain": "sql",
+    "topic": "set_operations",
+    "title": "Set Operations Rules: Column Counts, Data Type Compatibility, and ORDER BY",
+    "tags": [
+      "set operations rules",
+      "union requirements",
+      "column compatibility union",
+      "order by in union"
+    ],
+    "content": "Rules for set operations (UNION, INTERSECT, EXCEPT):\n\n1) Identical Column Count: All queries must select the exact same number of columns.\n2) Compatible Types: Corresponding columns must have compatible types in positional order.\n3) Single ORDER BY: ORDER BY is placed once at the very end of the final query.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-AGGREGATES-CORE",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "Aggregate Functions: COUNT, SUM, AVG, MIN, MAX and NULL Handling",
+    "tags": [
+      "aggregations",
+      "count",
+      "sum",
+      "avg",
+      "min",
+      "max",
+      "aggregate functions",
+      "nulls in aggregates"
+    ],
+    "content": "Aggregate functions summarize multiple values into a single scalar value. Note: SUM, AVG, MIN, MAX automatically ignore NULL values; COUNT(*) counts all rows including NULLs.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-GROUP-BY-DEEP",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "GROUP BY Clause: Grouping Keys and Aggregation Semantics",
+    "tags": [
+      "group by",
+      "grouping",
+      "aggregate functions",
+      "group by clause",
+      "group by multiple columns"
+    ],
+    "content": "GROUP BY groups rows sharing identical grouping keys into summary records:\n\n```sql\nSELECT department_id, COUNT(*) AS headcount, AVG(salary) AS avg_sal FROM employees GROUP BY department_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-HAVING-DEEP",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "HAVING Clause: Post-Aggregation Group Filtering",
+    "tags": [
+      "having",
+      "having clause",
+      "filter groups",
+      "aggregate filtering",
+      "having with sum"
+    ],
+    "content": "HAVING filters aggregated groups after GROUP BY:\n\n```sql\nSELECT customer_id, SUM(total_amount) AS total_spent FROM orders GROUP BY customer_id HAVING SUM(total_amount) > 10000;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-WHERE-VS-HAVING-DEEP",
+    "domain": "sql",
+    "topic": "filtering",
+    "title": "WHERE vs HAVING Clause: Execution Phase, Filtering Level, and Rules",
+    "tags": [
+      "where vs having",
+      "difference between where and having",
+      "where clause",
+      "having clause",
+      "group by having",
+      "filtering"
+    ],
+    "content": "WHERE filters raw rows before aggregation; HAVING filters aggregated group metrics after aggregation.\n\n```sql\nSELECT department_id, AVG(salary) FROM employees WHERE status = 'ACTIVE' GROUP BY department_id HAVING AVG(salary) > 75000;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-COUNT-DISTINCT",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "COUNT(DISTINCT col): Counting Unique Non-Null Values",
+    "tags": [
+      "count distinct",
+      "count(distinct)",
+      "unique count",
+      "distinct count performance"
+    ],
+    "content": "COUNT(DISTINCT col) counts unique non-NULL values in a column. Incurs hash table allocation or sorting in query execution.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ROLLUP-DEEP",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "ROLLUP: Hierarchical Subtotals and Grand Total Generation",
+    "tags": [
+      "rollup",
+      "subtotals",
+      "grand total",
+      "hierarchical aggregation"
+    ],
+    "content": "ROLLUP generates hierarchical subtotals and grand totals:\n\n```sql\nSELECT region, department_id, SUM(salary) FROM employees GROUP BY ROLLUP (region, department_id);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CUBE-DEEP",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "CUBE: Multidimensional Aggregations Across All Dimension Permutations",
+    "tags": [
+      "cube",
+      "multidimensional aggregation",
+      "all subtotals",
+      "cube clause"
+    ],
+    "content": "CUBE computes subtotals for all $2^N$ combinations of grouping columns:\n\n```sql\nSELECT region, category, SUM(sales) FROM sales_data GROUP BY CUBE (region, category);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-GROUPING-SETS-DEEP",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "GROUPING SETS: Custom Granular Multi-Level Grouping Combinations",
+    "tags": [
+      "grouping sets",
+      "custom grouping",
+      "selective subtotals"
+    ],
+    "content": "GROUPING SETS specifies explicit subtotal combinations in a single query pass without UNION ALL:\n\n```sql\nSELECT region, department_id, SUM(sales) FROM sales_data GROUP BY GROUPING SETS ((region, department_id), (region), ());\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STRING-AGG-DEEP",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "STRING_AGG, GROUP_CONCAT, and LISTAGG: Delimited String Aggregation",
+    "tags": [
+      "string_agg",
+      "group_concat",
+      "listagg",
+      "concatenate strings group",
+      "string aggregation"
+    ],
+    "content": "Concatenates text values across grouped rows into a delimited string:\n\n```sql\n-- PostgreSQL:\nSELECT department_id, STRING_AGG(emp_name, ', ' ORDER BY salary DESC) AS team FROM employees GROUP BY department_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ARRAY-AGG",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "ARRAY_AGG: Aggregating Column Values into Native SQL Arrays",
+    "tags": [
+      "array_agg",
+      "aggregate to array",
+      "sql arrays",
+      "postgres array_agg"
+    ],
+    "content": "ARRAY_AGG collects grouped values into a native array (PostgreSQL / BigQuery):\n\n```sql\nSELECT department_id, ARRAY_AGG(emp_id ORDER BY hire_date) AS emp_ids FROM employees GROUP BY department_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CONDITIONAL-AGG",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "Conditional Aggregation: Pivoting Rows to Columns via SUM(CASE WHEN)",
+    "tags": [
+      "conditional aggregation",
+      "pivot",
+      "sum case when",
+      "count case when",
+      "pivot rows to columns"
+    ],
+    "content": "Computes multiple category totals in a single table scan:\n\n```sql\nSELECT region, SUM(CASE WHEN status = 'COMPLETED' THEN amount ELSE 0 END) AS completed_rev, SUM(CASE WHEN status = 'REFUNDED' THEN amount ELSE 0 END) AS refund_rev FROM orders GROUP BY region;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-PIVOT-UNPIVOT",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "PIVOT and UNPIVOT: Native Matrix Transposition Syntax",
+    "tags": [
+      "pivot",
+      "unpivot",
+      "matrix transpose",
+      "sql server pivot",
+      "oracle pivot"
+    ],
+    "content": "PIVOT rotates rows into columns; UNPIVOT rotates columns back into rows (supported natively in SQL Server and Oracle).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STATISTICAL-AGGS",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "Statistical Aggregates: STDDEV_SAMP, VAR_SAMP, CORR, and MEDIAN",
+    "tags": [
+      "stddev",
+      "variance",
+      "median",
+      "statistical functions",
+      "var_samp",
+      "stddev_samp"
+    ],
+    "content": "Standard statistical functions in SQL: `STDDEV_SAMP()` (sample standard deviation), `VAR_SAMP()` (sample variance), `CORR(y, x)` (Pearson correlation coefficient).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-GROUPING-FUNCTION",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "GROUPING() and GROUPING_ID(): Identifying Subtotal Rows",
+    "tags": [
+      "grouping()",
+      "grouping_id",
+      "identify subtotal rows",
+      "distinguish nulls from subtotals"
+    ],
+    "content": "GROUPING(col) returns 1 if the row represents an aggregate subtotal generated by ROLLUP/CUBE, and 0 if it is a standard grouped row.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-AGGREGATE-FILTER-CLAUSE",
+    "domain": "sql",
+    "topic": "aggregations",
+    "title": "FILTER Clause on Aggregates: ANSI Standard Conditional Aggregation",
+    "tags": [
+      "filter clause",
+      "aggregate filter",
+      "count filter",
+      "sum filter",
+      "postgres filter clause"
+    ],
+    "content": "ANSI SQL standard FILTER clause (supported in PostgreSQL and SQLite 3.30+):\n\n```sql\nSELECT department_id, COUNT(*) FILTER (WHERE salary > 80000) AS high_earners FROM employees GROUP BY department_id;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-WINDOWS-OVER-CLAUSE",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "Anatomy of Window Functions: OVER, PARTITION BY, and ORDER BY",
+    "tags": [
+      "window function",
+      "window functions",
+      "windows function",
+      "over clause",
+      "partition by",
+      "windowing",
+      "what is windows function"
+    ],
+    "content": "Window functions perform calculations across a partition of rows related to the current row without collapsing rows:\n\n`FUNCTION() OVER (PARTITION BY part_col ORDER BY sort_col [frame])`\n\n```sql\nSELECT emp_name, salary, AVG(salary) OVER (PARTITION BY department_id) AS dept_avg FROM employees;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ROW-NUMBER-DEEP",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "ROW_NUMBER(): Sequential Row Indexing, Deduplication, and Top-N",
+    "tags": [
+      "row_number",
+      "row number",
+      "row_number()",
+      "sequential numbers",
+      "top n per group",
+      "deduplication with row_number"
+    ],
+    "content": "Assigns a unique sequential integer (1, 2, 3, ...) per partition with no ties. Used for Top-N per group and deduplication.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-RANK-DEEP",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "RANK(): Ranking with Gaps on Tied Values",
+    "tags": [
+      "rank",
+      "rank()",
+      "ranking with ties",
+      "rank with gaps",
+      "competition ranking"
+    ],
+    "content": "Assigns identical rank to ties, skipping subsequent numbers (1, 2, 2, 4).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DENSE-RANK-DEEP",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "DENSE_RANK(): Ranking Without Gaps on Tied Values",
+    "tags": [
+      "dense_rank",
+      "dense_rank()",
+      "ranking without gaps",
+      "consecutive ranking"
+    ],
+    "content": "Assigns identical rank to ties without skipping subsequent numbers (1, 2, 2, 3).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-RANK-VS-DENSE-RANK-DEEP",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "RANK vs DENSE_RANK: Tie-Handling Differences and Leaderboards",
+    "tags": [
+      "rank vs dense_rank",
+      "rank",
+      "dense_rank",
+      "difference between rank and dense_rank",
+      "ranking ties"
+    ],
+    "content": "RANK leaves gaps (1, 2, 2, 4); DENSE_RANK leaves no gaps (1, 2, 2, 3).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-NTILE-DEEP",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "NTILE(n): Dividing Data into Quartiles, Deciles, and Percentiles",
+    "tags": [
+      "ntile",
+      "ntile function",
+      "quartile",
+      "decile",
+      "percentile",
+      "bucket",
+      "ntile in detail",
+      "ntile example"
+    ],
+    "content": "NTILE(n) divides ordered rows into 'n' equal buckets (1 to n):\n\n```sql\nSELECT emp_name, salary, NTILE(4) OVER (ORDER BY salary DESC) AS quartile FROM employees;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-LAG-DEEP",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "LAG(): Fetching Previous Row Values and Day-over-Day Growth",
+    "tags": [
+      "lag",
+      "lag function",
+      "previous row",
+      "day over day",
+      "prior period"
+    ],
+    "content": "LAG(col, offset, default) retrieves values from preceding rows:\n\n```sql\nSELECT order_date, revenue, LAG(revenue, 1) OVER (ORDER BY order_date) AS prev_rev FROM daily_sales;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-LEAD-DEEP",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "LEAD(): Fetching Subsequent Future Row Values and Churn Analysis",
+    "tags": [
+      "lead",
+      "lead function",
+      "next row",
+      "future period",
+      "subsequent row"
+    ],
+    "content": "LEAD(col, offset, default) retrieves values from subsequent future rows.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-FIRST-LAST-VALUE",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "FIRST_VALUE() and LAST_VALUE(): Partition Boundary Values",
+    "tags": [
+      "first_value",
+      "last_value",
+      "boundary values",
+      "partition first",
+      "partition last"
+    ],
+    "content": "FIRST_VALUE(col) and LAST_VALUE(col) return the first or last value in the window frame.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-NTH-VALUE",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "NTH_VALUE(): Accessing Specific Row Positions in Window Partitions",
+    "tags": [
+      "nth_value",
+      "nth row in window",
+      "second highest in partition",
+      "nth_value()"
+    ],
+    "content": "NTH_VALUE(col, n) returns the value from the n-th row of the window frame.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CUME-DIST-PERCENT-RANK",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "CUME_DIST() and PERCENT_RANK(): Cumulative Distribution & Percentiles",
+    "tags": [
+      "cume_dist",
+      "percent_rank",
+      "cumulative distribution",
+      "percentile rank",
+      "statistical ranking"
+    ],
+    "content": "CUME_DIST() computes the relative rank of a value ($row\\_num / total\\_rows$); PERCENT_RANK() computes relative percentage ($(rank - 1) / (total - 1)$).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ROWS-VS-RANGE",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "ROWS vs RANGE BETWEEN: Physical Row Frames vs Logical Value Frames",
+    "tags": [
+      "rows between",
+      "range between",
+      "window frames",
+      "rolling average",
+      "running total",
+      "unbounded preceding"
+    ],
+    "content": "ROWS defines frames by physical row count; RANGE defines frames by logical value intervals based on ORDER BY.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-RUNNING-TOTAL",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "Cumulative Running Totals: Syntax and Execution Efficiency",
+    "tags": [
+      "running total",
+      "cumulative sum",
+      "cumulative total",
+      "running sum"
+    ],
+    "content": "Calculates cumulative totals using `SUM(col) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-MOVING-AVERAGE",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "Rolling Moving Averages: 7-Day, 30-Day, and Centered Moving Averages",
+    "tags": [
+      "moving average",
+      "rolling average",
+      "7 day moving average",
+      "rolling window"
+    ],
+    "content": "Calculates moving averages: `AVG(sales) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-WINDOWED-AGGREGATES",
+    "domain": "sql",
+    "topic": "window_functions",
+    "title": "Aggregate Window Functions: SUM(), AVG(), COUNT() with OVER()",
+    "tags": [
+      "aggregate window functions",
+      "sum over",
+      "avg over",
+      "count over",
+      "window aggregation"
+    ],
+    "content": "Using standard aggregate functions with `OVER()` computes partition summaries without collapsing row details.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-STANDARD",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Common Table Expressions (CTEs): WITH Clause, Modularity, and Readability",
+    "tags": [
+      "cte",
+      "ctes",
+      "with clause",
+      "common table expression",
+      "query modularity"
+    ],
+    "content": "A CTE defines a temporary named result set within a single SQL statement using `WITH`:\n\n```sql\nWITH HighEarners AS (SELECT * FROM employees WHERE salary > 80000) SELECT * FROM HighEarners;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-RECURSIVE-DEEP",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "WITH RECURSIVE: Tree Hierarchies, Anchor/Recursive Members, and Graphs",
+    "tags": [
+      "recursive cte",
+      "with recursive",
+      "hierarchical queries",
+      "tree traversal",
+      "parent child hierarchy"
+    ],
+    "content": "Recursive CTEs iterate over parent-child hierarchies using an Anchor Member, UNION ALL, and a Recursive Member.\n\n```sql\nWITH RECURSIVE Tree AS (SELECT id, parent_id, 1 AS level FROM nodes WHERE parent_id IS NULL UNION ALL SELECT n.id, n.parent_id, t.level + 1 FROM nodes n JOIN Tree t ON n.parent_id = t.id) SELECT * FROM Tree;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-CHAINED",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Chained Multiple CTEs: Multi-Stage Data Transformation Pipelines",
+    "tags": [
+      "multiple ctes",
+      "chained ctes",
+      "multi stage cte",
+      "data pipeline in sql"
+    ],
+    "content": "Multiple CTEs can be defined in a single WITH statement separated by commas:\n\n```sql\nWITH Step1 AS (SELECT ...), Step2 AS (SELECT ... FROM Step1) SELECT * FROM Step2;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-VS-SUBQUERY-DEEP",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "CTE vs Subquery vs Temporary Table vs View Comparison",
+    "tags": [
+      "cte vs subquery",
+      "cte vs temp table",
+      "cte vs view",
+      "when to use cte",
+      "subquery vs cte"
+    ],
+    "content": "CTEs enhance statement readability; Subqueries evaluate inline; Temp Tables persist intermediate data across statements; Views permanently store query definitions.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-DEDUPLICATION",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Deduplicating Data with CTEs and ROW_NUMBER()",
+    "tags": [
+      "deduplication with cte",
+      "delete duplicates cte",
+      "remove duplicate rows"
+    ],
+    "content": "Identify duplicate records using a CTE with ROW_NUMBER() and delete where `row_num > 1`.\n\n```sql\nWITH Ranked AS (SELECT ctid, ROW_NUMBER() OVER (PARTITION BY email ORDER BY created_at DESC) as r FROM users) DELETE FROM users WHERE ctid IN (SELECT ctid FROM Ranked WHERE r > 1);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-MUTATING-DML",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Data-Modifying CTEs: INSERT, UPDATE, DELETE with RETURNING in CTEs",
+    "tags": [
+      "modifying cte",
+      "cte insert returning",
+      "cte delete returning",
+      "postgres writable cte"
+    ],
+    "content": "PostgreSQL allows DML statements with `RETURNING` inside CTEs, moving deleted/inserted rows into audit tables in a single atomic transaction.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-MATERIALIZED",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "MATERIALIZED vs NOT MATERIALIZED CTEs (PostgreSQL 12+ Optimization)",
+    "tags": [
+      "materialized cte",
+      "not materialized cte",
+      "cte inlining",
+      "cte optimization fence"
+    ],
+    "content": "PostgreSQL 12+ automatically inlines CTEs unless specified as `WITH cte AS MATERIALIZED (...)` to force a materialization fence.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-GRAPH-PATHS",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Graph Path Finding & Cycle Detection in Recursive CTEs",
+    "tags": [
+      "graph path finding",
+      "cycle detection cte",
+      "infinite loop prevention",
+      "shortest path sql"
+    ],
+    "content": "Track visited node arrays (`ARRAY[id]`) in recursive CTEs to prevent infinite loops in cyclic graphs.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-PAGINATION",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "Windowed Pagination and Total Count in a Single CTE Query",
+    "tags": [
+      "pagination cte",
+      "total count pagination",
+      "single pass pagination"
+    ],
+    "content": "Compute total row count and paginated rows in a single query pass using CTEs with `COUNT(*) OVER()`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CTE-PITFALLS",
+    "domain": "sql",
+    "topic": "cte",
+    "title": "CTE Performance Pitfalls: Optimization Fences and TempDB Overhead",
+    "tags": [
+      "cte pitfalls",
+      "cte performance issues",
+      "tempdb cte",
+      "slow cte"
+    ],
+    "content": "Older database versions treat CTEs as strict optimization fences, preventing predicate pushdown. Verify query plans.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SCALAR-SUBQUERY",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Scalar Subqueries: Single-Value Subqueries in SELECT and WHERE",
+    "tags": [
+      "scalar subquery",
+      "single value subquery",
+      "subquery in select",
+      "scalar subquery rules"
+    ],
+    "content": "A scalar subquery returns exactly one row and one column. If it returns 0 rows, it evaluates to NULL; if >1 row, it throws a runtime error.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-MULTI-ROW-SUBQUERY",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Multi-Row Subqueries: IN, ANY, ALL, and SOME Operators",
+    "tags": [
+      "multi row subquery",
+      "any operator",
+      "all operator",
+      "some operator",
+      "subquery in where"
+    ],
+    "content": "Multi-row subqueries return a single column with multiple rows for evaluation with `IN`, `ANY` (true if any match), and `ALL` (true only if all match).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CORRELATED-SUBQUERY-DEEP",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Correlated Subqueries: Row-by-Row Outer References",
+    "tags": [
+      "correlated subquery",
+      "subqueries",
+      "outer reference",
+      "correlated query",
+      "subquery in where"
+    ],
+    "content": "Correlated subqueries reference outer query columns and evaluate once per candidate row.\n\n```sql\nSELECT * FROM employees e1 WHERE salary > (SELECT AVG(salary) FROM employees e2 WHERE e2.dept_id = e1.dept_id);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-EXISTS-VS-IN-DEEP",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "EXISTS vs IN: Short-Circuiting, Subquery Optimization, and Performance",
+    "tags": [
+      "exists vs in",
+      "difference between exists and in",
+      "exists",
+      "in operator",
+      "subquery optimization"
+    ],
+    "content": "EXISTS terminates on the first match (short-circuiting); IN materializes the entire set into memory.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-NOT-EXISTS-VS-NOT-IN",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "NOT EXISTS vs NOT IN: The NULL Hazard and Performance Differences",
+    "tags": [
+      "not exists vs not in",
+      "not exists",
+      "not in null hazard",
+      "anti join comparison"
+    ],
+    "content": "NOT IN fails if the subquery returns any NULL; NOT EXISTS is completely immune to NULL hazards and executes faster.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DERIVED-TABLES",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Derived Tables: Inline Subqueries in FROM Clauses and Mandatory Aliasing",
+    "tags": [
+      "derived table",
+      "subquery in from",
+      "inline view",
+      "derived table alias"
+    ],
+    "content": "A subquery placed in the FROM clause acts as a temporary in-memory table. In standard SQL, derived tables MUST have an explicit alias.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ANY-ALL-OPERATORS",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "ANY, SOME, and ALL Operators in Subquery Comparisons",
+    "tags": [
+      "any",
+      "all",
+      "some",
+      "greater than any",
+      "greater than all"
+    ],
+    "content": "`> ANY (subquery)` is true if greater than the minimum value; `> ALL (subquery)` is true only if greater than the maximum value.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SUBQUERY-SELECT",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Subqueries in SELECT List: Column-Level Lookup Patterns",
+    "tags": [
+      "subquery in select",
+      "computed column subquery",
+      "correlated select subquery"
+    ],
+    "content": "Evaluate lookup metrics per row without explicit joins:\n\n```sql\nSELECT customer_id, (SELECT MAX(order_date) FROM orders o WHERE o.customer_id = c.customer_id) AS latest_order FROM customers c;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SUBQUERY-HAVING",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Subqueries in HAVING Clauses: Dynamic Aggregate Thresholds",
+    "tags": [
+      "subquery in having",
+      "having subquery",
+      "dynamic group filter"
+    ],
+    "content": "Compare group aggregates against dynamic thresholds:\n\n```sql\nSELECT dept_id, AVG(salary) FROM employees GROUP BY dept_id HAVING AVG(salary) > (SELECT AVG(salary) FROM employees);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SUBQUERY-DML",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Subqueries in DML: INSERT INTO SELECT, UPDATE with Subqueries, DELETE Subqueries",
+    "tags": [
+      "insert into select",
+      "update with subquery",
+      "delete with subquery",
+      "dml subqueries"
+    ],
+    "content": "Using subqueries to drive bulk inserts, updates, and deletes across relational tables.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SUBQUERY-UNNESTING",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Subquery Unnesting & Decorrelation in Modern Query Optimizers",
+    "tags": [
+      "subquery unnesting",
+      "decorrelation",
+      "optimizer transform subquery",
+      "subquery to join"
+    ],
+    "content": "Modern query optimizers automatically transform correlated subqueries into semi-joins or hash joins to avoid nested loops.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INLINE-VIEWS",
+    "domain": "sql",
+    "topic": "subqueries",
+    "title": "Inline Views vs CTEs: Readability and Scope",
+    "tags": [
+      "inline views",
+      "inline views vs ctes",
+      "nested subqueries"
+    ],
+    "content": "Inline views define temporary tables in FROM; CTEs provide equivalent capability with top-down readability.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-PRIMARY-KEY-DEEP",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Primary Key (PK): Definition, Characteristics, and Entity Integrity",
+    "tags": [
+      "primary key",
+      "pk",
+      "primary",
+      "entity integrity",
+      "composite primary key",
+      "surrogate key",
+      "natural key"
+    ],
+    "content": "A Primary Key uniquely identifies each row (Unique + NOT NULL, 1 per table, clustered index by default).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-FOREIGN-KEY-DEEP",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Foreign Key (FK): Definition, Referential Integrity, and Cascade Actions",
+    "tags": [
+      "foreign key",
+      "fk",
+      "foreign",
+      "referential integrity",
+      "cascade",
+      "on delete cascade",
+      "on update cascade"
+    ],
+    "content": "A Foreign Key enforces Referential Integrity between child and parent tables (`ON DELETE CASCADE / RESTRICT / SET NULL`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-KEYS-PK-VS-FK-DEEP",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Primary Key vs Foreign Key: Entity Integrity vs Referential Integrity",
+    "tags": [
+      "difference between primary and foreign key",
+      "primary vs foreign key",
+      "pk vs fk",
+      "primary key vs foreign key",
+      "what us difference between primary and foreign key"
+    ],
+    "content": "Primary Key guarantees row uniqueness within a table; Foreign Key guarantees data consistency across related tables.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CONSTRAINTS-CHECK-DEEP",
+    "domain": "sql",
+    "topic": "constraints",
+    "title": "CHECK Constraints: Domain Validation and Multi-Column Rules",
+    "tags": [
+      "check constraint",
+      "check",
+      "domain validation",
+      "table constraints",
+      "add check constraint"
+    ],
+    "content": "CHECK constraints validate column values on INSERT/UPDATE:\n\n```sql\nALTER TABLE products ADD CONSTRAINT check_positive_price CHECK (unit_price > 0);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CONSTRAINTS-UNIQUE-DEEP",
+    "domain": "sql",
+    "topic": "constraints",
+    "title": "UNIQUE Constraint: Uniqueness Enforcement, Indexes, and NULLs",
+    "tags": [
+      "unique constraint",
+      "unique",
+      "unique key",
+      "primary key vs unique",
+      "unique index"
+    ],
+    "content": "UNIQUE ensures column values are distinct. Unlike PKs, multiple UNIQUE constraints can exist per table, and NULLs are allowed.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CONSTRAINTS-NOT-NULL",
+    "domain": "sql",
+    "topic": "constraints",
+    "title": "NOT NULL Constraint: Enforcing Mandatory Field Values",
+    "tags": [
+      "not null",
+      "not null constraint",
+      "mandatory column",
+      "nullability"
+    ],
+    "content": "NOT NULL prevents missing or unassigned values from being stored in a column.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CONSTRAINTS-DEFAULT",
+    "domain": "sql",
+    "topic": "constraints",
+    "title": "DEFAULT Constraint: Automatic Column Value Insertion",
+    "tags": [
+      "default constraint",
+      "default value",
+      "default current_timestamp",
+      "automatic values"
+    ],
+    "content": "DEFAULT supplies an initial value when no value is specified in an INSERT statement:\n\n```sql\nALTER TABLE orders ALTER COLUMN status SET DEFAULT 'PENDING';\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-AUTO-INCREMENT-SERIAL",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "AUTO_INCREMENT, SERIAL, IDENTITY, and SEQUENCES",
+    "tags": [
+      "auto_increment",
+      "serial",
+      "identity",
+      "sequences",
+      "surrogate key generation",
+      "nextval"
+    ],
+    "content": "System-generated surrogate primary keys: `AUTO_INCREMENT` (MySQL), `SERIAL` / `GENERATED ALWAYS AS IDENTITY` (PostgreSQL), `IDENTITY(1,1)` (SQL Server), `SEQUENCE.NEXTVAL` (Oracle).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ALTER-TABLE-DEEP",
+    "domain": "sql",
+    "topic": "ddl",
+    "title": "ALTER TABLE: Adding, Dropping, Renaming Columns and Constraints",
+    "tags": [
+      "alter table",
+      "add column",
+      "drop column",
+      "rename column",
+      "modify column"
+    ],
+    "content": "DDL command for schema evolution:\n\n```sql\nALTER TABLE users ADD COLUMN phone VARCHAR(20), DROP COLUMN fax_number;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DROP-VS-TRUNCATE",
+    "domain": "sql",
+    "topic": "ddl_dml",
+    "title": "DROP TABLE vs TRUNCATE TABLE: Complete Destruction vs Bulk Data Purge",
+    "tags": [
+      "drop vs truncate",
+      "difference between drop and truncate",
+      "drop table",
+      "truncate table"
+    ],
+    "content": "DROP TABLE destroys the table structure, metadata, constraints, and data; TRUNCATE preserves schema structure and empties data pages instantly.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DELETE-TRUNCATE-DROP-DEEP",
+    "domain": "sql",
+    "topic": "ddl_dml",
+    "title": "DELETE vs TRUNCATE vs DROP: Logging, Rollbacks, and Resets",
+    "tags": [
+      "delete vs truncate",
+      "delete vs truncate vs drop",
+      "truncate table",
+      "delete from",
+      "drop table",
+      "ddl vs dml",
+      "what is the difference between delete, truncate and drop"
+    ],
+    "content": "DELETE is DML (row logged, rollbackable, fires triggers); TRUNCATE is DDL (page deallocated, fast, resets identity); DROP is DDL (destroys table structure).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SCHEMAS-NAMESPACES",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Database Schemas & Namespaces: Organizing Tables & Security",
+    "tags": [
+      "schemas",
+      "database schema",
+      "public schema",
+      "search_path",
+      "schema namespaces"
+    ],
+    "content": "Schemas organize database objects into distinct logical namespaces (`sales.orders`, `hr.employees`) for multi-tenant isolation and security permissions.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-TEMP-TABLES",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Temporary Tables: Local (#temp), Global (##temp), and pg_temp",
+    "tags": [
+      "temporary tables",
+      "temp table",
+      "#temp",
+      "global temp table",
+      "pg_temp"
+    ],
+    "content": "Temporary tables persist data only during the current session or transaction, supporting custom indexes for heavy intermediate computations.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-PARTITIONING-DEEP",
+    "domain": "sql",
+    "topic": "partitioning",
+    "title": "Table Partitioning: Range, List, Hash Partitioning & Pruning",
+    "tags": [
+      "partitioning",
+      "table partitioning",
+      "range partitioning",
+      "list partitioning",
+      "hash partitioning",
+      "partition pruning"
+    ],
+    "content": "Partition massive tables into physically separate chunks based on date ranges, regions, or hash buckets, enabling Partition Pruning during queries.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-TABLE-CONSTRAINTS-CASCADE",
+    "domain": "sql",
+    "topic": "constraints",
+    "title": "Cascading Referential Actions: CASCADE, RESTRICT, SET NULL",
+    "tags": [
+      "cascade",
+      "on delete cascade",
+      "on update cascade",
+      "set null",
+      "restrict",
+      "no action"
+    ],
+    "content": "Define what happens to child records when parent records are deleted or updated:\n\n```sql\nFOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INSERT-DEEP",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "INSERT Statement: Single-Row, Multi-Row, and Default Value Inserts",
+    "tags": [
+      "insert",
+      "insert into",
+      "multi row insert",
+      "insert syntax"
+    ],
+    "content": "Insert new records into tables:\n\n```sql\nINSERT INTO products (product_name, unit_price) VALUES ('Widget A', 19.99), ('Widget B', 29.99);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INSERT-SELECT",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "INSERT INTO SELECT: Bulk Data Migration and Table Population",
+    "tags": [
+      "insert into select",
+      "bulk insert",
+      "copy data table",
+      "insert from select"
+    ],
+    "content": "Populates a table directly from query results:\n\n```sql\nINSERT INTO archive_orders SELECT * FROM orders WHERE order_date < '2024-01-01';\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-UPDATE-DEEP",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "UPDATE Statement: Modifying Rows, WHERE Safeguards, and Calculated Updates",
+    "tags": [
+      "update",
+      "update statement",
+      "update where",
+      "modify rows",
+      "update salary"
+    ],
+    "content": "Modifies existing records. Always include a WHERE clause to prevent updating all rows across the entire table!\n\n```sql\nUPDATE employees SET salary = salary * 1.05 WHERE department_id = 10;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-UPDATE-WITH-JOIN",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "UPDATE with JOIN: Cross-Table Updates across Relational Datasets",
+    "tags": [
+      "update with join",
+      "update from",
+      "cross table update",
+      "update join syntax"
+    ],
+    "content": "Update columns based on joined tables:\n\n```sql\n-- PostgreSQL / SQLite UPDATE FROM:\nUPDATE products p SET unit_price = p.unit_price * 1.1 FROM suppliers s WHERE p.supplier_id = s.supplier_id AND s.region = 'EMEA';\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DELETE-DEEP",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "DELETE Statement: Removing Specific Rows and Transaction Safeguards",
+    "tags": [
+      "delete",
+      "delete from",
+      "delete statement",
+      "delete where",
+      "remove rows"
+    ],
+    "content": "Removes records matching WHERE criteria. Logs individual row deletions in transaction logs, enabling ROLLBACK.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DELETE-WITH-JOIN",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "DELETE with JOIN: Removing Child Records Based on Parent Joins",
+    "tags": [
+      "delete with join",
+      "delete using",
+      "delete from join"
+    ],
+    "content": "Delete records based on relational join filters (e.g. `DELETE FROM orders USING customers WHERE ...`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-UPSERT-MERGE-DEEP",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "UPSERT & MERGE: ON CONFLICT DO UPDATE and ON DUPLICATE KEY UPDATE",
+    "tags": [
+      "upsert",
+      "merge",
+      "on conflict do update",
+      "on duplicate key update",
+      "insert or update"
+    ],
+    "content": "Conditional insert/update syntax: `ON CONFLICT (id) DO UPDATE` in PostgreSQL/SQLite; `ON DUPLICATE KEY UPDATE` in MySQL; `MERGE` in SQL Server/Oracle.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-RETURNING-OUTPUT-DEEP",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "RETURNING and OUTPUT: Returning Modified Rows Directly from DML",
+    "tags": [
+      "returning",
+      "output clause",
+      "returning clause",
+      "insert returning id",
+      "get generated id"
+    ],
+    "content": "Returns newly generated keys or updated data immediately without extra SELECT queries:\n\n```sql\nINSERT INTO users (username) VALUES ('alice') RETURNING user_id, created_at;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-BULK-OPERATIONS",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "Bulk Data Loading: COPY FROM, BULK INSERT, and LOAD DATA INFILE",
+    "tags": [
+      "bulk insert",
+      "copy from",
+      "load data infile",
+      "csv import sql",
+      "high speed insert"
+    ],
+    "content": "High-speed binary and CSV ingestion methods bypassing standard statement parsing overhead.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SELECT-INTO",
+    "domain": "sql",
+    "topic": "dml",
+    "title": "SELECT INTO: Creating and Populating New Tables in One Step",
+    "tags": [
+      "select into",
+      "create table as select",
+      "ctas",
+      "copy table structure"
+    ],
+    "content": "Create and populate a new table from query results (`SELECT INTO new_table FROM old_table` or `CREATE TABLE new_table AS SELECT ...`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ACID-OVERVIEW",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "ACID Properties: Atomicity, Consistency, Isolation, and Durability",
+    "tags": [
+      "acid",
+      "transactions",
+      "atomicity",
+      "consistency",
+      "isolation",
+      "durability",
+      "acid properties"
+    ],
+    "content": "Relational transaction guarantees: Atomicity (All or nothing), Consistency (Preserves constraints), Isolation (No concurrent corruption), Durability (Persisted to disk/WAL).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ISOLATION-LEVELS",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "SQL Isolation Levels: Read Uncommitted, Read Committed, Repeatable Read, Serializable",
+    "tags": [
+      "isolation levels",
+      "dirty read",
+      "non repeatable read",
+      "phantom read",
+      "read committed",
+      "repeatable read",
+      "serializable"
+    ],
+    "content": "Transaction isolation levels from lowest to highest strictness:\n\n1) Read Uncommitted (Allows dirty reads)\n2) Read Committed (Default in Postgres/Oracle)\n3) Repeatable Read (Default in MySQL InnoDB)\n4) Serializable (Strictest, full isolation)",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DIRTY-READS",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "Dirty Reads: Reading Uncommitted Data in Concurrency",
+    "tags": [
+      "dirty read",
+      "dirty reads",
+      "read uncommitted dirty read",
+      "concurrency anomaly"
+    ],
+    "content": "A Dirty Read occurs when Transaction A reads data modified by Transaction B that has NOT yet been committed (and could be rolled back).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-NON-REPEATABLE-READS",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "Non-Repeatable Reads: Value Changes Between Consecutive Queries",
+    "tags": [
+      "non repeatable read",
+      "fuzzy read",
+      "repeatable read isolation",
+      "row value changes"
+    ],
+    "content": "A Non-Repeatable Read occurs when Transaction A reads a row, Transaction B updates that row and commits, and Transaction A re-reads the row to find changed values.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-PHANTOM-READS",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "Phantom Reads: New Row Insertions in Range Queries",
+    "tags": [
+      "phantom read",
+      "phantom reads",
+      "range concurrency anomaly",
+      "serializable phantom"
+    ],
+    "content": "A Phantom Read occurs when Transaction A queries a range of rows (e.g. `salary > 50000`), Transaction B inserts a new matching row and commits, and Transaction A re-runs the query to find new 'phantom' rows.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-LOCKING-MECHANISMS",
+    "domain": "sql",
+    "topic": "locks_concurrency",
+    "title": "Database Locks: Shared (S) vs Exclusive (X) and Lock Granularity",
+    "tags": [
+      "locks",
+      "locking",
+      "shared lock",
+      "exclusive lock",
+      "row lock",
+      "table lock"
+    ],
+    "content": "Shared (S) locks allow concurrent readers; Exclusive (X) locks give sole write access, blocking all other readers and writers.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DEADLOCKS",
+    "domain": "sql",
+    "topic": "locks_concurrency",
+    "title": "Deadlocks: Detection, Victim Selection, and Prevention Strategies",
+    "tags": [
+      "deadlock",
+      "deadlocks",
+      "deadlock detection",
+      "deadlock victim",
+      "deadlock prevention"
+    ],
+    "content": "A Deadlock occurs when two transactions wait for locks held by each other. Databases detect cycles and abort one transaction as the 'victim'. Prevent by acquiring locks in consistent order.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-MVCC-DEEP",
+    "domain": "sql",
+    "topic": "locks_concurrency",
+    "title": "Multi-Version Concurrency Control (MVCC) Internals",
+    "tags": [
+      "mvcc",
+      "multi version concurrency control",
+      "snapshot isolation",
+      "readers do not block writers",
+      "xmin xmax"
+    ],
+    "content": "MVCC ensures Readers do not block Writers, and Writers do not block Readers by maintaining row version timestamps (xmin/xmax).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-TRANSACTION-CONTROL",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "TCL Commands: BEGIN TRANSACTION, COMMIT, ROLLBACK, SAVEPOINT",
+    "tags": [
+      "tcl",
+      "commit",
+      "rollback",
+      "savepoint",
+      "begin transaction",
+      "transaction control language"
+    ],
+    "content": "Explicit transaction management commands to guarantee atomicity and partial rollback points (`SAVEPOINT sp1`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-WAL-DURABILITY",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "Write-Ahead Logging (WAL) and Durability Architecture",
+    "tags": [
+      "wal",
+      "write ahead logging",
+      "durability",
+      "redo log",
+      "checkpointing"
+    ],
+    "content": "WAL writes transaction changes sequentially to an append-only log on disk BEFORE modifying table data pages, ensuring instant crash recovery.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-PESSIMISTIC-OPTIMISTIC",
+    "domain": "sql",
+    "topic": "locks_concurrency",
+    "title": "Pessimistic Locking (SELECT FOR UPDATE) vs Optimistic Locking (Version Check)",
+    "tags": [
+      "pessimistic locking",
+      "optimistic locking",
+      "select for update",
+      "version column locking"
+    ],
+    "content": "Pessimistic locking locks rows explicitly (`SELECT ... FOR UPDATE`); Optimistic locking checks version numbers upon update without holding locks.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-TWO-PHASE-COMMIT",
+    "domain": "sql",
+    "topic": "transactions",
+    "title": "Two-Phase Commit (2PC): Distributed Transaction Coordination",
+    "tags": [
+      "2pc",
+      "two phase commit",
+      "distributed transactions",
+      "prepare commit",
+      "distributed acid"
+    ],
+    "content": "Coordinates atomic transactions across multiple distinct physical databases using Prepare and Commit phases.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-BTREE-DEEP",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "B-Tree Index Architecture: Balanced Tree Traversal and Range Lookups",
+    "tags": [
+      "b-tree",
+      "btree index",
+      "balanced tree",
+      "range scan index",
+      "default index"
+    ],
+    "content": "B-Tree indexes maintain sorted balanced tree structures supporting O(log N) lookups for equality and ranges (`=, <, >, BETWEEN, LIKE 'abc%'`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-CLUSTERED-NONCLUSTERED",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Clustered vs Non-Clustered Indexes: Physical Storage and Pointers",
+    "tags": [
+      "clustered index",
+      "non-clustered index",
+      "clustered vs non clustered",
+      "heap table",
+      "index pointers"
+    ],
+    "content": "A Clustered Index determines the physical sort order of rows on disk (1 per table, typically PK). Non-Clustered indexes are secondary trees holding row pointers.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-COMPOSITE-LEFTMOST",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Composite Multi-Column Indexes and the Leftmost Prefix Rule",
+    "tags": [
+      "composite index",
+      "multi column index",
+      "leftmost prefix rule",
+      "composite index order"
+    ],
+    "content": "An index on `(A, B, C)` can serve queries filtering on `(A)`, `(A, B)`, or `(A, B, C)`, but CANNOT serve queries filtering on `(B)` or `(C)` alone.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-COVERING-INCLUDE",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Covering Indexes: The INCLUDE Clause and Index-Only Scans",
+    "tags": [
+      "covering index",
+      "include clause",
+      "index only scan",
+      "covering index syntax"
+    ],
+    "content": "Covering indexes store extra columns in leaf pages via `INCLUDE`, fulfilling queries entirely from the index without reading table pages:\n\n```sql\nCREATE INDEX idx_cust ON orders (customer_id) INCLUDE (order_date, total_amount);\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-FILTERED-PARTIAL",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Filtered and Partial Indexes: Indexing Specific Table Subsets",
+    "tags": [
+      "filtered index",
+      "partial index",
+      "index with where clause",
+      "selective index"
+    ],
+    "content": "Index only rows matching a WHERE predicate to save disk space:\n\n```sql\nCREATE INDEX idx_active_orders ON orders (customer_id) WHERE status = 'PENDING';\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-EXPRESSION-FUNCTIONAL",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Expression & Function-Based Indexes: Indexing Computed Columns",
+    "tags": [
+      "expression index",
+      "functional index",
+      "function based index",
+      "index on upper",
+      "index on date"
+    ],
+    "content": "Index computed expressions to accelerate non-SARGable queries:\n\n```sql\nCREATE INDEX idx_lower_email ON users (LOWER(email));\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-SEEK-SCAN-DEEP",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Index Seek vs Index Scan vs Sequential Table Scan Comparison",
+    "tags": [
+      "index seek",
+      "index scan",
+      "table scan",
+      "index seek vs index scan",
+      "sequential scan"
+    ],
+    "content": "Index Seek navigates directly to matching keys (O(log N)); Index Scan reads all leaf pages; Table Scan reads all raw data blocks.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-OPTIMIZATION-SARGABLE-DEEP",
+    "domain": "sql",
+    "topic": "optimization",
+    "title": "SARGable Query Design: Writing Index-Friendly Predicates",
+    "tags": [
+      "sargable",
+      "sargable queries",
+      "sargable predicates",
+      "query tuning",
+      "avoid full table scan",
+      "how does sargable query optimization work"
+    ],
+    "content": "Avoid wrapping indexed columns in functions in WHERE clauses. Use range bounds rather than `YEAR(date)` or `DATE(date)`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-EXPLAIN-ANALYZE-DEEP",
+    "domain": "sql",
+    "topic": "optimization",
+    "title": "EXPLAIN & EXPLAIN ANALYZE: Interpreting Query Cost and Memory Buffers",
+    "tags": [
+      "explain",
+      "explain analyze",
+      "execution plan",
+      "query plan",
+      "cost based optimizer",
+      "query cost"
+    ],
+    "content": "EXPLAIN shows estimated optimizer plans; EXPLAIN ANALYZE runs the query to measure actual millisecond latency and buffer hits.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-COLUMN-PRUNING",
+    "domain": "sql",
+    "topic": "optimization",
+    "title": "Column Pruning: Avoiding SELECT * and Reducing Disk I/O",
+    "tags": [
+      "column pruning",
+      "avoid select *",
+      "projection optimization",
+      "reduce io"
+    ],
+    "content": "Projecting only necessary columns reduces RAM cache consumption, network serialization, and enables Index-Only Scans.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEX-MAINTENANCE",
+    "domain": "sql",
+    "topic": "indexes",
+    "title": "Index Maintenance: Fragmentation, Page Splits, and REINDEX / REORGANIZE",
+    "tags": [
+      "index fragmentation",
+      "reindex",
+      "reorganize index",
+      "fill factor",
+      "page splits"
+    ],
+    "content": "Frequent inserts/updates cause index page fragmentation. Reorganize or rebuild fragmented indexes to restore sequential read performance.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STATISTICS-CBO",
+    "domain": "sql",
+    "topic": "optimization",
+    "title": "Cost-Based Optimizer (CBO), Statistics, Histograms, and ANALYZE",
+    "tags": [
+      "cost based optimizer",
+      "cbo",
+      "statistics",
+      "histograms",
+      "analyze table",
+      "cardinality estimation"
+    ],
+    "content": "The CBO relies on column histograms and data distribution statistics to estimate row cardinality and choose optimal join algorithms.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STORED-PROCEDURES-FULL",
+    "domain": "sql",
+    "topic": "stored_procedures",
+    "title": "Stored Procedures (SP): Complete Architecture, Parameters, and Syntax",
+    "tags": [
+      "stored procedure",
+      "storedprocedure",
+      "storeprocedure",
+      "sp",
+      "sprocs",
+      "procedures",
+      "create procedure",
+      "call procedure",
+      "plsql",
+      "tsql",
+      "help me to learn storeprocedure"
+    ],
+    "content": "Precompiled procedural code modules executed with `CALL` supporting loops, conditionals, transaction control, and parameter modes (`IN`, `OUT`, `INOUT`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-FUNCTIONS-UDF-FULL",
+    "domain": "sql",
+    "topic": "functions",
+    "title": "User-Defined Functions (UDF): Scalar vs Table-Valued Functions (TVF)",
+    "tags": [
+      "functions",
+      "udf",
+      "user defined function",
+      "scalar function",
+      "table valued function",
+      "tvf",
+      "deterministic function",
+      "udf vs sp",
+      "function vs procedure",
+      "explain udf vs sp"
+    ],
+    "content": "Reusable computational routines called inside queries (`SELECT my_func(col)`). Must return a value; cannot manage transactions.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-VIEWS-FULL",
+    "domain": "sql",
+    "topic": "views",
+    "title": "Standard Views: Virtual Table Abstractions and Security Encapsulation",
+    "tags": [
+      "views",
+      "view",
+      "create view",
+      "virtual table",
+      "view abstraction"
+    ],
+    "content": "A virtual saved query definition that does not store physical data on disk. Simplifies joins and provides column masking.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-MATERIALIZED-VIEWS-FULL",
+    "domain": "sql",
+    "topic": "views",
+    "title": "Materialized Views: Physical Caching and Refresh Strategies",
+    "tags": [
+      "materialized view",
+      "mv",
+      "refresh materialized view",
+      "cached query results",
+      "materialized views"
+    ],
+    "content": "Physically persists query results on disk as a table for ultra-fast analytical reads. Requires explicit refresh (`REFRESH MATERIALIZED VIEW`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-TRIGGERS-FULL",
+    "domain": "sql",
+    "topic": "triggers",
+    "title": "Database Triggers: BEFORE, AFTER, INSTEAD OF, and Audit Logging",
+    "tags": [
+      "triggers",
+      "trigger",
+      "create trigger",
+      "before trigger",
+      "after trigger",
+      "instead of trigger",
+      "audit log",
+      "event driven"
+    ],
+    "content": "Event-driven procedures executed automatically on INSERT, UPDATE, or DELETE, with access to `OLD` and `NEW` records.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-UPDATABLE-VIEWS",
+    "domain": "sql",
+    "topic": "views",
+    "title": "Updatable Views and the WITH CHECK OPTION Clause",
+    "tags": [
+      "updatable view",
+      "with check option",
+      "update view",
+      "view constraints"
+    ],
+    "content": "Single-table views without aggregates can accept INSERT/UPDATE. `WITH CHECK OPTION` enforces that modified rows satisfy the view WHERE filter.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-CURSORS",
+    "domain": "sql",
+    "topic": "stored_procedures",
+    "title": "Database Cursors: Row-by-Row Iteration, Fetching, and Performance Caveats",
+    "tags": [
+      "cursor",
+      "cursors",
+      "fetch next from cursor",
+      "row by row processing",
+      "cursor vs set based"
+    ],
+    "content": "Cursors iterate row-by-row through result sets. Slow in relational databases; set-based SQL operations should always be preferred.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DYNAMIC-SQL",
+    "domain": "sql",
+    "topic": "stored_procedures",
+    "title": "Dynamic SQL: EXECUTE, sp_executesql, and SQL Injection Defenses",
+    "tags": [
+      "dynamic sql",
+      "sp_executesql",
+      "execute immediate",
+      "sql injection defense",
+      "parameterized dynamic sql"
+    ],
+    "content": "Constructing SQL strings dynamically at runtime. Always use parameterized execution (`sp_executesql` / `EXECUTE ... USING`) to prevent SQL injection.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-PACKAGES-MODULES",
+    "domain": "sql",
+    "topic": "stored_procedures",
+    "title": "Database Packages and Modules: Grouping Procedures & Functions in Oracle / DB2",
+    "tags": [
+      "packages",
+      "package body",
+      "package specification",
+      "plsql packages",
+      "modular database code"
+    ],
+    "content": "Oracle PL/SQL packages encapsulate related procedures, functions, types, and variables into a single schema object.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-LIMIT-TOP-FULL",
+    "domain": "sql",
+    "topic": "pagination",
+    "title": "LIMIT vs TOP vs FETCH FIRST: Syntax and Dialect Differences",
+    "tags": [
+      "limit vs top",
+      "difference between limit and top",
+      "limit",
+      "top",
+      "offset",
+      "fetch next",
+      "fetch first",
+      "pagination",
+      "row limiting"
+    ],
+    "content": "Row limiting syntax: `LIMIT n` in PostgreSQL/MySQL/SQLite; `TOP (n)` in SQL Server; `FETCH FIRST n ROWS ONLY` in ANSI/Oracle.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INDEXED-VIEWS",
+    "domain": "sql",
+    "topic": "views",
+    "title": "Indexed Views (SQL Server) & Schema Binding",
+    "tags": [
+      "indexed view",
+      "schema binding",
+      "clustered index on view",
+      "sql server indexed view"
+    ],
+    "content": "SQL Server allows creating a Clustered Index directly on a view with `WITH SCHEMABINDING`, physically persisting view data on disk.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STORED-PROCEDURE-ERROR-HANDLING",
+    "domain": "sql",
+    "topic": "stored_procedures",
+    "title": "Error Handling in Stored Procedures: TRY-CATCH and EXCEPTION Blocks",
+    "tags": [
+      "error handling",
+      "try catch sql",
+      "exception block",
+      "rollback on error",
+      "sqlexception"
+    ],
+    "content": "Structured exception handling inside procedures to catch errors and safely execute `ROLLBACK`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-TRIGGERS-AUDIT-LOGGING",
+    "domain": "sql",
+    "topic": "triggers",
+    "title": "Building Automated Audit Trail Tables with Triggers",
+    "tags": [
+      "audit trail",
+      "audit logging trigger",
+      "track changes trigger",
+      "change history table"
+    ],
+    "content": "Using AFTER UPDATE/DELETE triggers to insert previous values (`OLD.*`) and timestamps into dedicated audit tables.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-UDF-DETERMINISM",
+    "domain": "sql",
+    "topic": "functions",
+    "title": "Deterministic vs Non-Deterministic Functions in Query Optimization",
+    "tags": [
+      "deterministic function",
+      "non deterministic function",
+      "deterministic vs non deterministic",
+      "function caching"
+    ],
+    "content": "Deterministic functions always return the same result for identical inputs, allowing the optimizer to cache results or build functional indexes.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-TABLE-VALUED-FUNCTIONS",
+    "domain": "sql",
+    "topic": "functions",
+    "title": "Table-Valued Functions (TVF): Inline vs Multi-Statement TVFs",
+    "tags": [
+      "table valued function",
+      "tvf",
+      "inline tvf",
+      "multi statement tvf",
+      "table function"
+    ],
+    "content": "Functions returning a table result set that can be joined in FROM clauses like a parameterized view.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-NUMERIC-TYPES",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "Numeric Data Types: INT, BIGINT, DECIMAL vs FLOAT",
+    "tags": [
+      "numeric types",
+      "integer",
+      "bigint",
+      "decimal",
+      "numeric",
+      "float vs decimal",
+      "exact precision"
+    ],
+    "content": "`INT`/`BIGINT` for whole numbers; `DECIMAL(p,s)` for exact fixed-point financial currency; `FLOAT` for approximate scientific floating point.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STRING-TYPES",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "String Types: CHAR vs VARCHAR vs TEXT vs NVARCHAR",
+    "tags": [
+      "char",
+      "varchar",
+      "text",
+      "nvarchar",
+      "char vs varchar",
+      "string data types"
+    ],
+    "content": "`CHAR(n)` is fixed-width padded with spaces; `VARCHAR(n)` is variable length; `TEXT` is unbounded string; `NVARCHAR` stores UTF-16 Unicode.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DATE-TIME-TYPES",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "Date & Time Types: DATE, TIME, TIMESTAMP, and TIMESTAMPTZ",
+    "tags": [
+      "date",
+      "time",
+      "timestamp",
+      "timestamptz",
+      "timezone offset",
+      "temporal data types"
+    ],
+    "content": "`DATE` stores calendar day; `TIME` stores time-of-day; `TIMESTAMP` stores date+time; `TIMESTAMPTZ` stores timezone offsets.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DATE-FUNCTIONS-DEEP",
+    "domain": "sql",
+    "topic": "date_functions",
+    "title": "Date Functions: DATE_TRUNC, EXTRACT, DATEDIFF, and DATEADD",
+    "tags": [
+      "date functions",
+      "date_trunc",
+      "extract",
+      "datediff",
+      "dateadd",
+      "intervals",
+      "current_timestamp"
+    ],
+    "content": "Manipulate dates: `DATE_TRUNC('month', dt)` truncates timestamp; `EXTRACT(YEAR FROM dt)` extracts integer parts; `dt + INTERVAL '7 days'` adds intervals.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STRING-FUNCTIONS",
+    "domain": "sql",
+    "topic": "string_functions",
+    "title": "String Functions: CONCAT, SUBSTRING, REPLACE, TRIM, and UPPER/LOWER",
+    "tags": [
+      "string functions",
+      "concat",
+      "substring",
+      "replace",
+      "trim",
+      "upper lower",
+      "string manipulation"
+    ],
+    "content": "Core string manipulation functions: `CONCAT()`, `SUBSTRING(str, start, len)`, `REPLACE(str, from, to)`, `TRIM()`, `UPPER()`, `LOWER()`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-REGEX-MATCHING",
+    "domain": "sql",
+    "topic": "string_functions",
+    "title": "Regular Expressions: REGEXP_LIKE, SIMILAR TO, and Regex Functions",
+    "tags": [
+      "regex",
+      "regexp_like",
+      "regex matching",
+      "similar to",
+      "regular expressions in sql"
+    ],
+    "content": "Regex search in SQL: `WHERE col ~ '^[A-Z]{3}-[0-9]{4}$'` (PostgreSQL) or `WHERE REGEXP_LIKE(col, pattern)` (MySQL/Oracle).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JSON-JSONB-DEEP",
+    "domain": "sql",
+    "topic": "json",
+    "title": "JSON & JSONB in SQL: Query Operators (->, ->>), Indexing, and Search",
+    "tags": [
+      "json",
+      "jsonb",
+      "json querying",
+      "json operators",
+      "gin index json",
+      "json_extract"
+    ],
+    "content": "PostgreSQL JSONB binary format supports `->` (returns JSON), `->>` (returns text), and GIN indexing for fast nested key lookups.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-JSON-CREATION",
+    "domain": "sql",
+    "topic": "json",
+    "title": "JSON Aggregation: JSON_BUILD_OBJECT, JSON_AGG, and JSON_ARRAY",
+    "tags": [
+      "json_build_object",
+      "json_agg",
+      "json_object",
+      "create json in sql",
+      "serialize json"
+    ],
+    "content": "Serialize relational rows directly into nested JSON structures using `JSON_BUILD_OBJECT()` and `JSON_AGG()`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-UUID-GUID",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "UUID / GUID Generation: UUIDv4 vs Sequential UUIDv7 in Primary Keys",
+    "tags": [
+      "uuid",
+      "guid",
+      "gen_random_uuid",
+      "uuidv4",
+      "uuidv7",
+      "distributed primary key"
+    ],
+    "content": "UUIDs provide globally unique IDs for distributed systems. `UUIDv7` (time-ordered) prevents B-Tree index fragmentation compared to random `UUIDv4`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ENUM-TYPES",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "ENUM Data Types: Static Value Sets and Schema Evolution",
+    "tags": [
+      "enum",
+      "enum data type",
+      "custom enum",
+      "enum vs check constraint"
+    ],
+    "content": "ENUM defines a static discrete list of allowed string values (e.g. `CREATE TYPE order_status AS ENUM ('PENDING', 'PAID', 'SHIPPED')`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-BOOLEAN-LOGIC-TYPES",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "Boolean Data Types: Truth Tables and NULL UNKNOWN Semantics",
+    "tags": [
+      "boolean",
+      "true false unknown",
+      "boolean type",
+      "tri state logic"
+    ],
+    "content": "Boolean logic in SQL: `TRUE AND UNKNOWN = UNKNOWN`, `FALSE AND UNKNOWN = FALSE`, `TRUE OR UNKNOWN = TRUE`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-BLOB-BYTEA",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "BLOB and BYTEA: Storing Binary Files, Images, and Documents",
+    "tags": [
+      "blob",
+      "bytea",
+      "binary data",
+      "store files in database",
+      "binary large object"
+    ],
+    "content": "`BLOB` / `BYTEA` stores raw binary bytes. Best practice is storing file paths on cloud object storage (S3) rather than massive binary in tables.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-COLLATIONS",
+    "domain": "sql",
+    "topic": "string_functions",
+    "title": "Collations: Character Sets, Case Sensitivity, and Accent Sensitivity",
+    "tags": [
+      "collation",
+      "collate",
+      "case sensitive collation",
+      "utf8mb4",
+      "accent sensitivity"
+    ],
+    "content": "Collations govern sorting and comparison rules (e.g. `COLLATE utf8mb4_general_ci` for case-insensitive comparisons).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INTERVAL-ARITHMETIC",
+    "domain": "sql",
+    "topic": "date_functions",
+    "title": "Interval Data Types and Temporal Arithmetic",
+    "tags": [
+      "interval",
+      "date interval",
+      "interval arithmetic",
+      "add days interval"
+    ],
+    "content": "Using native interval types for time arithmetic: `SELECT CURRENT_DATE + INTERVAL '3 months 2 days'`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DATA-TYPE-PRECEDENCE",
+    "domain": "sql",
+    "topic": "data_types",
+    "title": "Implicit Type Conversion and Data Type Precedence Hazards",
+    "tags": [
+      "implicit conversion",
+      "type precedence",
+      "implicit cast index loss"
+    ],
+    "content": "When comparing columns of different types (e.g. VARCHAR = INT), databases implicitly cast one side, which can disable B-Tree index usage.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-1NF",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "First Normal Form (1NF): Atomic Attributes and Primary Key Identity",
+    "tags": [
+      "1nf",
+      "first normal form",
+      "atomic values",
+      "no repeating groups",
+      "normalization 1nf"
+    ],
+    "content": "1NF requires that all column values are atomic (indivisible), each table has a Primary Key, and no repeating group columns exist.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-2NF",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Second Normal Form (2NF): Eliminating Partial Functional Dependencies",
+    "tags": [
+      "2nf",
+      "second normal form",
+      "partial dependency",
+      "composite key dependency"
+    ],
+    "content": "2NF requires 1NF + all non-key attributes must depend on the ENTIRE composite Primary Key, eliminating partial dependencies.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-3NF",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Third Normal Form (3NF): Eliminating Transitive Dependencies",
+    "tags": [
+      "3nf",
+      "third normal form",
+      "transitive dependency",
+      "non key dependencies"
+    ],
+    "content": "3NF requires 2NF + non-key attributes must depend ONLY on the Primary Key, eliminating transitive dependencies ($X \\to Y \\to PK$).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-BCNF",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Boyce-Codd Normal Form (BCNF): Determinant Candidate Keys",
+    "tags": [
+      "bcnf",
+      "boyce codd normal form",
+      "candidate keys",
+      "strict 3nf"
+    ],
+    "content": "BCNF is a stricter version of 3NF where every determinant (left side of functional dependency) MUST be a candidate key.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-4NF-5NF",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Fourth (4NF) and Fifth Normal Form (5NF): Multi-Valued & Join Dependencies",
+    "tags": [
+      "4nf",
+      "5nf",
+      "multi valued dependency",
+      "join dependency",
+      "advanced normalization"
+    ],
+    "content": "4NF eliminates multi-valued dependencies; 5NF eliminates join dependencies where tables cannot be split further without losing data.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DENORMALIZATION",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Denormalization: Tradeoffs for High-Read Data Warehouses and Reporting",
+    "tags": [
+      "denormalization",
+      "star schema",
+      "snowflake schema",
+      "olap modeling",
+      "read optimization"
+    ],
+    "content": "Denormalization intentionally introduces redundancy in analytical warehouses (Star Schema) to eliminate expensive joins during OLAP reporting.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-RELATIONSHIP-TYPES",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Entity Relationships: One-to-One, One-to-Many, and Many-to-Many",
+    "tags": [
+      "relationships",
+      "one to one",
+      "one to many",
+      "many to many",
+      "junction table",
+      "associative table"
+    ],
+    "content": "1:1 uses shared PK or unique FK; 1:N uses Foreign Key in child table; M:N requires an associative junction table holding composite FKs.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SURROGATE-VS-NATURAL-KEYS",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Surrogate Keys vs Natural Keys: Design Architecture and Tradeoffs",
+    "tags": [
+      "surrogate key",
+      "natural key",
+      "surrogate vs natural key",
+      "primary key design"
+    ],
+    "content": "Natural keys use real-world data (ISBN, SSN); Surrogate keys use artificial numbers/UUIDs. Surrogate keys insulate database schemas from business changes.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DIMENSIONAL-MODELING",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Dimensional Modeling: Fact Tables vs Dimension Tables (Star Schema)",
+    "tags": [
+      "star schema",
+      "fact table",
+      "dimension table",
+      "dimensional modeling",
+      "data warehouse modeling"
+    ],
+    "content": "Fact tables store quantitative business metrics (sales, revenue); Dimension tables store contextual descriptive filters (customers, dates, stores).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SCD-SLOWLY-CHANGING-DIMENSIONS",
+    "domain": "sql",
+    "topic": "schema_design",
+    "title": "Slowly Changing Dimensions (SCD Type 1, Type 2, Type 3)",
+    "tags": [
+      "scd",
+      "slowly changing dimensions",
+      "scd type 1",
+      "scd type 2",
+      "historical tracking"
+    ],
+    "content": "SCD Type 1 overwrites old values; SCD Type 2 preserves historical versions with start/end date timestamps; SCD Type 3 adds previous-value columns.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DCL-GRANT-REVOKE",
+    "domain": "sql",
+    "topic": "security",
+    "title": "GRANT and REVOKE: Data Control Language (DCL) Permissions",
+    "tags": [
+      "grant",
+      "revoke",
+      "dcl",
+      "database permissions",
+      "data control language",
+      "grant select"
+    ],
+    "content": "Manage database privileges:\n\n```sql\nGRANT SELECT, INSERT ON TABLE orders TO analyst_role;\nREVOKE DELETE ON TABLE orders FROM analyst_role;\n```",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-RBAC-ROLES",
+    "domain": "sql",
+    "topic": "security",
+    "title": "Role-Based Access Control (RBAC): Creating and Assigning Roles",
+    "tags": [
+      "rbac",
+      "roles",
+      "create role",
+      "role based access control",
+      "database security"
+    ],
+    "content": "Create roles to aggregate permissions and assign roles to users instead of granting direct permissions to individual accounts.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ROW-LEVEL-SECURITY",
+    "domain": "sql",
+    "topic": "security",
+    "title": "Row-Level Security (RLS): Enforcing Multi-Tenant Row Isolation",
+    "tags": [
+      "rls",
+      "row level security",
+      "multi tenant security",
+      "create policy",
+      "row security"
+    ],
+    "content": "PostgreSQL Row-Level Security restricts which rows a user can see based on security policies (e.g. `tenant_id = CURRENT_USER`).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-INJECTION-DEFENSE",
+    "domain": "sql",
+    "topic": "security",
+    "title": "SQL Injection Defense: Parameterized Queries and Prepared Statements",
+    "tags": [
+      "sql injection",
+      "sqli defense",
+      "parameterized queries",
+      "prepared statements",
+      "prevent sql injection"
+    ],
+    "content": "SQL injection occurs when unescaped user inputs are concatenated into SQL strings. Always use Parameterized Queries / Prepared Statements.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-COLUMN-MASKING",
+    "domain": "sql",
+    "topic": "security",
+    "title": "Dynamic Data Masking (DDM): Obscuring Sensitive PII Data",
+    "tags": [
+      "dynamic data masking",
+      "data masking",
+      "masking pii",
+      "column masking"
+    ],
+    "content": "Obscure sensitive data (e.g. masking credit card numbers `XXXX-XXXX-XXXX-1234`) for non-privileged user queries.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DATABASE-AUDITING",
+    "domain": "sql",
+    "topic": "security",
+    "title": "Database Auditing: Tracking Schema Changes and DDL Events",
+    "tags": [
+      "database auditing",
+      "ddl triggers",
+      "audit log",
+      "pgaudit",
+      "compliance audit"
+    ],
+    "content": "Track all DDL operations and administrative logins for SOC2 and GDPR compliance.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ENCRYPTION-TDE",
+    "domain": "sql",
+    "topic": "security",
+    "title": "Transparent Data Encryption (TDE) and Data-at-Rest Protection",
+    "tags": [
+      "tde",
+      "transparent data encryption",
+      "encryption at rest",
+      "database encryption"
+    ],
+    "content": "TDE encrypts underlying database data pages and log files on disk transparently to protect against stolen physical backups.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-BACKUPS-PITR",
+    "domain": "sql",
+    "topic": "security",
+    "title": "Database Backups & Point-in-Time Recovery (PITR) with WAL",
+    "tags": [
+      "pitr",
+      "point in time recovery",
+      "database backups",
+      "wal archiving",
+      "disaster recovery"
+    ],
+    "content": "Combine full base backups with continuous WAL archiving to restore database state to any specific microsecond in the past.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-DIALECTS-COMPARISON",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "SQL Dialects: PostgreSQL vs MySQL vs SQLite vs SQL Server vs Oracle",
+    "tags": [
+      "dialects",
+      "postgresql",
+      "mysql",
+      "sqlite",
+      "sql server",
+      "tsql",
+      "oracle",
+      "plsql",
+      "dialect differences"
+    ],
+    "content": "Cross-platform comparisons of pagination, string concatenation, upsert statements, and procedural languages.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-POSTGRES-FEATURES",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "PostgreSQL Advanced Capabilities: JSONB, Arrays, RETURNING, and Extensions",
+    "tags": [
+      "postgresql",
+      "postgres features",
+      "jsonb",
+      "pg_stat_statements",
+      "postgres extensions"
+    ],
+    "content": "PostgreSQL features: Native JSONB, array types, `RETURNING` clauses, custom extensions (PostGIS, pgvector), and full ACID compliance.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-MYSQL-FEATURES",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "MySQL & InnoDB: Storage Engines, Clustered Keys, and Locking Semantics",
+    "tags": [
+      "mysql",
+      "innodb",
+      "myisam",
+      "mysql features",
+      "mysql architecture"
+    ],
+    "content": "MySQL InnoDB engine uses clustered primary keys, Next-Key locking to prevent phantom reads, and doublewrite buffers.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SQLITE-FEATURES",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "SQLite Architecture: Serverless, Single-File, Dynamic Typing & WAL Mode",
+    "tags": [
+      "sqlite",
+      "serverless database",
+      "sqlite wal mode",
+      "type affinity sqlite"
+    ],
+    "content": "SQLite is an in-process, serverless, self-contained relational database engine with dynamic type affinity and lightweight zero-config storage.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-SQLSERVER-TSQL",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "Microsoft SQL Server & T-SQL: TOP, CROSS APPLY, Indexed Views, and TempDB",
+    "tags": [
+      "sql server",
+      "tsql",
+      "t-sql",
+      "cross apply",
+      "indexed views",
+      "tempdb"
+    ],
+    "content": "T-SQL extensions: `CROSS APPLY`, `TOP (n) WITH TIES`, table variables (`@table`), global temporary tables (`##temp`), and `MERGE`.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ORACLE-PLSQL",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "Oracle Database & PL/SQL: Packages, Sequences, DUAL Table, and NVL",
+    "tags": [
+      "oracle",
+      "plsql",
+      "dual table",
+      "nvl",
+      "oracle database"
+    ],
+    "content": "Oracle features: `DUAL` dummy table, `NVL()` null replacement, `ROWNUM`, `CONNECT BY` hierarchical queries, and robust PL/SQL packages.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-OLTP-VS-OLAP",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "OLTP vs OLAP Systems: Transaction Processing vs Analytical Warehouses",
+    "tags": [
+      "oltp vs olap",
+      "oltp",
+      "olap",
+      "row oriented vs column oriented",
+      "data warehouse vs database"
+    ],
+    "content": "OLTP systems (PostgreSQL, MySQL) optimize for high-concurrency small row transactions; OLAP systems (Snowflake, BigQuery, ClickHouse) optimize for massive columnar scans.",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ROW-VS-COLUMNAR",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "Row-Oriented vs Columnar Storage Engines: I/O and Compression",
+    "tags": [
+      "row oriented",
+      "columnar storage",
+      "column oriented",
+      "data compression",
+      "parquet vs postgres"
+    ],
+    "content": "Row-oriented engines store entire rows contiguously (great for single-row lookups); Columnar engines store individual columns contiguously (great for aggregating billions of numbers).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-ANSI-STANDARDS",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "ANSI / ISO SQL Standards: SQL-92, SQL:1999, SQL:2003, SQL:2023",
+    "tags": [
+      "ansi sql",
+      "iso sql",
+      "sql-92",
+      "sql:1999",
+      "sql standards"
+    ],
+    "content": "Historical progression of SQL standards: SQL-92 (Joins), SQL:1999 (CTEs, Triggers), SQL:2003 (Window Functions), SQL:2023 (Property Graphs).",
+    "source": "SQL Reference Manual"
+  },
+  {
+    "id": "DOC-SQL-STORAGE-PAGE-INTERNALS",
+    "domain": "sql",
+    "topic": "dialects",
+    "title": "Database Storage Engine Internals: 8KB Pages, Slotted Pages, and Row Headers",
+    "tags": [
+      "storage pages",
+      "slotted page architecture",
+      "row header",
+      "heap file",
+      "database buffer pool"
+    ],
+    "content": "Databases read and write data in fixed-size blocks/pages (typically 8KB in Postgres/SQL Server, 16KB in InnoDB) with slotted page offset arrays.",
+    "source": "SQL Reference Manual"
+  }
+]

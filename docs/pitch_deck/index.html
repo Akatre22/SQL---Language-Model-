@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiny SQL LLM — Technical Architecture &amp; Product Overview</title>
+  <meta name="description" content="Technical architecture and product overview for Tiny SQL LLM: A 6.16M parameter domain-specialized Transformer with dynamic vector RAG and AST validation.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top-nav">
+    <div class="logo-badge">
+      Tiny SQL LLM <span>| Technical Overview</span>
+    </div>
+
+    <div class="nav-center">
+      <div class="slide-indicator">
+        Slide <span id="currentSlideNum">1</span> of <span id="totalSlidesNum">12</span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn-nav-primary" id="openGenAiIdeaBtn" type="button">New GenAI Idea</button>
+      <button class="btn-nav-action" id="openDrawerBtn" type="button">Index</button>
+      <button class="btn-nav-action" id="fullscreenBtn" onclick="window.presentationApp.toggleFullscreen()" type="button">Fullscreen</button>
+    </div>
+  </header>
+
+  <!-- Presentation Main Viewport -->
+  <main class="presentation-container">
+    <div class="slides-track" id="slidesTrack">
+
+      <!-- ========================================== -->
+      <!-- SLIDE 1: Title & Executive Summary         -->
+      <!-- ========================================== -->
+      <section class="slide active" id="slide-1">
+        <div class="blueprint-tag pos-top-right">
+          <span>SPEC // 6.16M_NEURAL_CORE (CPU NATIVE)</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="grid-2col" style="align-items: center;">
+            <div>
+              <div class="slide-tag">Architecture &amp; Product Overview</div>
+              <h1 class="slide-title" style="font-size: 2rem; margin-bottom: 0.65rem;">
+                Tiny SQL LLM: Domain-Specialized Neural Intelligence for Relational Data
+              </h1>
+              <p class="slide-subtitle" style="margin-bottom: 1.25rem;">
+                A 6.16M parameter Decoder Transformer built from scratch, combining domain-trained BPE tokenization, 194-topic Vector RAG, and an AST-verified SQLite execution sandbox.
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.25rem;">
+                <div class="metric-box">
+                  <div class="metric-val">6.16M</div>
+                  <div class="metric-label">Parameters</div>
+                </div>
+                <div class="metric-box">
+                  <div class="metric-val">&lt; 20ms</div>
+                  <div class="metric-label">Inference Latency</div>
+                </div>
+                <div class="metric-box">
+                  <div class="metric-val">&lt; 30MB</div>
+                  <div class="metric-label">RAM Footprint</div>
+                </div>
+                <div class="metric-box">
+                  <div class="metric-val">100%</div>
+                  <div class="metric-label">Local Data Privacy</div>
+                </div>
+              </div>
+
+              <button class="btn-primary" onclick="window.presentationApp.next()" type="button">
+                View Architecture Blueprint
+              </button>
+            </div>
+
+            <!-- Abstract Artifact: Neural SQL Core Radar -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: NEURAL SQL CORE</span>
+                <span style="color: #38bdf8;">ACTIVE PULSE</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-1" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 2: The Enterprise Challenge          -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-2">
+        <div class="blueprint-tag pos-bottom-right">
+          <span>SECURITY // AIRWALL_ISOLATION [ZERO EXFILTRATION]</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Problem Statement</div>
+            <h2 class="slide-title">Limitations of Generalist Cloud LLMs for Enterprise SQL</h2>
+            <p class="slide-subtitle">Why routing internal database queries to 70B+ parameter general-purpose models presents operational and compliance challenges.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+              <div class="card">
+                <div class="card-num">01. EXFILTRATION RISK</div>
+                <h3 class="card-title">Data Privacy &amp; Schema Exposure</h3>
+                <p class="card-desc">Sending enterprise schemas, column identifiers, and operational prompts to external cloud endpoints violates SOC2, HIPAA, and banking data residency standards.</p>
+              </div>
+
+              <div class="card">
+                <div class="card-num">02. SYNTACTIC FRAGMENTATION</div>
+                <h3 class="card-title">Token Splitting &amp; Hallucinations</h3>
+                <p class="card-desc">Generalist tokenizers slice reserved clauses like <code>PARTITION BY</code> into 4-6 sub-words, elevating error rates in deep SQL queries.</p>
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Cloud Data Flow & Firewall Breach vs Airwall -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: EXFILTRATION VS AIRWALL</span>
+                <span style="color: #f87171;">PACKET TRACE</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-2" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 3: Specialized Solution vs Cloud     -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-3">
+        <div class="blueprint-tag pos-top-right">
+          <span>EFFICIENCY // 100%_RELATIONAL_WEIGHT_DENSITY</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Technical Philosophy</div>
+            <h2 class="slide-title">Domain Specialization vs. Parameter Scale</h2>
+            <p class="slide-subtitle">Purpose-built relational architecture vs general-purpose language models.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+              <div class="card highlight">
+                <div class="card-num">TINY SQL LLM</div>
+                <h3 class="card-title">Domain-Engineered 6.16M Architecture</h3>
+                <ul style="list-style: none; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem; color: var(--text-secondary);">
+                  <li><b>100% Relational Density:</b> Entire parameter space dedicated to SQL AST logic.</li>
+                  <li><b>Atomic 4096-BPE:</b> No token fragmentation on reserved keywords.</li>
+                  <li><b>CPU-Native Footprint:</b> Under 30MB memory consumption.</li>
+                  <li><b>Deterministic Safety:</b> In-memory execution with AST verification.</li>
+                </ul>
+              </div>
+
+              <div class="card">
+                <div class="card-num">70B+ GENERALIST CLOUD LLM</div>
+                <h3 class="card-title">Parameter Dilution</h3>
+                <p class="card-desc">Less than 0.2% of weights represent SQL syntax; 99.8% consumed by natural languages, multi-domain text, and conversational overhead.</p>
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Parameter Density Spectrum -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: PARAMETER KNOWLEDGE DENSITY</span>
+                <span style="color: #34d399;">DENSITY SPECTRUM</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-3" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 4: Interactive Pipeline & Terminal   -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-4">
+        <div class="blueprint-tag pos-bottom-left">
+          <span>RUNTIME // PIPELINE_EXEC_DAEMON (PID: 4182)</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">System Execution</div>
+            <h2 class="slide-title">End-to-End Information Processing Pipeline</h2>
+            <p class="slide-subtitle">Trace natural language input through intent routing, vector retrieval, neural inference, AST validation, and database execution.</p>
+          </div>
+
+          <div class="pipeline-container">
+            <div class="pipeline-controls">
+              <input type="text" class="prompt-input" id="pipelinePromptInput" value="Find top 5 highest paid employees with dept" placeholder="Enter query...">
+              <button class="btn-primary" id="btnRunPipeline" type="button">Run Pipeline</button>
+              <div style="display: flex; gap: 0.35rem;">
+                <button class="btn-secondary preset-query-chip" data-query="Find top 5 highest paid employees with dept" type="button">Top Earners</button>
+                <button class="btn-secondary preset-query-chip" data-query="Explain difference between RANK and DENSE_RANK" type="button">RANK vs DENSE_RANK</button>
+                <button class="btn-secondary preset-query-chip" data-query="Calculate monthly customer retention rate" type="button">Retention CTE</button>
+              </div>
+            </div>
+
+            <div class="pipeline-diagram">
+              <div class="pipeline-step active" id="pstep-0">
+                <div class="step-node">01</div>
+                <div class="step-title">Intent Router</div>
+                <div class="step-subtitle">Classification</div>
+              </div>
+              <div class="step-line" id="pconn-0"></div>
+
+              <div class="pipeline-step" id="pstep-1">
+                <div class="step-node">02</div>
+                <div class="step-title">Vector RAG</div>
+                <div class="step-subtitle">ChromaDB</div>
+              </div>
+              <div class="step-line" id="pconn-1"></div>
+
+              <div class="pipeline-step" id="pstep-2">
+                <div class="step-node">03</div>
+                <div class="step-title">6.16M LLM</div>
+                <div class="step-subtitle">Inference</div>
+              </div>
+              <div class="step-line" id="pconn-2"></div>
+
+              <div class="pipeline-step" id="pstep-3">
+                <div class="step-node">04</div>
+                <div class="step-title">AST Validator</div>
+                <div class="step-subtitle">sqlglot Check</div>
+              </div>
+              <div class="step-line" id="pconn-3"></div>
+
+              <div class="pipeline-step" id="pstep-4">
+                <div class="step-node">05</div>
+                <div class="step-title">DB Sandbox</div>
+                <div class="step-subtitle">Execution</div>
+              </div>
+            </div>
+
+            <!-- Structured Neat Live Terminal Window -->
+            <div class="terminal-window">
+              <div class="terminal-header">
+                <div class="terminal-header-title">
+                  <span>TERMINAL LOG: PIPELINE EXECUTION DAEMON</span>
+                </div>
+                <span id="terminalStatusPill" style="color: #6ee7b7; font-family: var(--font-mono); font-size: 0.7rem;">STATUS: READY</span>
+              </div>
+              <div class="terminal-body" id="pipelineTerminalBody">
+                <div class="log-entry">
+                  <span class="log-time">15:30:00.000</span>
+                  <span class="log-badge info">DAEMON</span>
+                  <span class="log-msg">Pipeline initialized. Click <b>Run Pipeline</b> or choose a preset query to execute.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 5: Domain BPE Tokenizer              -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-5">
+        <div class="blueprint-tag pos-top-right">
+          <span>LEXER // BPE_4096_VOCAB (-42% SEQ_LEN)</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">NLP Engineering</div>
+            <h2 class="slide-title">Domain-Specific Byte-Level BPE Tokenizer</h2>
+            <p class="slide-subtitle">Trained on 4.31 MB of structured SQL code to eliminate token fragmentation on reserved keywords.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div class="card">
+              <h3 class="card-title">Token Segmentation Inspector</h3>
+              <p class="card-desc" style="margin-bottom: 0.5rem;">Interactive token breakdown comparison for SQL clauses:</p>
+              <textarea id="tokInput" class="prompt-input" rows="2" style="width: 100%; margin-bottom: 0.6rem; font-family: var(--font-mono); font-size: 0.76rem;">SELECT DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rnk FROM employees;</textarea>
+
+              <div style="margin-bottom: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 0.2rem;">
+                  <span style="color: var(--text-secondary); font-weight: 600;">Generic Tokenizer (Sub-word splits):</span>
+                  <span id="tokGenericCount" style="font-family: var(--font-mono); color: var(--text-tertiary);">42 Tokens</span>
+                </div>
+                <div id="tokGenericTokens" style="background: var(--bg-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 0.4rem; min-height: 36px;"></div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 0.2rem;">
+                  <span style="color: var(--text-primary); font-weight: 600;">Tiny SQL 4096-BPE (Atomic tokens):</span>
+                  <span id="tokCustomCount" style="font-family: var(--font-mono); color: var(--text-primary);">24 Tokens (-42%)</span>
+                </div>
+                <div id="tokCustomTokens" style="background: var(--bg-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 0.4rem; min-height: 36px;"></div>
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Token Laser Slicer Animation -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: BPE BYTE SLICER</span>
+                <span style="color: #38bdf8;">ATOMIC VS FRAGMENTED</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-5" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 6: Transformer Neural Blueprint      -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-6">
+        <div class="blueprint-tag pos-bottom-left">
+          <span>NEURAL_LAYER // RoPE + RMSNORM + SwiGLU</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Neural Architecture</div>
+            <h2 class="slide-title">6.16M Parameter Decoder-Only Transformer</h2>
+            <p class="slide-subtitle">Click any of the 5 architectural components below to inspect its dedicated neural tensor animation.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div class="arch-layers-list">
+              <div class="arch-layer-item selected" data-layer="rope">
+                <span class="layer-name">Rotary Position Embeddings (RoPE)</span>
+                <span class="layer-dim">q_m, k_n Rotations</span>
+              </div>
+
+              <div class="arch-layer-item" data-layer="rmsnorm">
+                <span class="layer-name">RMSNorm Normalization</span>
+                <span class="layer-dim">d_model = 256</span>
+              </div>
+
+              <div class="arch-layer-item" data-layer="mha">
+                <span class="layer-name">8-Head Causal Self-Attention</span>
+                <span class="layer-dim">Head Dim = 32</span>
+              </div>
+
+              <div class="arch-layer-item" data-layer="swiglu">
+                <span class="layer-name">SwiGLU Gated Feed-Forward Network</span>
+                <span class="layer-dim">d_ffn = 768</span>
+              </div>
+
+              <div class="arch-layer-item" data-layer="tiedhead">
+                <span class="layer-name">Weight-Tied Output LM Head</span>
+                <span class="layer-dim">256 -> 4096 (Tied)</span>
+              </div>
+
+              <div class="card" id="archDetailPanel" style="padding: 0.75rem; margin-top: 0.25rem;">
+                <h4 class="card-title" id="archDetailTitle" style="font-size: 0.88rem; margin-bottom: 0.2rem;">Rotary Position Embeddings (RoPE)</h4>
+                <p class="card-desc" id="archDetailDesc" style="font-size: 0.78rem;">Applies rotational transformation matrices directly to Query and Key states.</p>
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Dynamic 5-State Neural Layer Animation -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span id="slide6VizHeader">ABSTRACT ARTIFACT: ROTARY POSITION EMBEDDING</span>
+                <span id="slide6VizBadge" style="color: #38bdf8;">ACTIVE COMPONENT</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-6" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 7: Training Convergence & Loss       -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-7">
+        <div class="blueprint-tag pos-top-right">
+          <span>OPTIM // ADAMW + COSINE_ANNEALING [PPL 11.44]</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Empirical Training</div>
+            <h2 class="slide-title">Optimization Schedule &amp; Convergence Metrics</h2>
+            <p class="slide-subtitle">Pretrained on 6,180 curated SQL pairs with AdamW optimizer and Cosine Annealing learning rate schedule.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div class="card">
+              <h3 class="card-title">Epoch Progression Metrics</h3>
+              <table class="data-table" style="margin-top: 0.35rem;">
+                <thead>
+                  <tr>
+                    <th>Epoch</th>
+                    <th>Train Loss</th>
+                    <th>Val Loss</th>
+                    <th>Val Perplexity</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><b>1</b></td>
+                    <td>4.6276</td>
+                    <td>3.4772</td>
+                    <td>32.37</td>
+                    <td>Initial Checkpoint</td>
+                  </tr>
+                  <tr>
+                    <td><b>2</b></td>
+                    <td>3.0921</td>
+                    <td>2.8873</td>
+                    <td>17.95</td>
+                    <td>Rapid Convergence</td>
+                  </tr>
+                  <tr>
+                    <td><b>3</b></td>
+                    <td>2.7025</td>
+                    <td>2.6119</td>
+                    <td>13.63</td>
+                    <td>Checkpoint Saved</td>
+                  </tr>
+                  <tr>
+                    <td><b>4</b></td>
+                    <td>2.4963</td>
+                    <td>2.4807</td>
+                    <td>11.95</td>
+                    <td>Stabilization</td>
+                  </tr>
+                  <tr style="background: var(--bg-subtle);">
+                    <td><b>5</b></td>
+                    <td><b>2.4061</b></td>
+                    <td><b>2.4371</b></td>
+                    <td><b>11.44</b></td>
+                    <td><b>Final Best Model</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Abstract Artifact: Loss Descent Curve & LR Schedule -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: CONVERGENCE DYNAMICS</span>
+                <span style="color: #34d399;">LOSS &amp; PERPLEXITY DESCENT</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-7" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 8: 194-Topic Vector Space & RAG      -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-8">
+        <div class="blueprint-tag pos-bottom-left">
+          <span>VECTOR_RAG // 194_DOCUMENTS (384-D EMBEDDINGS)</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Knowledge Architecture</div>
+            <h2 class="slide-title">194-Topic Vector Space &amp; Dynamic Comparison</h2>
+            <p class="slide-subtitle">Dense 384-dimensional retrieval covering 16 relational pillars with dynamic entity comparison synthesis.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                <button class="btn-secondary rag-nav-btn active" data-topic="rank_vs_denserank" type="button">RANK vs DENSE_RANK</button>
+                <button class="btn-secondary rag-nav-btn" data-topic="cte_vs_subquery" type="button">CTE vs Subquery</button>
+                <button class="btn-secondary rag-nav-btn" data-topic="delete_vs_truncate" type="button">DELETE vs TRUNCATE</button>
+                <button class="btn-secondary rag-nav-btn" data-topic="acid_properties" type="button">ACID Isolation</button>
+              </div>
+
+              <div class="card" id="ragDisplayCard" style="padding: 0.85rem;">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: 194-Vector Space & Ray Projection -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: 194 KNOWLEDGE NODES (384-D)</span>
+                <span id="vectorSearchMetrics" style="color: #38bdf8;">Nearest: Window Functions (0.082)</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="vectorNetworkCanvas" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 9: Agent Sandbox Execution           -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-9">
+        <div class="blueprint-tag pos-top-right">
+          <span>EXECUTION // SQLGLOT_AST + SQLITE_SANDBOX</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Execution Safety</div>
+            <h2 class="slide-title">Autonomous Agent Loop &amp; SQLite Sandbox</h2>
+            <p class="slide-subtitle">Click the business scenarios below to see the dynamically generated AST Parse Tree update in real time.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div class="card">
+              <h3 class="card-title">Select Scenario</h3>
+              <div style="display: flex; gap: 0.35rem; margin: 0.35rem 0 0.5rem 0;">
+                <button class="btn-secondary sandbox-tab active" data-scenario="scenario1" type="button">Top Salaries</button>
+                <button class="btn-secondary sandbox-tab" data-scenario="scenario2" type="button">Product Revenue</button>
+                <button class="btn-secondary sandbox-tab" data-scenario="scenario3" type="button">Customer Cohorts</button>
+              </div>
+
+              <pre class="code-container" id="sandboxSqlCode" style="min-height: 75px; margin-bottom: 0.5rem;"><code>SELECT e.emp_name, d.dept_name, e.salary, e.job_title
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+ORDER BY e.salary DESC
+LIMIT 4;</code></pre>
+
+              <div id="sandboxTableContainer" style="overflow-x: auto;">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>emp_name</th>
+                      <th>dept_name</th>
+                      <th>salary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Sophia Patel</td><td>Executive</td><td>$148,000</td></tr>
+                    <tr><td>Marcus Thorne</td><td>Engineering</td><td>$135,000</td></tr>
+                    <tr><td>Elena Rostova</td><td>Engineering</td><td>$128,000</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Dynamic Scenario AST Parse Tree Graph -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span id="slide9VizHeader">ABSTRACT ARTIFACT: AST PARSE TREE (JOIN)</span>
+                <span style="color: #6ee7b7;">VERIFIED (sqlglot)</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-9" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 10: TCO & Constant Baseline $X       -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-10">
+        <div class="blueprint-tag pos-bottom-right">
+          <span>ECONOMICS // $X_CONSTANT_BASELINE (FLAT)</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Operational Economics</div>
+            <h2 class="slide-title">Infrastructure Economics &amp; Cost Model</h2>
+            <p class="slide-subtitle">Comparison between variable per-token cloud API charges and constant on-premise baseline compute.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div class="card">
+              <h3 class="card-title">Query Volume Simulator</h3>
+              <p class="card-desc" style="margin-bottom: 0.5rem;">Adjust estimated monthly database query volume:</p>
+
+              <input type="range" id="calcVolumeSlider" min="100000" max="10000000" step="100000" value="1000000" style="width: 100%; margin-bottom: 0.25rem;">
+              
+              <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-tertiary); margin-bottom: 0.85rem;">
+                <span>100K</span>
+                <span id="calcVolumeDisplay" style="font-weight: 700; color: var(--text-primary);">1.0M Queries / month</span>
+                <span>10M</span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-bottom: 0.85rem;">
+                <div class="metric-box">
+                  <div class="metric-val" id="calcCloudCost" style="font-size: 1.1rem;">$8,000 / mo</div>
+                  <div class="metric-label">Cloud API Cost (Linear)</div>
+                </div>
+                <div class="metric-box">
+                  <div class="metric-val" id="calcTinyCost" style="font-size: 1.1rem;">$X / mo (Constant)</div>
+                  <div class="metric-label">Tiny SQL On-Prem</div>
+                </div>
+              </div>
+
+              <div style="font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700; color: var(--text-primary);" id="calcAnnualSavings">
+                $96,000 - 12X / Year
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Linear vs Horizontal Cost Curves -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: TCO MARGIN DIVERGENCE</span>
+                <span style="color: #f59e0b;">EXPONENTIAL DELTA</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-10" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 11: Deployment Topologies            -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-11">
+        <div class="blueprint-tag pos-top-right">
+          <span>TOPOLOGY // AIRWALL_VPC + EMBEDDED_BI + CI_CD</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Integration Architecture</div>
+            <h2 class="slide-title">Enterprise Deployment Topologies</h2>
+            <p class="slide-subtitle">Flexible integration architectures for air-gapped data centers, embedded analytics, and developer workflows.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div class="grid-2col" style="gap: 0.65rem;">
+              <div class="card">
+                <div class="card-num">TOPOLOGY 01</div>
+                <h3 class="card-title" style="font-size: 0.88rem;">Air-Gapped VPC</h3>
+                <p class="card-desc" style="font-size: 0.78rem;">Zero outbound telemetry. Complies with banking, healthcare, and defense data airwalls.</p>
+              </div>
+
+              <div class="card">
+                <div class="card-num">TOPOLOGY 02</div>
+                <h3 class="card-title" style="font-size: 0.88rem;">Embedded BI Copilot</h3>
+                <p class="card-desc" style="font-size: 0.78rem;">Direct integration into dashboards without recurring per-seat licensing fees.</p>
+              </div>
+
+              <div class="card">
+                <div class="card-num">TOPOLOGY 03</div>
+                <h3 class="card-title" style="font-size: 0.88rem;">CI/CD Query Linter</h3>
+                <p class="card-desc" style="font-size: 0.78rem;">Analyzes pull-request migrations to catch non-SARGable full table scans.</p>
+              </div>
+
+              <div class="card">
+                <div class="card-num">TOPOLOGY 04</div>
+                <h3 class="card-title" style="font-size: 0.88rem;">Edge &amp; Local CLI</h3>
+                <p class="card-desc" style="font-size: 0.78rem;">Runs on developer workstations without dedicated GPU acceleration.</p>
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Topology Router Network Architecture -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: MULTI-TOPOLOGY INTEGRATION</span>
+                <span style="color: #60a5fa;">NETWORK BLUEPRINT</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-11" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SLIDE 12: Roadmap & Conclusion             -->
+      <!-- ========================================== -->
+      <section class="slide" id="slide-12">
+        <div class="blueprint-tag pos-bottom-left">
+          <span>ROADMAP // MULTI_DIALECT_TRANSPILER + LORA_HUB</span>
+        </div>
+
+        <div class="slide-content-wrap">
+          <div class="slide-header">
+            <div class="slide-tag">Strategic Roadmap</div>
+            <h2 class="slide-title">Roadmap &amp; Enterprise Pilot Program</h2>
+            <p class="slide-subtitle">Key engineering milestones and pilot deployment opportunities.</p>
+          </div>
+
+          <div class="grid-2col">
+            <div style="display: flex; flex-direction: column; gap: 0.55rem;">
+              <div class="card">
+                <div class="card-num">PHASE 1</div>
+                <h3 class="card-title">Multi-Dialect Transpilation</h3>
+                <p class="card-desc">Broadened dialect adapters for PostgreSQL, Snowflake SQL, Google BigQuery, and Oracle PL/SQL.</p>
+              </div>
+
+              <div class="card">
+                <div class="card-num">PHASE 2</div>
+                <h3 class="card-title">LoRA Schema Adapters</h3>
+                <p class="card-desc">Low-Rank Adaptation modules enabling rapid fine-tuning on proprietary enterprise table schemas in under 5 minutes.</p>
+              </div>
+
+              <div class="card">
+                <div class="card-num">PHASE 3</div>
+                <h3 class="card-title">On-Prem Pilot Rollout</h3>
+                <p class="card-desc">Turnkey containerized deployment with REST endpoints, AST verification gates, and interactive Streamlit UI.</p>
+              </div>
+            </div>
+
+            <!-- Abstract Artifact: Dialect Transpiler & LoRA Adapter Hub -->
+            <div class="abstract-viz-panel">
+              <div class="abstract-viz-header">
+                <span>ABSTRACT ARTIFACT: DIALECT TRANSPILER &amp; LORA HUB</span>
+                <span style="color: #34d399;">CROSS-ENGINE AST</span>
+              </div>
+              <div class="abstract-canvas-wrap tall">
+                <canvas id="canvas-slide-12" class="abstract-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <footer class="bottom-controls">
+    <div class="progress-track">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="control-shortcuts">
+      <span>Keys: <span class="kbd">&larr;</span> <span class="kbd">&rarr;</span> or <span class="kbd">Space</span></span>
+      <span>Fullscreen: <span class="kbd">F</span></span>
+    </div>
+
+    <div class="nav-btn-group">
+      <button class="btn-ctrl" id="prevSlideBtn" disabled type="button">Previous</button>
+      <button class="btn-ctrl" id="nextSlideBtn" type="button">Next</button>
+    </div>
+  </footer>
+
+  <!-- Slide Index Drawer -->
+  <div class="drawer-overlay" id="drawerOverlay">
+    <div class="drawer-content" id="slideDrawer">
+      <div class="drawer-header">
+        <div class="drawer-title">Slide Index</div>
+        <button class="btn-nav-action" id="closeDrawerBtn" type="button">Close</button>
+      </div>
+      <div class="drawer-list" id="drawerList">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Fullscreen Interactive Workspace Modal: GenAI Ideas Pitch Decks -->
+  <div class="genai-modal-overlay" id="genAiModalOverlay">
+    <div class="genai-modal-header">
+      <div class="genai-modal-title">
+        <span class="genai-badge">GENAI LAB</span>
+        <span>PROPOSITION WORKSPACE</span>
+      </div>
+
+      <!-- Idea Selector Tabs -->
+      <div class="genai-idea-tabs" id="genAiIdeaTabs">
+        <!-- Dynamically generated from window.GENAI_IDEAS_REGISTRY -->
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button class="btn-nav-action" id="closeGenAiModalBtn" type="button">Back to Master Deck</button>
+      </div>
+    </div>
+
+    <!-- Modal Content & Mini Slide Presentation Stage -->
+    <div class="genai-modal-body">
+      <!-- Top Idea Banner & Mini Slide Navigator -->
+      <div class="genai-subnav">
+        <div class="genai-idea-meta">
+          <div class="genai-idea-tag" id="genAiIdeaTag">IDEA 01 // DATABASE OPTIMIZATION</div>
+          <h2 class="genai-idea-heading" id="genAiIdeaHeading">Autonomous SQL Performance &amp; Anti-Pattern Linter</h2>
+        </div>
+
+        <div class="genai-mini-controls">
+          <div class="genai-slide-pills" id="genAiSlidePills">
+            <!-- Injected via JS based on number of slides (1 or 2) -->
+          </div>
+          <div class="genai-mini-arrows">
+            <button class="btn-ctrl" id="genAiPrevSlideBtn" type="button">Prev Slide</button>
+            <span class="genai-counter" id="genAiSlideCounter">Slide 1 of 2</span>
+            <button class="btn-ctrl" id="genAiNextSlideBtn" type="button">Next Slide</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Mini Slide Viewport -->
+      <div class="genai-slide-viewport" id="genAiSlideViewport">
+        <!-- Injected dynamically via JS based on active idea and active slide -->
+      </div>
+    </div>
+
+    <!-- Modal Footer Controls -->
+    <div class="genai-modal-footer">
+      <div class="genai-footer-hint">
+        <span>Shortcuts: <span class="kbd">&larr;</span> <span class="kbd">&rarr;</span> Mini Slides &nbsp;|&nbsp; <span class="kbd">Tab</span> Next Idea &nbsp;|&nbsp; <span class="kbd">Esc</span> Exit</span>
+      </div>
+
+      <div class="genai-footer-nav">
+        <button class="btn-ctrl" id="genAiPrevIdeaBtn" type="button">Previous Idea</button>
+        <span class="genai-idea-counter" id="genAiIdeaCounter">Idea 1 of 3</span>
+        <button class="btn-ctrl" id="genAiNextIdeaBtn" type="button">Next Idea</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="Ideas/ideas_registry.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

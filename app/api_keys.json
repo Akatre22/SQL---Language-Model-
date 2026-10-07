@@ -1,0 +1,34 @@
+{
+  "keys": {
+    "key_2fddb062f745": {
+      "key_id": "key_2fddb062f745",
+      "api_key": "AK-nice-fe4b6dbafd7af4a9e8ad36c695e260f24e0ad0c7",
+      "client_name": "NICE-Developer-Master",
+      "prefix": "AK-nice-",
+      "created_at": "2026-10-06 16:16:26",
+      "last_used": null,
+      "total_requests": 0,
+      "is_active": true
+    },
+    "key_2bc48ae81871": {
+      "key_id": "key_2bc48ae81871",
+      "api_key": "AK-nice-879af4dbe8781f62ccd2abfb8f321cd1a68674d8",
+      "client_name": "Analytics Microservice",
+      "prefix": "AK-nice-",
+      "created_at": "2026-10-06 16:16:27",
+      "last_used": "2026-10-06 16:16:27",
+      "total_requests": 2,
+      "is_active": true
+    },
+    "key_93688f1cd0a6": {
+      "key_id": "key_93688f1cd0a6",
+      "api_key": "AK-nice-e081697b10939a0d2af329a8de5473d5f6745e0b",
+      "client_name": "Tiny-SQL-LLM",
+      "prefix": "AK-nice-",
+      "created_at": "2026-10-06 16:17:45",
+      "last_used": "2026-10-06 19:17:47",
+      "total_requests": 3,
+      "is_active": true
+    }
+  }
+}

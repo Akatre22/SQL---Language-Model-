@@ -1,0 +1,322 @@
+{
+  "timestamp": "2026-09-24 14:11:32",
+  "model_checkpoint": "TinyLLMConfig(vocab_size=4096, d_model=128, n_layers=4, n_heads=4, d_ffn=512, max_seq_len=256, dropout=0.1, bias=False, pad_token_id=0, bos_token_id=2, eos_token_id=4)",
+  "total_benchmark_questions": 22,
+  "metrics": {
+    "avg_keyword_coverage_pct": 18.41,
+    "sql_syntax_pass_rate_pct": 0.0,
+    "sql_execution_pass_rate_pct": 0.0,
+    "total_sql_tests": 10,
+    "avg_latency_sec": 0.497
+  },
+  "domain_breakdown": {
+    "sql": {
+      "total_questions": 22,
+      "avg_keyword_coverage_pct": 18.4,
+      "sql_syntax_pass_pct": 0.0,
+      "sql_exec_pass_pct": 0.0
+    }
+  },
+  "detailed_results": [
+    {
+      "id": "SQL-001",
+      "domain": "sql",
+      "category": "joins",
+      "question": "What is an INNER JOIN in SQL and when would you use it?",
+      "response": "A LEFT JOIN on a single query execution p.",
+      "keyword_coverage": 20.0,
+      "latency_sec": 0.11,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-002",
+      "domain": "sql",
+      "category": "joins",
+      "question": "Write a SQL query to join the 'customers' and 'orders' tables on customer_id to get customer name and total amount.",
+      "response": "```sql\nSELECT * FROM customers WHERE grade = 'VIP';\n```",
+      "keyword_coverage": 50.0,
+      "latency_sec": 0.126,
+      "sql_eval": {
+        "sql": "SELECT * FROM customers WHERE grade = 'VIP';",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such column: grade",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-003",
+      "domain": "sql",
+      "category": "joins",
+      "question": "Write a SQL query using a LEFT JOIN anti-pattern to find all customers who have never placed an order.",
+      "response": "```sql\nSELECT c.customer_id, o.order_number, o.total_amount FROM orders o INNER JOIN orders o ON o.customer_id = o.customer_id WHERE o.status NOT IN ('cancelled', 'returned') AND o.ordered_at < '2024-01-01' AND o.status NOT IN ('cancelled')\nGROUP BY c.name;\n```",
+      "keyword_coverage": 50.0,
+      "latency_sec": 0.741,
+      "sql_eval": {
+        "sql": "SELECT c.customer_id, o.order_number, o.total_amount FROM orders o INNER JOIN orders o ON o.customer_id = o.customer_id WHERE o.status NOT IN ('cancelled', 'returned') AND o.ordered_at < '2024-01-01' AND o.status NOT IN ('cancelled')\nGROUP BY c.name;",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such column: c.customer_id",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-004",
+      "domain": "sql",
+      "category": "aggregations",
+      "question": "Write a SQL query to calculate the total order amount and average order amount per customer.",
+      "response": "```sql\nSELECT c.customer_id, o.order_number, o.total_amount FROM orders AS o ON o.customer_id = o.customer_id WHERE o.status NOT IN ('cancelled')\nGROUP BY o.ordered_at DESC;\n```\n\n**Explanation:**\n- Joins `orders` on `customers` table.",
+      "keyword_coverage": 60.0,
+      "latency_sec": 0.661,
+      "sql_eval": {
+        "sql": "SELECT c.customer_id, o.order_number, o.total_amount FROM orders AS o ON o.customer_id = o.customer_id WHERE o.status NOT IN ('cancelled')\nGROUP BY o.ordered_at DESC;",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: a JOIN clause is required before ON",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-005",
+      "domain": "sql",
+      "category": "aggregations",
+      "question": "Write a SQL query to find product categories with an average price greater than 50 using the HAVING clause.",
+      "response": "```sql\nSELECT name, email, grade\nFROM products;\n```",
+      "keyword_coverage": 50.0,
+      "latency_sec": 0.131,
+      "sql_eval": {
+        "sql": "SELECT name, email, grade\nFROM products;",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such column: name",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-006",
+      "domain": "sql",
+      "category": "window_functions",
+      "question": "Explain ROW_NUMBER() in SQL and provide an example partitioned by department.",
+      "response": "```sql\nSELECT * FROM Student WHERE id IN (SELECT customer_id FROM orders) AS o ON c.customer_id = o.customer_id ORDER BY o.total_amount DESC;\n```\n\n**Explanation:**\n- Joins `WHERE` table, then filters the same order count for each product.",
+      "keyword_coverage": 25.0,
+      "latency_sec": 0.636,
+      "sql_eval": {
+        "sql": "SELECT * FROM Student WHERE id IN (SELECT customer_id FROM orders) AS o ON c.customer_id = o.customer_id ORDER BY o.total_amount DESC;",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: near \"AS\": syntax error",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-007",
+      "domain": "sql",
+      "category": "window_functions",
+      "question": "What is the difference between RANK() and DENSE_RANK() in SQL?",
+      "response": "ACreate a data from the final result sets.",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.095,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-008",
+      "domain": "sql",
+      "category": "window_functions",
+      "question": "Write a SQL query using LAG() to calculate the difference in order amount compared to each customer's previous order.",
+      "response": "```sql\nSELECT\n    c.name,\n    o.order_number,\n    o.total_amount,\n    o.status AS total_revenue,\n    SUM(oi.quantity) OVER (PARTITION BY oi.product_id ORDER BY p.price DESC) AS avg_rating\nFROM orders AS o\nINNER JOIN customers AS r ON oi.customer_id = cat.id\nWHERE o.ordered_at LIKE '2024%'\nORDER BY o.ordered_at ASC;\n```",
+      "keyword_coverage": 50.0,
+      "latency_sec": 1.27,
+      "sql_eval": {
+        "sql": "SELECT\n    c.name,\n    o.order_number,\n    o.total_amount,\n    o.status AS total_revenue,\n    SUM(oi.quantity) OVER (PARTITION BY oi.product_id ORDER BY p.price DESC) AS avg_rating\nFROM orders AS o\nINNER JOIN customers AS r ON oi.customer_id = cat.id\nWHERE o.ordered_at LIKE '2024%'\nORDER BY o.ordered_at ASC;",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such column: c.name",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-009",
+      "domain": "sql",
+      "category": "cte",
+      "question": "What is a Common Table Expression (CTE) in SQL and how does it compare to subqueries?",
+      "response": "A LEFT JOIN when you can be not NULL values with the following query execution.",
+      "keyword_coverage": 20.0,
+      "latency_sec": 0.135,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-010",
+      "domain": "sql",
+      "category": "cte",
+      "question": "Write a SQL query using a CTE to find customers whose total spending exceeds 1000.",
+      "response": "```sql\nSELECT name, price, grade\nFROM products;\n```",
+      "keyword_coverage": 20.0,
+      "latency_sec": 0.127,
+      "sql_eval": {
+        "sql": "SELECT name, price, grade\nFROM products;",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such column: name",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-011",
+      "domain": "sql",
+      "category": "cte",
+      "question": "Explain what a Recursive CTE is in SQL and provide a scenario where it is required.",
+      "response": "ACLs the following query execution suiting a single-stars for each table, and equals of all rows from the same table.\n\n**Best Use Case:** Use Case:** Use LEFT JOIN to finds are be NULL values with HAVING, then filters.\n\n**Example SQL:**\n```sql\nSELECT c.name, c.email, o.order_id FROM customers c INNER JOIN orders o ON c.customer_id = o.customer_id WHERE o.status NOT IN ('cancelled', 'returned') AND o.total_amount > 100 ORDER BY o.ordered_at DESC;\n```\nThis query returns order count by total amount (inates)",
+      "keyword_coverage": 0.0,
+      "latency_sec": 1.771,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-012",
+      "domain": "sql",
+      "category": "subqueries",
+      "question": "Write a SQL query using a correlated subquery to find employees earning more than their department's average salary.",
+      "response": "```sql\nSELECT * FROM Student WHERE type = 'A' AND name LIKE '%Mey%';\n```",
+      "keyword_coverage": 40.0,
+      "latency_sec": 0.202,
+      "sql_eval": {
+        "sql": "SELECT * FROM Student WHERE type = 'A' AND name LIKE '%Mey%';",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such table: Student",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-013",
+      "domain": "sql",
+      "category": "subqueries",
+      "question": "Explain the difference between EXISTS and IN in SQL subqueries.",
+      "response": "```sql\n-- Query the name, price of products with know the product count per category\nSELECT COUNT(*) FROM reviews WHERE is_active = 1;\n```",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.266,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-014",
+      "domain": "sql",
+      "category": "set_operations",
+      "question": "What is the difference between UNION and UNION ALL in SQL?",
+      "response": "A LEFT JOIN to finds are a specific table, you can be NULL values.",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.141,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-015",
+      "domain": "sql",
+      "category": "ddl",
+      "question": "Write SQL DDL to create an employees table with emp_id as primary key, emp_name, salary, and department_id as foreign key.",
+      "response": "```sql\nSELECT * FROM Student WHERE type = 'PA' AND name LIKE '%B-12%';\n```",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.201,
+      "sql_eval": {
+        "sql": "SELECT * FROM Student WHERE type = 'PA' AND name LIKE '%B-12%';",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such table: Student",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-016",
+      "domain": "sql",
+      "category": "indexes",
+      "question": "Explain the difference between a B-Tree index and a Hash index in SQL databases.",
+      "response": "ACLLLUEIL (D) for each table, then use `PERS NOT NULL` is a subquery to finds.\n\n**Best Use Case:** Use `CREATE TABLE temp_products(\n        id INTEGER PRIMARY KEY AUTOINCREMENT,\n        name      TEXT NOT NULL REFERENCES customers(id),\n        email           REAL NOT NULL DEFAULT 0,                           -- bon/missation\n        birth_date       TEXT NOT NULL,                            created_at  TEXT NOT NULL,                               -- maneraly date\n            updated_at    );\n```",
+      "keyword_coverage": 0.0,
+      "latency_sec": 1.258,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-017",
+      "domain": "sql",
+      "category": "indexes",
+      "question": "What is a SARGable query and why does wrapping indexed columns in functions cause performance issues?",
+      "response": "```sql\n-- Anks for each customer_id (order_id, product_id)\nSELECT name FROM customers AS c\nWHERE EXISTS (\n    SELECT 1\n        FROM orders AS o\n        WHERE o.customer_id = c.id\n          AND o.status NOT IN ('cancelled', 'returned')\n      )\n    ORDER BY c.name;\n    \n    -- 2. **Hint 1:** `GROUP BY order_count DESC`\ub85c \uc0ac\uc6a9\ud55c \uc8fc\ubb38\uc5d0 \ud3ec\ud568\ud569\ub2c8\ub2e4. ??? success \"\uc815\ub2f5\"\n\n### SQL Breakdown:\n- Merges data across relational tables using JOIN conditions.\n- Applies filtering predicates to narrow the row selection.",
+      "keyword_coverage": 0.0,
+      "latency_sec": 1.478,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-018",
+      "domain": "sql",
+      "category": "transactions",
+      "question": "Explain the ACID properties in relational database management systems.",
+      "response": "Aoaomer a SQL Sructation (M) for each table, and suiting a single-falores.\n\n**Best Use Case:** Use `SELECT * FROM Student WHERE id IN ('Pet', 'Sey', 'BTC' AND name = 1;\n```\nThis query execution priced all records from the following query execution.",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.73,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-019",
+      "domain": "sql",
+      "category": "transactions",
+      "question": "What is the difference between DELETE, TRUNCATE, and DROP in SQL?",
+      "response": "A Case:** Use a data from the following query execution paring table.",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.114,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-020",
+      "domain": "sql",
+      "category": "conditional",
+      "question": "Write a SQL query using a CASE expression to classify orders as 'High' (>= 500), 'Medium' (>= 100), or 'Low' (< 100).",
+      "response": "```sql\nSELECT name, price\nFROM products;\n```",
+      "keyword_coverage": 20.0,
+      "latency_sec": 0.116,
+      "sql_eval": {
+        "sql": "SELECT name, price\nFROM products;",
+        "syntax_valid": false,
+        "executable": false,
+        "row_count": 0,
+        "sample_rows": [],
+        "error": "SQLite Operational Error: no such column: name",
+        "has_sql": true
+      }
+    },
+    {
+      "id": "SQL-021",
+      "domain": "sql",
+      "category": "dialects",
+      "question": "How do pagination queries differ between PostgreSQL/SQLite and Microsoft SQL Server / ANSI SQL?",
+      "response": "```sql\n-- Check the following query execution san of a table, then iting a specific product count permum (e.id)\nSELECT name FROM products WHERE id IN ('column', '2024-01');\n```",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.459,
+      "sql_eval": null
+    },
+    {
+      "id": "SQL-022",
+      "domain": "sql",
+      "category": "schema_design",
+      "question": "Explain 1st, 2nd, and 3rd Normal Forms (1NF, 2NF, 3NF) in relational database normalization.",
+      "response": "```sql\n-- So of A: Cuation\nSELECT * FROM customers;\n```",
+      "keyword_coverage": 0.0,
+      "latency_sec": 0.157,
+      "sql_eval": null
+    }
+  ]
+}

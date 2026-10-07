@@ -1,0 +1,1231 @@
+
+--- Page 5 ---
+Contents
+SQL programming ......... . 1
+What's new for IBM i 7.1 ......... . 1
+PDF file for SQL programming ....... . 4
+Introduction to DB2 for i Str uctured Query Language 4
+SQL concepts ............ . 5
+SQL relational database and system
+terminology ........... . 6
+SQL and system naming conventions ... . 7
+Types of SQL statements ....... . 7
+SQL communication ar ea ....... . 9
+SQL diagnostics ar ea......... . 9
+SQL objects ............. . 9
+Schemas ............. . 9
+Journals and journal r eceivers ..... . 9
+Catalogs ............ . 10
+Tables, r ows, and columns ...... . 10
+Aliases ............. . 10
+Views ............. . 10
+Indexes ............. . 11
+Constraints ........... . 11
+Triggers ............ . 12
+Stored pr ocedures ......... . 12
+Sequences ............ . 12
+Global variables .......... . 12
+User-defined functions ........ . 12
+User-defined types ......... . 13
+XSR objects ........... . 13
+SQL packages .......... . 13
+Application pr ogram objects ....... . 13
+User sour ce file .......... . 15
+Output sour ce file member ...... . 15
+Program ............ . 15
+SQL package ........... . 15
+Module ............. . 16
+Service pr ogram .......... . 16
+Data definition language ......... . 16
+Creating a schema .......... . 16
+Creating a table ........... . 17
+Adding and r emoving constraints .... . 17
+Referential integrity and tables ..... . 18
+Adding and r emoving r eferential
+constraints........... . 18
+Example: Adding r eferential constraints . . 19
+Example: Removing constraints ..... . 20
+Check pending .......... . 20
+Creating a table using LIKE ....... . 21
+Creating a table using AS........ . 21
+Creating and altering a materialized query table 22
+Declaring a global temporary table .... . 23
+Creating a table with r emote server data .. . 23
+Creating a r ow change timestamp column .. . 24
+Creating and altering an identity column .. . 24
+Using ROWID ........... . 25
+Creating and using sequences ...... . 26
+Comparison of identity columns and
+sequences ............ . 27
+Defining field pr ocedures........ . 28
+Field definition for field pr ocedures ... . 29
+Specifying the field pr ocedure ..... . 29
+When field pr ocedures ar e invoked ... . 29
+Parameter list for execution of field
+procedures ........... . 30
+The field pr ocedure parameter value list
+(FPPVL) ........... . 32
+Parameter value descriptors for field
+procedures .......... . 32
+Field-definition (function code 8) ... . 33
+Field-encoding (function code 0) ... . 34
+Field-decoding (function code 4) ... . 35
+Example field pr ocedure pr ogram ... . 36
+General guidelines for writing field
+procedures ........... . 37
+Index considerations ....... . 38
+Thread considerations ....... . 38
+Debug considerations ....... . 38
+Guidelines for writing field pr ocedures that
+mask data ............ . 38
+Example field pr ocedure pr ogram that
+masks data .......... . 41
+Creating descriptive labels using the LABEL ON
+statement ............. . 42
+Describing an SQL object using COMMENT ON 43
+Changing a table definition ....... . 44
+Adding a column ......... . 44
+Changing a column ......... . 44
+Allowable conversions of data types ... . 45
+Deleting a column ......... . 46
+Order of operations for the ALTER TABLE
+statement ............ . 46
+Using CREATE OR REPLACE T ABLE .. . 47
+Creating and using ALIAS names ..... . 48
+Creating and using views ........ . 48
+WITH CHECK OPTION on a view ... . 50
+WITH CASCADED CHECK OPTION . . 51
+WITH LOCAL CHECK OPTION ... . 51
+Example: Cascaded check option ... . 52
+Creating indexes ........... . 53
+Creating and using global variables .... . 53
+Replacing existing objects ........ . 54
+Catalogs in database design ....... . 54
+Getting catalog information about a table . . 55
+Getting catalog information about a column 55
+Dropping a database object ....... . 55
+Data manipulation language ........ . 56
+Retrieving data using the SELECT statement . . 56
+Basic SELECT statement ....... . 56
+Specifying a sear ch condition using the
+WHERE clause .......... . 57
+Expressions in the WHERE clause ... . 58
+Comparison operators ....... . 59
+NOT keywor d ......... . 60
+GROUP BY clause ......... . 60
+© Copyright IBM Corp. 1998, 2010 iii
+||
+||
+||
+||
+||
+||
+||
+||
+|
+||
+|
+||
+|
+||
+||
+||
+||
+||
+|
+||
+||
+||
+||
+|
+||
+|
+||
+||
+||
+||
+--- Page 6 ---
+HAVING clause .......... . 62
+ORDER BY clause ......... . 63
+Static SELECT statements ....... . 65
+Handling null values ........ . 65
+Special r egisters in SQL statements ... . 66
+Casting data types ......... . 68
+Date, time, and timestamp data types .. . 68
+Specifying curr ent date and time values . . 68
+Date/time arithmetic ....... . 69
+Row change expr essions ....... . 69
+Handling duplicate r ows ....... . 69
+Defining complex sear ch conditions ... . 70
+Special considerations for LIKE .... . 71
+Multiple sear ch conditions within a
+WHERE clause ......... . 72
+Using OLAP specifications ...... . 73
+Joining data fr om mor e than one table .. . 76
+Inner join ........... . 76
+Left outer join ......... . 77
+Right outer join ......... . 78
+Exception join ......... . 78
+Cross join ........... . 79
+Full outer join ......... . 80
+Multiple join types in one statement .. . 81
+Using table expr essions ....... . 81
+Using r ecursive queries ....... . 83
+Using the UNION keywor d to combine
+subselects ............ . 95
+Specifying the UNION ALL keyword.. . 98
+Using the EXCEPT keywor d ..... . 100
+Using the INTERSECT keywor d .... . 102
+Data r etrieval err ors ........ . 104
+Inserting r ows using the INSER T statement . . 105
+Inserting r ows using the V ALUES clause . . 106
+Inserting r ows using a select-statement .. . 107
+Inserting multiple r ows using the blocked
+INSERT statement ......... . 108
+Inserting data into tables with r eferential
+constraints ........... . 108
+Inserting values into an identity column . . 109
+Selecting inserted values ....... . 110
+Inserting data fr om a r emote database .. . 110
+Changing data in a table using the UPDA TE
+statement ............. . 111
+Updating a table using a scalar -subselect . . 112
+Updating a table with r ows fr om another
+table ............. . 112
+Updating tables with r eferential constraints 113
+Examples: UPDATE r ules ..... . 114
+Updating an identity column ..... . 114
+Updating data as it is r etrieved fr om a table 114
+Removing r ows fr om a table using the DELETE
+statement ............. . 116
+Removing r ows fr om tables with r eferential
+constraints ........... . 117
+Example: DELETE r ules ...... . 118
+Merging data ........... . 119
+Using subqueries .......... . 120
+Subqueries in SELECT statements ... . 121
+Subqueries and sear ch conditions ... . 122
+Usage notes on subqueries ..... . 122
+Including subqueries in the WHERE or
+HAVING clause ........ . 123
+Correlated subqueries ....... . 124
+Correlated names and r eferences ... . 124
+Example: Corr elated subquery in a
+WHERE clause ......... . 125
+Example: Corr elated subquery in a
+HAVING clause ........ . 126
+Example: Corr elated subquery in a
+select-list ........... . 127
+Example: Corr elated subquery in an
+UPDATE statement ....... . 127
+Example: Corr elated subquery in a
+DELETE statement ....... . 128
+Sort sequences and normalization in SQL ... . 128
+Sort sequence used with ORDER BY and r ow
+selection ............. . 129
+Sort sequence and ORDER BY ..... . 129
+Sort sequence and r ow selection .... . 131
+Sort sequence and views ....... . 131
+Sort sequence and the CREA TE INDEX
+statement............. . 132
+Sort sequence and constraints ...... . 132
+ICU sort sequence .......... . 132
+Normalization ........... . 133
+Data pr otection ............ . 134
+Security for SQL objects ........ . 134
+Authorization ID ......... . 135
+Views ............. . 135
+Auditing ............ . 135
+Data integrity ........... . 136
+Concurrency........... . 136
+Journaling ........... . 138
+Commitment contr ol ........ . 138
+Savepoints ........... . 142
+Atomic operations ......... . 144
+Constraints ........... . 145
+Adding and using check constraints .. . 146
+Save and r estore functions ...... . 146
+Damage tolerance ......... . 147
+Index r ecovery .......... . 148
+Catalog integrity ......... . 148
+User auxiliary storage pool ...... . 149
+Independent auxiliary storage pool ... . 149
+Routines .............. . 149
+Stored pr ocedures .......... . 149
+Defining an external pr ocedure .... . 150
+Defining an SQL procedure...... . 151
+Defining a pr ocedure with default
+parameters ........... . 156
+Calling a stor ed pr ocedure ...... . 158
+Using the CALL statement wher e
+procedure definition exists ..... . 158
+Using the embedded CALL statement
+where no pr ocedure definition exists . . 159
+Using the embedded CALL statement
+with an SQLDA ........ . 160
+Using the dynamic CALL statement wher e
+no CREATE PROCEDURE exists ... . 161
+Examples: CALL statements .... . 161
+Returning r esult sets fr om stor ed pr ocedures 167
+iv IBM i: Database SQL programming
+||
+||
+|
+||
+--- Page 7 ---
+Example 1: Calling a stor ed pr ocedure
+that r eturns a single r esult set .... . 168
+Example 2: Calling a stor ed pr ocedure
+that r eturns a r esult set fr om a nested
+procedure .......... . 169
+Writing a pr ogram or SQL procedure to
+receive the r esult sets fr om a stor ed
+procedure ........... . 174
+Parameter passing conventions for stor ed
+procedures and user -defined functions .. . 180
+Indicator variables and stor ed pr ocedures 185
+Returning a completion status to the calling
+program ............ . 187
+Passing parameters fr om DB2 to external
+proceduress ........... . 187
+Parameter style SQL ....... . 187
+Parameter style GENERAL ..... . 189
+Parameter style GENERAL WITH NULLS 189
+Parameter style DB2GENERAL ... . 189
+Parameter style Java ....... . 190
+Using user -defined functions ...... . 190
+UDF concepts .......... . 190
+Writing UDFs as SQL functions .... . 192
+Example: SQL scalar UDFs ..... . 193
+Example: SQL table UDFs ..... . 193
+Writing UDFs as external functions ... . 194
+Registering UDFs ........ . 194
+Passing ar guments fr om DB2 to external
+functions ........... . 197
+Table function considerations .... . 203
+Error pr ocessing for UDFs ..... . 203
+Threads considerations ...... . 204
+Parallel pr ocessing........ . 204
+Fenced or unfenced considerations .. . 204
+Save and r estore considerations ... . 205
+Examples: UDF code ........ . 205
+Example: Squar e of a number UDF .. . 205
+Example: Counter ........ . 207
+Example: Weather table function ... . 208
+Using UDFs in SQL statements .... . 214
+Using parameter markers or the NULL
+values as function ar guments .... . 214
+Using qualified function r eferences .. . 214
+Using unqualified function r eferences . . 215
+Summary of function r eferences ... . 216
+Triggers ............. . 217
+SQL triggers ........... . 218
+BEFORE SQL triggers ...... . 219
+AFTER SQL triggers ....... . 220
+Multiple event SQL triggers .... . 221
+INSTEAD OF SQL triggers ..... . 222
+Handlers in SQL triggers ..... . 224
+SQL trigger transition tables .... . 225
+External triggers ......... . 225
+Array support in SQL procedures .... . 226
+Debugging an SQL routine ....... . 227
+Obfuscating an SQL routine ...... . 228
+Managing SQL and external r outine objects . . 230
+Improving performance of pr ocedures and
+functions ............. . 231
+Improving implementation of pr ocedures and
+functions ............ . 231
+Redesigning r outines for performance .. . 233
+Processing special data types ....... . 234
+Large objects ........... . 234
+Large object data types ....... . 235
+Large object locators ........ . 235
+Example: Using a locator to work with a
+CLOB value ........... . 236
+Example: LOBLOC in C ...... . 236
+Example: LOBLOC in COBOL .... . 238
+Indicator variables and LOB locators .. . 239
+LOB file r eference variables ..... . 239
+Example: Extracting CLOB data to a file . . 240
+Example: LOBFILE in C ...... . 241
+Example: LOBFILE in COBOL .... . 242
+Example: Inserting data into a CLOB column 243
+Displaying the layout of LOB columns .. . 243
+Journal entry layout of LOB columns .. . 243
+User-defined distinct types ....... . 244
+Defining a UDT ......... . 244
+Example: Money ........ . 245
+Example: Resumé ........ . 245
+Defining tables with UDT s ...... . 245
+Example: Sales ......... . 245
+Example: Application forms .... . 246
+Manipulating UDTs ........ . 246
+Examples: Using UDT s ....... . 246
+Example: Comparisons between UDT s and
+constants ........... . 246
+Example: Casting between UDT s ... . 247
+Example: Comparisons involving UDT s 248
+Example: Sour ced UDFs involving UDT s 248
+Example: Assignments involving UDT s 249
+Example: Assignments in dynamic SQL 249
+Example: Assignments involving dif ferent
+UDTs ............ . 249
+Example: Using UDT s in UNION ... . 250
+Examples: Using UDT s, UDFs, and LOBs .. . 251
+Example: Defining the UDT and UDFs .. . 251
+Example: Using the LOB function to
+populate the database ....... . 252
+Example: Using UDFs to query instances of
+UDTs ............. . 252
+Example: Using LOB locators to manipulate
+UDT instances .......... . 253
+Using DataLinks .......... . 253
+Linking contr ol levels in DataLinks ... . 254
+NO LINK CONTROL ...... . 254
+FILE LINK CONTROL with FS
+permissions .......... . 254
+FILE LINK CONTROL with DB
+permissions .......... . 255
+Working with DataLinks ...... . 255
+SQL statements and SQL/XML functions ... . 257
+XML input and output overview ..... . 258
+Comparison of XML and r elational models . . 259
+Tutorial for XML .......... . 261
+Exercise 1: Cr eating a table that can stor e
+XML data ........... . 261
+Contents v
+|
+|
+||
+|
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+|
+||
+--- Page 8 ---
+Exercise 2: Inserting XML documents into
+XML typed columns ........ . 261
+Exercise 3: Updating XML documents stor ed
+in an XML column ........ . 262
+Exercise 4: V alidating XML documents
+against XML schemas ....... . 263
+Exercise 5: T ransforming with XSL T
+stylesheets ........... . 265
+Inserting XML data ......... . 267
+Addition of XML columns to existing tables 267
+Insertion into XML columns ..... . 268
+XML parsing .......... . 269
+SQL/XML publishing functions for constr ucting
+XML values ............ . 270
+Example: Constr uct an XML document with
+values fr om a single table ...... . 271
+Example: Constr uct an XML document with
+values fr om multiple tables ...... . 272
+Example: Constr uct an XML document with
+values fr om table r ows that contain null
+elements ............ . 273
+Example: Transforming with XSL T stylesheets 273
+Example: Using XSL T as a formatting engine 275
+Example: Using XSL T for data exchange . . 277
+Example: Using XSL T to r emove namespaces 278
+Important considerations for transforming
+XML documents ......... . 281
+Special character handling in SQL/XML
+publishing functions ........ . 281
+XML serialization ......... . 282
+Differences in an XML document after
+storage and r etrieval ........ . 284
+Data types for ar chiving XML documents 284
+Using XMLTABLE to r eference XML content as
+a r elational table .......... . 284
+Example: Use XML TABLE to handle missing
+elements ............ . 286
+Example: Use XML TABLE to subset r esult
+data ............. . 286
+Example: Use XML TABLE to handle multiple
+values ............. . 287
+Example: Use XML TABLE with namespaces 289
+Example: Number r esult r ows for
+XMLTABLE ........... . 291
+Updating XML data ......... . 292
+Deletion of XML data fr om tables ... . 293
+XML schema r epository ........ . 293
+Application pr ogramming language support . . 294
+XML column inserts and updates in CLI
+applications ........... . 294
+XML data r etrieval in CLI applications .. . 295
+Declaring XML host variables in embedded
+SQL applications ......... . 296
+Example: Refer encing XML host variables
+in embedded SQL applications ... . 297
+Recommendations for developing
+embedded SQL applications with XML . . 298
+Identifying XML values in an SQLDA . . 298
+Java ............. . 298
+XML data in JDBC applications ... . 298
+XML data in SQLJ applications ... . 304
+Routines ............ . 306
+XML support in SQL procedures ... . 307
+XML data type support in external
+routines ........... . 307
+XML data encoding ......... . 311
+Encoding considerations when storing or
+passing XML data ......... . 312
+Encoding considerations for input of XML
+data to a database ........ . 312
+Encoding considerations for r etrieval of
+XML data fr om a database ..... . 312
+Encoding considerations for passing XML
+data in r outine parameters ..... . 312
+Encoding considerations for XML data in
+JDBC and SQLJ applications .... . 312
+Effects of XML encoding and serialization on
+data conversion ......... . 313
+Encoding scenarios for input of internally
+encoded XML data to a database ... . 313
+Encoding scenarios for input of externally
+encoded XML data to a database ... . 315
+Encoding scenarios for r etrieval of XML
+data with implicit serialization ... . 316
+Encoding scenarios for r etrieval of XML
+data with explicit XMLSERIALIZE .. . 319
+Mappings of encoding names to ef fective
+CCSIDs for stor ed XML data ..... . 321
+Mappings of CCSIDs to encoding names for
+serialized XML output data ...... . 321
+Annotated XML schema decomposition .. . 321
+Decomposing XML documents with
+annotated XML schemas....... . 321
+Registering and enabling XML schemas for
+decomposition .......... . 322
+Sources for annotated XML schema
+decomposition .......... . 322
+XML decomposition annotations .... . 322
+Specification and scope of XML
+decomposition annotations ..... . 323
+Annotations as attributes ..... . 323
+Annotations as str uctured child elements 323
+Global annotations ....... . 324
+XML decomposition annotations -
+Summary........... . 324
+db2-xdb:defaultSQLSchema decomposition
+annotation .......... . 326
+db2-xdb:rowSet decomposition annotation 327
+db2-xdb:table decomposition annotation 331
+db2-xdb:column decomposition annotation 333
+db2-xdb:locationPath decomposition
+annotation .......... . 335
+db2-xdb:expression decomposition
+annotation .......... . 338
+db2-xdb:condition decomposition
+annotation .......... . 341
+db2-xdb:contentHandling decomposition
+annotation .......... . 344
+db2-xdb:normalization decomposition
+annotation .......... . 348
+db2-xdb:order decomposition annotation 350
+vi IBM i: Database SQL programming
+|
+||
+|
+||
+|
+||
+|
+||
+||
+||
+||
+||
+|
+||
+|
+||
+|
+||
+|
+|
+||
+||
+||
+||
+||
+|
+||
+|
+||
+||
+|
+||
+||
+|
+||
+|
+||
+|
+||
+|
+||
+||
+|
+||
+||
+||
+||
+||
+|
+||
+||
+|
+||
+|
+||
+|
+||
+||
+||
+||
+||
+||
+||
+|
+||
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+||
+|
+||
+|
+||
+|
+||
+||
+|
+||
+||
+||
+||
+|
+||
+|
+||
+||
+||
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+||
+--- Page 9 ---
+db2-xdb:truncate decomposition
+annotation .......... . 352
+db2-xdb:rowSetMapping decomposition
+annotation .......... . 354
+db2-xdb:rowSetOperationOrder
+decomposition annotation ..... . 356
+Keywords for annotated XML schema
+decomposition ......... . 357
+Treatment of CDA TA sections in annotated
+XML schema decomposition ..... . 358
+NULL values and empty strings in annotated
+XML schema decomposition ..... . 358
+Checklist for annotated XML schema
+decomposition .......... . 359
+Examples of mappings in annotated XML
+schema decomposition ........ . 360
+Annotations of derived complex types .. . 360
+Decomposition annotation example: Mapping
+to an XML column ........ . 366
+Decomposition annotation example: A value
+mapped to a single table that yields a single
+row ............. . 367
+Decomposition annotation example: A value
+mapped to a single table that yields multiple
+rows ............. . 368
+Decomposition annotation example: A value
+mapped to multiple tables ...... . 370
+Decomposition annotation example:
+Grouping multiple values mapped to a single
+table ............. . 371
+Decomposition annotation example: Multiple
+values fr om dif ferent contexts mapped to a
+single table ........... . 373
+XML schema to SQL types compatibility for
+annotated schema decomposition .... . 375
+Limits and r estrictions for annotated XML
+schema decomposition ....... . 381
+Schema for XML decomposition annotations 382
+Using SQL in dif ferent envir onments .... . 383
+Using a cursor ........... . 383
+Types of cursors ......... . 383
+Examples: Using a cursor ...... . 384
+Step 1: Defining the cursor ..... . 386
+Step 2: Opening the cursor ..... . 387
+Step 3: Specifying what to do when the
+end of data is r eached ...... . 387
+Step 4: Retrieving a r ow using a cursor 388
+Step 5a: Updating the curr ent r ow .. . 389
+Step 5b: Deleting the curr ent r ow... . 389
+Step 6: Closing the cursor ..... . 389
+Using the multiple-r ow FETCH statement 390
+Multiple-row FETCH using a host
+structure array ......... . 390
+Multiple-row FETCH using a r ow storage
+area ............ . 392
+Unit of work and open cursors .... . 394
+Dynamic SQL applications ....... . 395
+Designing and r unning a dynamic SQL
+application ........... . 395
+CCSID of dynamic SQL statements ... . 396
+Processing non-SELECT statements ... . 396
+Using the PREP ARE and EXECUTE
+statements .......... . 396
+Processing SELECT statements and using a
+descriptor ........... . 397
+Fixed-list SELECT statements .... . 397
+Varying-list SELECT statements ... . 398
+SQL descriptor ar eas ....... . 399
+SQLDA format ......... . 399
+Example: A SELECT statement for
+allocating storage for SQLDA .... . 402
+Example: A SELECT statement using an
+allocated SQL descriptor...... . 406
+Parameter markers ....... . 408
+Using interactive SQL ........ . 410
+Starting interactive SQL ....... . 411
+Using the statement entry function ... . 412
+Prompting ........... . 412
+Syntax checking ........ . 414
+Statement pr ocessing mode ..... . 414
+Subqueries .......... . 414
+CREATE TABLE pr ompting .... . 414
+Entering DBCS data ....... . 414
+Using the list selection function .... . 415
+Example: Using the list selection function 415
+Session services description ..... . 417
+Exiting interactive SQL ....... . 418
+Using an existing SQL session ..... . 419
+Recovering an SQL session ...... . 419
+Accessing r emote databases with interactive
+SQL ............. . 419
+Using the SQL statement pr ocessor .... . 421
+Execution of statements after err ors occur 423
+Commitment contr ol in the SQL statement
+processor ............ . 423
+Source listing for the SQL statement
+processor ............ . 423
+Using the RUNSQL CL command .... . 425
+Distributed r elational database function and SQL 427
+DB2 for i distributed r elational database support 427
+DB2 for i distributed r elational database
+example pr ogram .......... . 428
+SQL package support ......... . 429
+Valid SQL statements in an SQL package . . 430
+Considerations for cr eating an SQL package 430
+CRTSQLPKG authorization ..... . 430
+Creating a package on a database other
+than DB2 for i ......... . 430
+Target r elease (TGTRLS) parameter .. . 431
+SQL statement size ....... . 431
+Statements that do not r equire a package 431
+Package object type ....... . 432
+ILE pr ograms and service pr ograms .. . 432
+Package cr eation connection .... . 432
+Unit of work ......... . 432
+Creating packages locally ..... . 432
+Labels ............ . 432
+Consistency token ........ . 432
+SQL and r ecursion........ . 433
+CCSID considerations for SQL ...... . 433
+Connection management and activation gr oups 433
+Source code for PGM1 ....... . 434
+Contents vii
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+|
+||
+||
+|
+||
+|
+|
+||
+|
+|
+||
+|
+||
+|
+|
+||
+|
+|
+||
+|
+||
+|
+||
+||
+||
+--- Page 10 ---
+Source code for PGM2 ....... . 434
+Source code for PGM3 ....... . 435
+Multiple connections to the same r elational
+database ............ . 437
+Implicit connection management for the
+default activation gr oup ....... . 438
+Implicit connection management for
+nondefault activation gr oups ..... . 439
+Distributed support ......... . 439
+Determining the connection type .... . 440
+Connect and commitment contr ol r estrictions 442
+Determining the connection status ... . 442
+Distributed unit of work connection
+considerations .......... . 444
+Ending connections ........ . 444
+Distributed unit of work ........ . 445
+Managing distributed unit of work
+connections ........... . 445
+Checking the connection status .... . 447
+Cursors and pr epared statements .... . 447
+DRDA stored pr ocedure considerations ... . 448
+WebSphere MQ with DB2 ........ . 448
+WebSphere MQ messages ....... . 449
+WebSphere MQ message handling ... . 449
+DB2 MQ services ........ . 450
+DB2 MQ policies ........ . 450
+DB2 MQ functions .......... . 451
+DB2 MQ dependencies ....... . 452
+DB2 MQ tables ........... . 453
+DB2 MQ CCSID conversion ...... . 458
+Websphere MQ transactions ...... . 459
+Basic messaging with W ebSphere MQ ... . 460
+Sending messages with W ebSphere MQ .. . 461
+Retrieving messages with W ebSphere MQ .. . 462
+Application to application connectivity with
+WebSphere MQ ........... . 463
+Reference.............. . 463
+DB2 for i sample tables ........ . 463
+Department table (DEP ARTMENT) ... . 464
+DEPARTMENT ......... . 465
+Employee table (EMPLOYEE) ..... . 465
+EMPLOYEE .......... . 466
+Employee photo table (EMP_PHOT O) .. . 467
+EMP_PHOTO ......... . 468
+Employee r esumé table (EMP_RESUME) . . 468
+EMP_RESUME ......... . 469
+Employee to pr oject activity table
+(EMPPROJACT) ......... . 469
+EMPPROJACT ......... . 470
+Project table (PROJECT) ....... . 471
+PROJECT........... . 472
+Project activity table (PROJACT) .... . 473
+PROJACT .......... . 474
+Activity table (ACT) ........ . 476
+ACT ............ . 476
+Class schedule table (CL_SCHED) ... . 477
+CL_SCHED .......... . 477
+In-tray table (IN_TRA Y) ....... . 477
+IN_TRAY ........... . 478
+Organization table (ORG) ...... . 478
+ORG ............ . 479
+Staff table (ST AFF) ........ . 479
+STAFF ............ . 480
+Sales table (SALES) ........ . 481
+SALES............ . 481
+Sample XML tables ........ . 482
+Product table (PRODUCT) ...... . 482
+PRODUCT .......... . 483
+Purchase or der table (PURCHASEORDER) 484
+PURCHASEORDER ....... . 485
+Customer table (CUST OMER) ..... . 487
+CUSTOMER .......... . 488
+Catalog table (CA TALOG) ...... . 489
+CATALOG .......... . 489
+Suppliers table (SUPPLIERS) ..... . 489
+SUPPLIERS .......... . 490
+Inventory table (INVENT ORY) .... . 490
+INVENTORY ......... . 490
+Product Supplier table
+(PRODUCTSUPPLIER) ....... . 490
+PRODUCTSUPPLIER....... . 491
+DB2 for i CL command descriptions .... . 491
+Appendix. Notices ........ . 493
+Programming interface information ..... . 494
+Trademarks ............. . 495
+Terms and conditions .......... . 495
+viii IBM i: Database SQL programming
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+|
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+||
+|
+||
+||
+--- Page 11 ---
+SQL programming
+The DB2 ® for IBM ® i database pr ovides a wide range of support for Str uctured Query Language (SQL).
+The examples of SQL statements shown in this topic collection ar e based on the sample tables and
+assume that the following statements ar e tr ue:
+v They ar e shown in the interactive SQL environment or they ar e written in ILE C or in COBOL. EXEC
+SQL and END-EXEC ar e used to delimit an SQL statement in a COBOL program.
+v Each SQL example is shown on several lines, with each clause of the statement on a separate line.
+v SQL keywords ar e highlighted.
+v Table names pr ovided in the sample tables use the schema CORPDA TA. Table names that ar e not
+found in the Sample T ables should use schemas you cr eate.
+v Calculated columns ar e enclosed in par entheses, (), and brackets, [].
+v The SQL naming convention is used.
+v The APOST and APOSTSQL precompiler options ar e assumed although they ar e not the default
+options in COBOL. Character string literals within SQL and host language statements ar e delimited by
+single-quotation marks (').
+v A sort sequence of *HEX is used, unless otherwise noted.
+Whenever the examples vary fr om these assumptions, it is stated.
+Because this topic collection is for the application pr ogrammer, most of the examples ar e shown as if they
+were written in an application pr ogram. However, many examples can be slightly changed and r un
+interactively by using interactive SQL. The syntax of an SQL statement, when using interactive SQL,
+differs slightly fr om the format of the same statement when it is embedded in a pr ogram.
+Note: By using the code examples, you agr ee to the terms of the “Code license and disclaimer
+information” on page 491.
+Related concepts :
+Embedded SQL programming
+Related reference :
+“DB2 for i sample tables” on page 463
+These sample tables ar e r eferred to and used in the SQL programming and the SQL reference topic
+collections.
+DB2 for i5/OS SQL reference
+What's new for IBM i 7.1
+Read about new or significantly changed information for the SQL programming topic collection.
+Result sets returned to programs
+You can r eturn a r esult set fr om a stor ed pr ocedure to a pr ogram and have the pr ogram consume the
+result set. For mor e information, see “Writing a pr ogram or SQL procedure to r eceive the r esult sets fr om
+a stor ed pr ocedure” on page 174.
+© Copyright IBM Corp. 1998, 2010 1
+|
+|
+|
+|
+|
+|
+--- Page 12 ---
+XML
+The XML data type has been added to SQL. This includes internal handling of XML values and XML
+schema decomposition. For mor e information, see “SQL statements and SQL/XML functions” on page
+257.
+Field procedures
+A field pr ocedure is a user -written exit r outine to transform values in a single column. When values in
+the column ar e changed, or new values inserted, the field pr ocedure is invoked for each value, and can
+transform that value (encode it) in any way . The encoded value is then stor ed. When values ar e r etrieved
+from the column, the field pr ocedure is invoked for each value, which is encoded, and must decode it
+back to the original value. For mor e information, see “Defining field pr ocedures” on page 28.
+MERGE statement
+The MERGE statement can be used to either insert new r ows or update existing r ows in a table or view ,
+depending on whether they alr eady exists in the table or view . For mor e information, see “Merging data”
+on page 1 19.
+Global variables
+Global variables can be cr eated and used in SQL. For mor e information, see “Creating and using global
+variables” on page 53.
+Arrays in SQL procedures
+An array data type has been added for use in SQL procedures. For mor e information, see “Array support
+in SQL procedures” on page 226  and “Debugging an SQL routine” on page 227.
+WebSphere® MQ with DB2
+DB2 pr ovides an application pr ogramming interface to the W ebSphere MQ message handling system
+through a set of external user -defined functions, which ar e called DB2 MQ functions. You can use these
+functions in SQL statements to combine DB2 database access with W ebSphere MQ message handling. For
+more information, see “WebSphere MQ with DB2” on page 448.
+Other functional changes to the SQL programming information
+v An option to r eplace an existing object has been added to many DDL CREATE statements. See
+“Replacing existing objects” on page 54 .
+What's new as of April 2015
+The OR REPLACE option has been added to the CREA TE TABLE statement. For mor e information, see
+“Using CREATE OR REPLACE T ABLE” on page 47.
+What's new as of October 2014
+Pipelined table functions
+A pipelined SQL table function is a mor e flexible version of a table function. For mor e information, see
+“Example: SQL table UDFs” on page 193.
+2 IBM i: Database SQL programming
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+--- Page 13 ---
+SQL variable debug for SQL routines
+Debugging of SQL routines allows you to display values of SQL variables. For mor e information, see
+“Debugging an SQL routine” on page 227.
+What's new as of February 2013
+Multiple event triggers
+A trigger can be defined for mor e than one event. For mor e information, see “Multiple event SQL
+triggers” on page 221.
+System name for tables, views, and indexes
+When cr eating a table, view , or index, the system name for the object can be specified on the cr eate
+statement. For mor e information, see “Creating a table” on page 17  and “Creating and using views” on
+page 48.
+What's new as of October 2012
+Defaults for procedure parameters and using parameter names in CALL
+You can define parameters for SQL and external pr ocedures to have default values. Parameters with
+default values can be omitted when calling the pr ocedure. The CALL statement can specify parameter
+names for any ar guments. For mor e information, see “Defining a pr ocedure with default parameters” on
+page 156.
+CREATE TABLE referencing a remote table
+You can cr eate a local table with the definition and data pulled fr om a non-local table. For mor e
+information, see “Creating a table with r emote server data” on page 23.
+SQL and external routine management
+Procedures and functions ar e tied to system objects that can be administer ed with CL commands. For
+more information, see “Managing SQL and external r outine objects” on page 230.
+RUNSQLSTM OPTION parameter
+The RUNSQLSTM command does not need to generate a listing. For mor e information, see “Using the
+SQL statement pr ocessor” on page 421.
+What's new as of April 2012
+Obfuscation
+The content of an SQL procedure or SQL function can be obfuscated. For mor e information, see
+“Obfuscating an SQL routine” on page 228.
+XMLTABLE
+The XMLTABLE table function pr ovides a way to work with XML content as a r elational table. For mor e
+information, see “Using XMLTABLE to r eference XML content as a r elational table” on page 284.  In
+addition, SQL XML Programming contains all the new and existing XML information that is r elated to
+SQL.
+SQL programming 3
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+--- Page 14 ---
+Insert from a remote table
+You can insert into a local table with data pulled fr om a non-local table. For mor e information, see
+“Inserting data fr om a r emote database” on page 1 10.
+RUNSQL
+This new CL command r uns a single SQL statement. For mor e information, see “Using the RUNSQL CL
+command” on page 425.
+What's new as of April 2011
+Connect by
+Hierarchical queries can be defined using the CONNECT BY syntax. For mor e information, see “Using
+recursive queries” on page 83.
+How to see what's new or changed
+To help you see wher e technical changes have been made, the information center uses:
+v The 
+  image to mark wher e new or changed information begins.
+v The 
+  image to mark wher e new or changed information ends.
+In PDF files, you might see r evision bars (|) in the left mar gin of new and changed information.
+To find other information about what's new or changed this r elease, see the Memo to users .
+PDF file for SQL programming
+You can view and print a PDF file of this information.
+To view or download the PDF version of this document, select SQL programming (about 1,714 KB).
+Saving PDF files
+To save a PDF on your workstation for viewing or printing:
+1. Right-click the PDF link in your br owser.
+2. Click the option that saves the PDF locally .
+3. Navigate to the dir ectory in which you want to save the PDF .
+4. Click Save.
+Downloading Adobe Reader
+You need Adobe Reader installed on your system to view or print these PDFs. You can download a fr ee
+copy fr om the Adobe Web site  (http://get.adobe.com/r eader/)
+ .
+Introduction to DB2 for i Structured Query Language
+Structured Query Language (SQL) is a standar dized language for defining and manipulating data in a
+relational database. These topics describe the System i ® implementation of the SQL using the DB2 for i
+database and the IBM DB2 Query Manager and SQL Development Kit for i licensed pr ogram.
+4 IBM i: Database SQL programming
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+--- Page 15 ---
+SQL manages information based on the r elational model of data. SQL statements can be embedded in
+high-level languages, dynamically pr epared and r un, or r un interactively. For information about
+embedded SQL, see Embedded SQL programming.
+SQL consists of statements and clauses that describe what you want to do with the data in a database
+and under what conditions you want to do it.
+SQL can access data in a r emote r elational database, using the IBM Distributed Relational Database
+Architecture™ (DRDA).
+Related concepts :
+Distributed database pr ogramming
+Related reference :
+“Distributed r elational database function and SQL” on page 427
+A distributed r elational database consists of a set of SQL objects that ar e spr ead acr oss inter connected
+computer systems.
+SQL concepts
+DB2 for i SQL consists of several main parts, such as SQL runtime support, pr ecompilers, and interactive
+SQL.
+v SQL runtime support
+SQL run time parses SQL statements and r uns any SQL statements. This support is part of the IBM i
+licensed pr ogram, which allows applications that contain SQL statements to be r un on systems wher e
+the IBM DB2 Query Manager and SQL Development Kit for i licensed pr ogram is not installed.
+v SQL precompilers
+SQL precompilers support pr ecompiling embedded SQL statements in host languages. The following
+languages ar e supported:
+– ILE C
+– ILE C++
+– ILE COBOL
+– COBOL
+– PL/I
+– RPG III (part of RPG)
+– ILE RPG
+The SQL host language pr ecompilers pr epare an application pr ogram that contains SQL statements.
+The host language compilers then compile the pr ecompiled host sour ce pr ograms. For mor e
+information about pr ecompiling, see Preparing and r unning a pr ogram with SQL statements in the
+Embedded SQL programming information. The pr ecompiler support is part of the IBM DB2 Query
+Manager and SQL Development Kit for i licensed pr ogram.
+v SQL interactive interface
+The SQL interactive interface allows you to cr eate and r un SQL statements. For mor e information about
+interactive SQL, see “Using interactive SQL” on page 410.  Interactive SQL is part of the IBM DB2
+Query Manager and SQL Development Kit for i licensed pr ogram.
+v Run SQL Scripts
+The Run SQL Scripts window in System i Navigator allows you to cr eate, edit, r un, and tr oubleshoot
+scripts of SQL statements.
+v Run SQL Statements (RUNSQLSTM) CL command
+The RUNSQLSTM command can be used to r un a series of SQL statements that ar e stor ed in a sour ce
+file or a sour ce str eam file. For mor e information about the RUNSQLSTM command, see “Using the
+SQL statement pr ocessor” on page 421.
+v DB2 Query Manager
+SQL programming 5
