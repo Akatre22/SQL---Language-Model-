@@ -173,22 +173,58 @@ class TinyLLMRAG:
 
     def format_pedagogical_markdown(self, doc: Dict[str, Any]) -> str:
         """
-        Transforms raw retrieved chunk into a clean pedagogical markdown guide.
+        Transforms retrieved concept knowledge into an engaging, practical developer guide.
         """
         title = doc["metadata"].get("title", "SQL Concept Guide")
-        text = doc["text"]
+        text = doc.get("text", "")
         
-        lines = text.split("\n")
-        body_lines = [l for l in lines if not l.startswith("Title:") and not l.startswith("Topic:") and not l.startswith("Keywords & Aliases:")]
-        raw_body = "\n".join(body_lines).strip()
+        # Extract sections if available across standard and harvested templates
+        def_match = re.search(r"(?:Definition & Core Purpose|Description & Scenario|Description):\s*(.+?)(?=\n\n(?:Syntax|Practical|SQL Code|SQL Implementation|Common|Pitfalls)|$)", text, re.DOTALL)
+        ex_match = re.search(r"(?:Practical Code Example|SQL Code Implementation|SQL Implementation Example):\s*(.+?)(?=\n\n(?:Common|Pitfalls & Best Practices|Pitfalls & Antipatterns|Pitfalls|Syntax|Source)|$)", text, re.DOTALL)
+        pit_match = re.search(r"(?:Common Pitfalls & Antipatterns|Pitfalls & Best Practices|Pitfalls & Antipatterns|Pitfalls):\s*(.+?)(?=\n\n(?:Source|$)|$)", text, re.DOTALL)
+        syn_match = re.search(r"(?:Syntax Specification|Syntax Template|Syntax / Pattern|Syntax):\s*(.+?)(?=\n\n(?:Practical|SQL Code|SQL Implementation|Common|Pitfalls)|$)", text, re.DOTALL)
 
-        formatted_body = re.sub(r'(?m)^(\d+\))\s+', r'- **\1** ', raw_body)
+        definition = def_match.group(1).strip() if def_match else ""
+        example = ex_match.group(1).strip() if ex_match else ""
+        pitfalls = pit_match.group(1).strip() if pit_match else ""
+        syntax = syn_match.group(1).strip() if syn_match else ""
 
-        guide = (
-            f"### 💡 {title}\n\n"
-            f"{formatted_body.strip()}"
-        )
-        return guide
+        # Clean section labels if leaked into values
+        for label in ["SQL Implementation Example:", "SQL Code Implementation:", "Practical Code Example:", "Syntax Template:", "Syntax Specification:", "Pitfalls & Antipatterns:", "Pitfalls & Best Practices:"]:
+            if syntax == label:
+                syntax = ""
+            if example == label:
+                example = ""
+            if pitfalls.startswith("Source:"):
+                pitfalls = ""
+
+        if not definition and not example and not syntax:
+            # Fallback for generic text chunks
+            lines = [l for l in text.split("\n") if not l.startswith("Title:") and not l.startswith("Topic:") and not l.startswith("Keywords & Aliases:") and not l.startswith("Category:") and not l.startswith("Source:")]
+            raw_body = "\n".join(lines).strip()
+            raw_body = re.sub(r'(?m)^(\d+\))\s+', r'- **\1** ', raw_body)
+            return f"### 💡 {title}\n\n{raw_body}"
+
+        parts = [f"### 💡 {title}"]
+        if definition:
+            parts.append(f"\n{definition}")
+
+        if syntax and len(syntax) > 3:
+            if not syntax.startswith("```"):
+                parts.append(f"\n#### 📋 Syntax Template:\n```sql\n{syntax}\n```")
+            else:
+                parts.append(f"\n#### 📋 Syntax Template:\n{syntax}")
+
+        if example and len(example) > 3:
+            if not example.startswith("```"):
+                parts.append(f"\n#### ⚡ Practical SQL Implementation:\n```sql\n{example}\n```")
+            else:
+                parts.append(f"\n#### ⚡ Practical SQL Implementation:\n{example}")
+
+        if pitfalls and len(pitfalls) > 3:
+            parts.append(f"\n> ⚠️ **Key Takeaway & Best Practice:**\n> {pitfalls}")
+
+        return "\n".join(parts)
 
     def answer_with_rag(
         self,

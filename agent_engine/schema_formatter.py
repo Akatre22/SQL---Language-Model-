@@ -21,6 +21,7 @@ class ColumnMeta:
     is_primary_key: bool = False
     is_foreign_key: bool = False
     references: Optional[str] = None  # e.g. "customers.customer_id"
+    nullable: bool = True
 
 @dataclass
 class TableMeta:
@@ -113,6 +114,45 @@ class SchemaFormatter:
         db_name = getattr(engine.url, "database", None) or "connected_db"
         catalog = DatabaseCatalog(database_name=str(db_name))
 
+        # Special handling for Snowflake multi-schema and database introspection
+        if getattr(engine.dialect, "name", "").lower() == "snowflake":
+            try:
+                from sqlalchemy import text
+                with engine.connect() as conn:
+                    db_clean = str(db_name).split("/")[0].strip('"').strip("'")
+                    res = conn.execute(text(f"SHOW TABLES IN DATABASE {db_clean}"))
+                    for r in res.fetchall():
+                        t_name = str(r[1])
+                        t_schema = str(r[3])
+                        if t_schema.upper() == "INFORMATION_SCHEMA":
+                            continue
+                        try:
+                            col_res = conn.execute(text(f'DESC TABLE "{db_clean}"."{t_schema}"."{t_name}"'))
+                            cols_meta = []
+                            for cr in col_res.fetchall():
+                                col_name = str(cr[0])
+                                col_type = str(cr[1]).upper()
+                                is_pk = col_name.lower().endswith("_id") or col_name.lower() == "id"
+                                cols_meta.append(ColumnMeta(
+                                    name=col_name,
+                                    data_type=col_type,
+                                    is_primary_key=is_pk,
+                                    is_foreign_key=False,
+                                    references=None,
+                                    nullable=cr[3] == "Y"
+                                ))
+                            catalog.tables[t_name.lower()] = TableMeta(
+                                name=t_name,
+                                columns=cols_meta,
+                                foreign_keys=[]
+                            )
+                        except Exception:
+                            continue
+                if catalog.tables:
+                    return catalog
+            except Exception:
+                pass
+
         table_names = []
         try:
             table_names = inspector.get_table_names(schema=schema_name)
@@ -149,7 +189,8 @@ class SchemaFormatter:
                         data_type=c_type,
                         is_primary_key=is_pk,
                         is_foreign_key=is_fk,
-                        references=ref
+                        references=ref,
+                        nullable=bool(c.get("nullable", True))
                     ))
 
                 catalog.tables[t.lower()] = TableMeta(

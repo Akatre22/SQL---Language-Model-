@@ -1,21 +1,51 @@
-# Byte-compiled / optimized / DLL files
+# ==============================================================================
+# SECRETS & ENVIRONMENT CONFIGURATIONS (PROTECT API KEYS & CREDENTIALS)
+# ==============================================================================
+.env
+.env.*
+*.env
+*.pem
+*.key
+app/api_keys.json
+api_keys.json
+
+# ==============================================================================
+# DATABASES, CHROMA VECTOR STORAGE & SHADOW REPLICAS
+# ==============================================================================
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+knowledge/shadow_sandboxes/
+knowledge/chroma_db/
+*.log
+
+# ==============================================================================
+# NODE / FRONTEND DEPENDENCIES & ARTIFACTS
+# ==============================================================================
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+.npm/
+
+# ==============================================================================
+# PYTHON VIRTUAL ENVIRONMENTS & COMPILED ARTIFACTS
+# ==============================================================================
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Environments
-.env
-.venv
-env/
+.venv/
 venv/
+env/
 ENV/
+.pytest_cache/
 
-# Large checkpoints / model weights (uncomment if you want to track them via Git LFS instead)
-# *.pt
-# *.bin
-
-# IDE and OS files
+# ==============================================================================
+# IDE & OS SYSTEM FILES
+# ==============================================================================
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+.gemini/

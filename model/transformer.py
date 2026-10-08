@@ -186,7 +186,7 @@ class TinyLLM(nn.Module):
         no_repeat_ngram_size: int = 3,
         eos_token_id=None
     ) -> torch.Tensor:
-        """Autoregressive text generation with greedy argmax and sampling controls."""
+        """Autoregressive text generation with greedy argmax, repetition penalty, and sampling controls."""
         self.eval()
         
         # Normalize eos_token_id into a list
@@ -200,23 +200,42 @@ class TinyLLM(nn.Module):
         for _ in range(max_new_tokens):
             idx_cond = idx if idx.size(1) <= self.config.max_seq_len else idx[:, -self.config.max_seq_len:]
             logits, _ = self(idx_cond)
-            logits = logits[:, -1, :] # focus on last token
+            logits = logits[:, -1, :].clone() # focus on last token
+
+            # Repetition Penalty across previously generated tokens
+            if repetition_penalty != 1.0 and idx.size(1) > 0:
+                past_tokens = set(idx[0].tolist())
+                for token_id in past_tokens:
+                    if logits[0, token_id] > 0:
+                        logits[0, token_id] /= repetition_penalty
+                    else:
+                        logits[0, token_id] *= repetition_penalty
+
+            # No-repeat n-gram blocking
+            if no_repeat_ngram_size > 0 and idx.size(1) >= no_repeat_ngram_size:
+                seq = idx[0].tolist()
+                ngram_prefix = tuple(seq[-(no_repeat_ngram_size - 1):])
+                for i in range(len(seq) - no_repeat_ngram_size + 1):
+                    if tuple(seq[i:i + no_repeat_ngram_size - 1]) == ngram_prefix:
+                        banned_token = seq[i + no_repeat_ngram_size - 1]
+                        logits[0, banned_token] = -float("inf")
 
             # Fast deterministic greedy decoding
             if temperature == 0.0 or temperature < 1e-6:
                 idx_next = torch.argmax(logits, dim=-1, keepdim=True)
                 idx = torch.cat((idx, idx_next), dim=1)
+                
+                # Check for 2-token and 3-token repetitive loop traps
+                if idx.size(1) >= 6:
+                    last6 = idx[0, -6:].tolist()
+                    if last6[0] == last6[2] == last6[4] and last6[1] == last6[3] == last6[5]:
+                        break
+                    if last6[3] == last6[4] == last6[5]:
+                        break
+
                 if eos_list and idx_next.item() in eos_list:
                     break
                 continue
-
-            # Repetition Penalty
-            if repetition_penalty != 1.0:
-                for token_id in set(idx[0].tolist()):
-                    if logits[0, token_id] > 0:
-                        logits[0, token_id] /= repetition_penalty
-                    else:
-                        logits[0, token_id] *= repetition_penalty
 
             # Temperature Scaling
             logits = logits / max(temperature, 1e-4)
@@ -239,8 +258,15 @@ class TinyLLM(nn.Module):
             # Sample next token
             probs = F.softmax(logits, dim=-1)
             idx_next = torch.multinomial(probs, num_samples=1)
-
             idx = torch.cat((idx, idx_next), dim=1)
+
+            # Check for repetition traps
+            if idx.size(1) >= 6:
+                last6 = idx[0, -6:].tolist()
+                if last6[0] == last6[2] == last6[4] and last6[1] == last6[3] == last6[5]:
+                    break
+                if last6[3] == last6[4] == last6[5]:
+                    break
 
             if eos_list and idx_next.item() in eos_list:
                 break

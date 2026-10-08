@@ -26,8 +26,33 @@ class ModelEvaluator:
         self.sql_evaluator = SQLEvaluator()
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         
-        with open(BENCHMARK_PATH, "r", encoding="utf-8") as f:
-            self.benchmark: List[Dict[str, Any]] = json.load(f)
+        # Load from PostgreSQL evaluation_benchmarks table
+        self.benchmark: List[Dict[str, Any]] = []
+        try:
+            from knowledge.storage_manager import DatabaseStorageManager
+            from sqlalchemy import text
+            storage = DatabaseStorageManager()
+            if storage.pg_engine:
+                with storage.pg_engine.connect() as conn:
+                    rows = conn.execute(text("SELECT benchmark_id, category, difficulty, question, schema_context, ground_truth_sql, expected_tables, expected_columns, ordered FROM evaluation_benchmarks ORDER BY benchmark_id")).fetchall()
+                    for r in rows:
+                        self.benchmark.append({
+                            "id": r[0],
+                            "category": r[1],
+                            "difficulty": r[2],
+                            "question": r[3],
+                            "schema": r[4],
+                            "ground_truth_sql": r[5],
+                            "expected_tables": r[6] if isinstance(r[6], list) else (json.loads(r[6]) if r[6] else []),
+                            "expected_columns": r[7] if isinstance(r[7], list) else (json.loads(r[7]) if r[7] else []),
+                            "ordered": bool(r[8])
+                        })
+        except Exception as e:
+            print(f"[!] PostgreSQL benchmark load notice: {e}")
+
+        if not self.benchmark and BENCHMARK_PATH.exists():
+            with open(BENCHMARK_PATH, "r", encoding="utf-8") as f:
+                self.benchmark = json.load(f)
 
     def calculate_keyword_coverage(self, response: str, expected_keywords: List[str]) -> float:
         """Calculates percentage of expected domain terms mentioned in the answer."""
