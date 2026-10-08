@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiny SQL LLM — Enterprise Technical Architecture &amp; Neural Platform</title>
+  <meta name="description" content="Ultra-technical interactive presentation for Tiny SQL LLM: 6.16M parameter Decoder Transformer, Evolutionary Architecture Graph, Dual-Brain Agent, Multi-Database Connectors, and REST API.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Animated Neural Canvas -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Laser Cursor Pointer -->
+  <div id="laserCursor"></div>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <div class="brand-badge">
+        <span class="pulse-dot"></span>
+        <span>SLM // 6.16M</span>
+      </div>
+      <div class="brand-title">TINY SQL LLM</div>
+      <span class="brand-sep">/</span>
+      <div class="brand-sub">Neural Core &amp; Enterprise Architecture Deep Dive</div>
+    </div>
+
+    <div class="nav-center">
+      <div class="slide-indicator">
+        <span>Slide</span>
+        <strong id="currentSlideNum">1</strong>
+        <span>/</span>
+        <span id="totalSlidesNum">10</span>
+      </div>
+      <div class="slide-topic-badge" id="currentSlideTopic">Executive Summary</div>
+    </div>
+
+    <div class="nav-actions">
+      <button class="nav-btn" id="laserToggleBtn" title="Toggle Laser Pointer (L)">
+        <svg class="icon-svg sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" stroke-dasharray="2 2"/></svg>
+        <span>Laser</span>
+      </button>
+      <button class="nav-btn" id="prevSlideBtn" title="Previous Slide (← / PageUp)">
+        <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Prev</span>
+      </button>
+      <button class="nav-btn primary" id="nextSlideBtn" title="Next Slide (→ / Space / PageDown)">
+        <span>Next</span>
+        <svg class="icon-svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      <button class="nav-btn" id="openDrawerBtn" title="Slide Index">
+        <svg class="icon-svg" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <span>Index</span>
+      </button>
+      <button class="nav-btn" id="fullscreenBtn" title="Fullscreen (F)">
+        <svg class="icon-svg" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-track">
+    <div class="progress-fill" id="progressBar"></div>
+  </div>
+
+  <!-- Slides Viewport -->
+  <main class="presentation-viewport">
+    <div class="slides-wrapper" id="slidesWrapper">
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 1: Executive Summary & Platform Overview               -->
+      <!-- ============================================================ -->
+      <section class="slide active" id="slide-1" data-topic="Executive Summary">
+        <div class="slide-inner">
+          <div class="section-badge">
+            ARCHITECTURE SPECIFICATION // VERSION 2.4 (OCTOBER 2026)
+          </div>
+
+          <h1 class="hero-title">
+            Tiny SQL LLM: Domain-Specialized Neural Core &amp; Autonomous Agent Platform
+          </h1>
+          <p class="hero-subtitle">
+            A custom 6.16M parameter Decoder Transformer engineered from scratch for deterministic Natural Language to SQL translation, zero-GPU CPU inference, and multi-dialect enterprise data warehouse connectivity.
+          </p>
+
+          <!-- Metric KPI Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card blue">
+              <div class="kpi-header">
+                <span class="kpi-tag">CORE // WEIGHTS</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+              </div>
+              <div class="kpi-val" id="kpiWeights">6,164,288</div>
+              <div class="kpi-title">Neural Parameters</div>
+              <div class="kpi-desc">Custom Causal Decoder with Rotary Position Embeddings (RoPE)</div>
+            </div>
+
+            <div class="kpi-card green">
+              <div class="kpi-header">
+                <span class="kpi-tag">COMPUTE // SPEED</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="kpi-val">&lt; 50ms</div>
+              <div class="kpi-title">Inference Speed</div>
+              <div class="kpi-desc">100% CPU Native execution with zero cloud GPU dependence</div>
+            </div>
+
+            <div class="kpi-card purple">
+              <div class="kpi-header">
+                <span class="kpi-tag">CATALOG // DIALECTS</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+              </div>
+              <div class="kpi-val">5+ Engines</div>
+              <div class="kpi-title">Multi-DB Connectivity</div>
+              <div class="kpi-desc">Snowflake Data Cloud, PostgreSQL, MSSQL, MySQL, SQLite</div>
+            </div>
+
+            <div class="kpi-card amber">
+              <div class="kpi-header">
+                <span class="kpi-tag">SAFETY // AST VERIFIED</span>
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 11 12 14 22 4"/></svg>
+              </div>
+              <div class="kpi-val">100% Valid</div>
+              <div class="kpi-title">Self-Repair Validation</div>
+              <div class="kpi-desc">sqlglot AST verification &amp; dynamic shadow sandboxing</div>
+            </div>
+          </div>
+
+          <!-- Architecture Pillars -->
+          <div class="pillars-bar">
+            <div class="pillar-col">
+              <strong>1. Neural Model Core</strong>
+              <span>Custom RoPE, RMSNorm, SwiGLU &amp; SQL-BPE</span>
+            </div>
+            <div class="pillar-col">
+              <strong>2. Dual-Brain Agent</strong>
+              <span>Intent routing, ChromaDB RAG &amp; AST self-repair</span>
+            </div>
+            <div class="pillar-col">
+              <strong>3. Web Interface</strong>
+              <span>Monochrome light/slate UI &amp; relational data grid</span>
+            </div>
+            <div class="pillar-col">
+              <strong>4. Enterprise REST API</strong>
+              <span>FastAPI backend, key security &amp; telemetry</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 2: Interactive Layered Architecture Graph              -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-2" data-topic="Layered Architecture Graph">
+        <div class="slide-inner">
+          <div class="section-badge">
+            INTERACTIVE SYSTEM GRAPH // CLICK ANY LAYER TO EXPLORE
+          </div>
+          <h2 class="slide-title">Full-Stack Architecture &amp; Enterprise Extensibility</h2>
+          <p class="slide-subtitle">
+            How Tiny SQL LLM layers from its foundational 6.16M neural core up to an enterprise ecosystem—completely replacing generic cloud LLMs for database operations.
+          </p>
+
+          <!-- Interactive Stack Explorer -->
+          <div class="stack-explorer-grid">
+            <!-- Left: Clickable Layers -->
+            <div class="stack-layers-column" id="stackLayersCol">
+              <!-- Layer 5 -->
+              <div class="stack-layer-btn" data-layer="5">
+                <div class="layer-btn-left">
+                  <span class="layer-badge-tag" style="color: var(--accent-green);">LAYER 05 // ECOSYSTEM</span>
+                  <span class="layer-btn-title">Enterprise Extensibility &amp; Applications</span>
+                  <span class="layer-btn-desc">Custom BI Dashboards, Slack/Teams NL Data Bots, Automated ETL SQL</span>
+                </div>
+                <div class="layer-btn-tags">
+                  <span class="tech-chip" style="background: var(--accent-green-bg); color: var(--accent-green);">Slack / Teams Bot</span>
+                  <span class="tech-chip">Auto ETL</span>
+                </div>
+              </div>
+
+              <!-- Layer 4 -->
+              <div class="stack-layer-btn" data-layer="4">
+                <div class="layer-btn-left">
+                  <span class="layer-badge-tag" style="color: var(--accent-amber);">LAYER 04 // GATEWAY</span>
+                  <span class="layer-btn-title">Universal REST API &amp; Key Security</span>
+                  <span class="layer-btn-desc">FastAPI Server (Port 8000), SHA-256 Hashed Tiered Keys, Rate Limiting</span>
+                </div>
+                <div class="layer-btn-tags">
+                  <span class="tech-chip">/v1/agent/query</span>
+                  <span class="tech-chip">Tiered Tokens</span>
+                </div>
+              </div>
+
+              <!-- Layer 3 -->
+              <div class="stack-layer-btn" data-layer="3">
+                <div class="layer-btn-left">
+                  <span class="layer-badge-tag" style="color: var(--accent-purple);">LAYER 03 // WORKSPACE</span>
+                  <span class="layer-btn-title">Enterprise Web Interface</span>
+                  <span class="layer-btn-desc">Minimalist UI, Live Trace Bar, Relational Grid &amp; CSV Export</span>
+                </div>
+                <div class="layer-btn-tags">
+                  <span class="tech-chip">React + Vite</span>
+                  <span class="tech-chip">CSV Export</span>
+                </div>
+              </div>
+
+              <!-- Layer 2 -->
+              <div class="stack-layer-btn" data-layer="2">
+                <div class="layer-btn-left">
+                  <span class="layer-badge-tag" style="color: var(--accent-blue);">LAYER 02 // AGENT</span>
+                  <span class="layer-btn-title">Dual-Brain Agent Reasoning Engine</span>
+                  <span class="layer-btn-desc">NLP Intent Router, ChromaDB Vector RAG, sqlglot AST Self-Repair</span>
+                </div>
+                <div class="layer-btn-tags">
+                  <span class="tech-chip" style="background: var(--accent-blue-bg); color: var(--accent-blue);">AST Repair</span>
+                  <span class="tech-chip">Vector RAG</span>
+                </div>
+              </div>
+
+              <!-- Layer 1 -->
+              <div class="stack-layer-btn active" data-layer="1">
+                <div class="layer-btn-left">
+                  <span class="layer-badge-tag" style="color: var(--text-primary);">LAYER 01 // FOUNDATION</span>
+                  <span class="layer-btn-title">6.16M Tiny SQL-SLM Neural Core</span>
+                  <span class="layer-btn-desc">Causal Decoder Transformer, RoPE, RMSNorm, SwiGLU &amp; SQL-BPE</span>
+                </div>
+                <div class="layer-btn-tags">
+                  <span class="tech-chip">6.16M Weights</span>
+                  <span class="tech-chip">&lt; 50ms CPU</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Interactive Live Inspector Pane -->
+            <div class="stack-inspector-pane">
+              <div class="inspector-header">
+                <span id="inspectorTitle">Layer 01: 6.16M Neural Core Foundation</span>
+                <span class="badge-pill blue" id="inspectorBadge">Neural Foundation</span>
+              </div>
+              <div class="inspector-body" id="inspectorContent">
+                <h4>Deterministic SQL Synthesis on Zero-GPU Hardware</h4>
+                <p>
+                  The foundation of the entire system is a custom 6.16M parameter Decoder-only Transformer trained specifically on multi-dialect SQL syntax, foreign key graphs, and relational schemas.
+                </p>
+                <div class="inspector-diagram">
+                  <div class="diagram-node highlight">SQL-BPE (4,096)</div>
+                  <span>→</span>
+                  <div class="diagram-node highlight">RoPE 6-Layer Core</div>
+                  <span>→</span>
+                  <div class="diagram-node highlight">AST Clean SQL</div>
+                </div>
+                <div class="inspector-highlight-box">
+                  <strong>Why it replaces 70B+ Cloud LLMs:</strong>
+                  <span>Operates completely offline/on-premises with &lt;50ms response times on ordinary CPU hardware. Eliminates recurring token costs and prevents data leaks.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Replacement Value Comparison -->
+          <div class="replacement-value-banner">
+            <div class="rep-box">
+              <span class="rep-icon-badge red">REPLACES</span>
+              <div class="rep-text">
+                <strong>Costly 70B+ Cloud LLMs (GPT-4 / Claude / Gemini)</strong>
+                <p>Eliminates recurring API token costs, column hallucinations, cloud latency bottlenecks, and vendor data privacy leaks.</p>
+              </div>
+            </div>
+
+            <div class="rep-box">
+              <span class="rep-icon-badge green">DELIVERS</span>
+              <div class="rep-text">
+                <strong>Deterministic, 100% Private On-Premise Execution</strong>
+                <p>Zero data leaves your private VPC. Executes sub-50ms deterministic SQL tailored specifically to your active database schemas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 3: Interactive Neural Forward-Pass Simulator           -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-3" data-topic="Neural Architecture">
+        <div class="slide-inner">
+          <div class="section-badge">
+            NEURAL FORWARD PASS // INTERACTIVE COMPONENT INSPECTOR
+          </div>
+          <h2 class="slide-title">How the Tiny SQL Language Model Works</h2>
+          <p class="slide-subtitle">
+            Click each stage of the forward-pass pipeline to inspect the exact mathematical computations, Rotary Position Embeddings (RoPE), and Multi-Head Attention distributions.
+          </p>
+
+          <div class="grid-2col">
+            <!-- Left: Clickable Forward Pass Pipeline -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <span>Forward-Pass Transformer Pipeline</span>
+                <span class="badge-pill blue">Click Stage to Inspect</span>
+              </div>
+              <div class="neural-pipeline-list" id="neuralPipelineList">
+                <div class="neural-stage-btn active" data-stage="1">
+                  <span class="stage-btn-tag">01. TOKENIZATION</span>
+                  <div class="stage-btn-summary">
+                    <span class="math-chip">Prompt + Schema DDL</span>
+                    <span class="math-chip">SQL-BPE (Vocab: 4,096)</span>
+                  </div>
+                </div>
+
+                <div class="neural-stage-btn" data-stage="2">
+                  <span class="stage-btn-tag">02. EMBED &amp; RoPE</span>
+                  <div class="stage-btn-summary">
+                    <span class="math-chip">$d_{model} = 384$</span>
+                    <span class="math-chip purple">Rotary Embeddings</span>
+                  </div>
+                </div>
+
+                <div class="neural-stage-btn" data-stage="3">
+                  <span class="stage-btn-tag">03. 6x TRANSFORMER</span>
+                  <div class="stage-btn-summary">
+                    <span class="math-chip">6 Heads ($d_k = 64$)</span>
+                    <span class="math-chip">RMSNorm + SwiGLU</span>
+                  </div>
+                </div>
+
+                <div class="neural-stage-btn" data-stage="4">
+                  <span class="stage-btn-tag">04. OUTPUT PROJECTION</span>
+                  <div class="stage-btn-summary">
+                    <span class="math-chip">Linear Head → Softmax</span>
+                    <span class="math-chip" style="color: var(--accent-blue);">Deterministic SQL</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Dynamic Neural Stage Details & Interactive Attention Heatmap -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <span id="neuralStageTitle">Stage 01: Domain SQL-BPE Tokenization</span>
+                <span class="badge-pill green" id="neuralStageBadge">Vocabulary: 4,096</span>
+              </div>
+              <div class="spec-rows" id="neuralStageRows">
+                <div class="spec-item">
+                  <span class="spec-k">Tokenizer Type</span>
+                  <span class="spec-v">Byte-Pair Encoding (BPE)</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-k">SQL Keyword Optimization</span>
+                  <span class="spec-v">Atomic Multi-Word Tokens (LEFT JOIN, GROUP BY)</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-k">Context Length Window</span>
+                  <span class="spec-v">512 Sequence Tokens</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-k">Schema Conditioning Strategy</span>
+                  <span class="spec-v">Compact DDL Table Header Serialization</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-k">Special Tokens</span>
+                  <span class="spec-v">[QUESTION], [SCHEMA], [SQL], [EOS]</span>
+                </div>
+              </div>
+
+              <!-- Interactive Attention Visualizer Mini Box -->
+              <div class="attention-heatmap-widget">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:11px; font-weight:700; color:var(--text-primary);">Interactive Multi-Head Attention Heatmap</span>
+                  <span class="badge-pill blue" style="font-size:9.5px;">Head #3 (Foreign Key Routing)</span>
+                </div>
+                <div class="attention-matrix-grid" id="attMatrixGrid">
+                  <!-- Rendered dynamically by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 4: 4-Stage Progressive Training Pipeline               -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-4" data-topic="4-Stage Training Pipeline">
+        <div class="slide-inner">
+          <div class="section-badge">
+            TRAINING METHODOLOGY // CLICK STAGE FOR METRICS &amp; DATASET
+          </div>
+          <h2 class="slide-title">4-Stage Progressive Training Pipeline</h2>
+          <p class="slide-subtitle">
+            How we trained a lightweight 6.16M parameter SLM to deliver high accuracy on complex multi-table SQL queries.
+          </p>
+
+          <!-- 4 Stage Cards -->
+          <div class="stage-grid" id="trainStageCards">
+            <div class="stage-card active" data-train-stage="1">
+              <div class="stage-num-badge">STAGE 01</div>
+              <div class="stage-name">Pre-Training</div>
+              <div class="stage-summary">
+                Pre-trained on standard SQL textbooks, ANSI manuals, and open-source enterprise schemas.
+              </div>
+              <div class="stage-specs">
+                <span>Loss: <strong>4.82 → 1.15</strong></span>
+                <span>Goal: <strong>Grammar Fluency</strong></span>
+              </div>
+            </div>
+
+            <div class="stage-card" data-train-stage="2">
+              <div class="stage-num-badge" style="color: var(--accent-blue);">STAGE 02</div>
+              <div class="stage-name">Schema SFT</div>
+              <div class="stage-summary">
+                Supervised fine-tuning with <code>[QUESTION]</code> + <code>[SCHEMA]</code> → <code>[SQL]</code> pairs.
+              </div>
+              <div class="stage-specs">
+                <span>Loss: <strong>1.15 → 0.42</strong></span>
+                <span>Goal: <strong>Zero Hallucinations</strong></span>
+              </div>
+            </div>
+
+            <div class="stage-card" data-train-stage="3">
+              <div class="stage-num-badge" style="color: var(--accent-amber);">STAGE 03</div>
+              <div class="stage-name">Hard Negatives</div>
+              <div class="stage-summary">
+                Adversarial pairs penalizing subtle bugs (<code>WHERE</code> vs <code>HAVING</code>, Cartesian joins).
+              </div>
+              <div class="stage-specs">
+                <span>Loss: <strong>0.42 → 0.18</strong></span>
+                <span>Goal: <strong>AST Correctness</strong></span>
+              </div>
+            </div>
+
+            <div class="stage-card" data-train-stage="4">
+              <div class="stage-num-badge" style="color: var(--accent-green);">STAGE 04</div>
+              <div class="stage-name">Schema Adaptation</div>
+              <div class="stage-summary">
+                Autonomous shadow sandboxing that fine-tunes live on newly connected user databases.
+              </div>
+              <div class="stage-specs">
+                <span>Loss: <strong>0.18 → 0.08</strong></span>
+                <span>Goal: <strong>Zero-Shot Master</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dynamic Training Detail Box -->
+          <div class="training-detail-box" id="trainDetailBox">
+            <div class="train-detail-left">
+              <h4 id="trainDetailTitle">Stage 01: Foundational Unsupervised Pre-Training</h4>
+              <p id="trainDetailDesc">
+                Trained on a curated multi-dialect SQL corpus spanning ISO standards, open-source schemas, and technical manuals. Instills deep structural priors for relational table relationships.
+              </p>
+            </div>
+            <div class="train-detail-stats">
+              <div class="train-stat-card">
+                <div class="train-stat-val" id="trainStatLoss">1.15</div>
+                <div class="train-stat-label">Convergence Loss</div>
+              </div>
+              <div class="train-stat-card">
+                <div class="train-stat-val" id="trainStatTokens">120M</div>
+                <div class="train-stat-label">Tokens Processed</div>
+              </div>
+              <div class="train-stat-card">
+                <div class="train-stat-val" id="trainStatTime">3.4h</div>
+                <div class="train-stat-label">Training Duration</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 5: Dual-Brain Agent Engine & NLP Intent Routing        -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-5" data-topic="Autonomous Agent Engine">
+        <div class="slide-inner">
+          <div class="section-badge">
+            AGENT INTELLIGENCE // CLICK QUERY INTENT TO TEST DISPATCH
+          </div>
+          <h2 class="slide-title">Autonomous Agent Engine &amp; Dynamic Intent Router</h2>
+          <p class="slide-subtitle">
+            Combines dynamic NLP intent classification, ChromaDB vector RAG for educational concept queries, and an AST self-repair feedback loop.
+          </p>
+
+          <div class="grid-2col">
+            <!-- Left: Dynamic Router -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <span>Dynamic NLP Intent Router (SQLIntentRouter)</span>
+                <span class="badge-pill blue">Click Query to Dispatch</span>
+              </div>
+              <div class="intent-list" id="intentList">
+                <div class="intent-item active" data-intent="text_to_sql">
+                  <span class="intent-chip blue">TEXT_TO_SQL</span>
+                  <div class="intent-body">
+                    <strong>"customer whose id is 1003"</strong>
+                    <p>Routes to schema-grounded single-record lookup: <code>WHERE customer_id = 1003 LIMIT 1;</code></p>
+                  </div>
+                </div>
+
+                <div class="intent-item" data-intent="join_query">
+                  <span class="intent-chip blue">TEXT_TO_SQL</span>
+                  <div class="intent-body">
+                    <strong>"left join branch and loan table"</strong>
+                    <p>Detects explicit join request: <code>FROM branches b LEFT JOIN loans l ON b.branch_id = l.branch_id</code></p>
+                  </div>
+                </div>
+
+                <div class="intent-item" data-intent="concept_rag">
+                  <span class="intent-chip green">CONCEPT_EXPLANATION</span>
+                  <div class="intent-body">
+                    <strong>"what is CTE in SQL?"</strong>
+                    <p>Dispatches to ChromaDB Vector RAG across 150+ SQL concepts with markdown tutorials.</p>
+                  </div>
+                </div>
+
+                <div class="intent-item" data-intent="comparison">
+                  <span class="intent-chip amber">CONCEPT_COMPARISON</span>
+                  <div class="intent-body">
+                    <strong>"difference between WHERE and HAVING"</strong>
+                    <p>Generates structured comparison matrix of row-level filtering vs aggregate filtering.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: AST Self Repair Loop Interactive Simulator -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <span id="astHeaderTitle">Live AST Verification &amp; Self-Repair Loop</span>
+                <span class="badge-pill green" id="astStatusBadge">sqlglot Engine</span>
+              </div>
+              <div class="ast-pipeline" id="astPipelineView">
+                <div class="ast-node">
+                  <span>1. User Natural Language Prompt</span>
+                  <span class="badge-pill" id="astStepPrompt">"customer whose id is 1003"</span>
+                </div>
+                <div class="ast-arrow">↓</div>
+                <div class="ast-node focus">
+                  <span>2. Tiny SLM Inference + Schema Grounding</span>
+                  <span class="badge-pill blue" id="astStepSlm">SELECT ... WHERE customer_id = 1003</span>
+                </div>
+                <div class="ast-arrow">↓</div>
+                <div class="ast-node">
+                  <span>3. AST Parsing (sqlglot) &amp; Sandbox Execution</span>
+                  <span class="badge-pill" id="astStepVal">AST Tree Validated</span>
+                </div>
+                <div class="ast-split">
+                  <div class="ast-branch ok">
+                    <span>Valid AST &amp; Execution</span>
+                    <strong id="astOkText">Return Clean Results (1 Row)</strong>
+                  </div>
+                  <div class="ast-branch err">
+                    <span>Syntax / Dialect Error</span>
+                    <strong id="astErrText">0 Retries Needed</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 6: Multi-Database Enterprise Connectivity             -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-6" data-topic="Multi-Database Connectivity">
+        <div class="slide-inner">
+          <div class="section-badge">
+            DATABASE CONNECTIVITY // MULTI-DIALECT CONNECTORS
+          </div>
+          <h2 class="slide-title">Enterprise Multi-Database Connectors</h2>
+          <p class="slide-subtitle">
+            Seamlessly connects to Cloud Data Warehouses and On-Premise Relational Systems with live schema introspection and dialect normalization.
+          </p>
+
+          <div class="db-grid">
+            <!-- Snowflake Hub -->
+            <div class="db-panel primary">
+              <div class="db-title-row">
+                <div class="db-title">Snowflake Data Cloud</div>
+                <span class="badge-pill blue">Dedicated Form + All Drivers</span>
+              </div>
+              <ul class="db-list">
+                <li><span class="bullet-chk">✓</span> Dedicated setup: Account, User, Password, Warehouse, Database, Schema, Role</li>
+                <li><span class="bullet-chk">✓</span> Supports ODBC (<code>SnowflakeDSIIDriver</code>), JDBC, Go, .NET, Python</li>
+                <li><span class="bullet-chk">✓</span> SSO / External Browser &amp; JWT Key-Pair Authentication support</li>
+                <li><span class="bullet-chk">✓</span> Multi-schema introspection using <code>SHOW TABLES</code> &amp; <code>DESC TABLE</code></li>
+              </ul>
+            </div>
+
+            <!-- PostgreSQL -->
+            <div class="db-panel">
+              <div class="db-title-row">
+                <div class="db-title">PostgreSQL</div>
+                <span class="badge-pill">Native SQLAlchemy &amp; Psycopg2</span>
+              </div>
+              <ul class="db-list">
+                <li><span class="bullet-chk">✓</span> Full support for schemas (<code>public</code>, custom enterprise schemas)</li>
+                <li><span class="bullet-chk">✓</span> JSONB / Array data type formatting &amp; window functions</li>
+                <li><span class="bullet-chk">✓</span> High-concurrency sandbox session execution</li>
+              </ul>
+            </div>
+
+            <!-- SQL Server -->
+            <div class="db-panel">
+              <div class="db-title-row">
+                <div class="db-title">SQL Server (SSMS / MSSQL)</div>
+                <span class="badge-pill">PyODBC &amp; ODBC 17/18 Driver</span>
+              </div>
+              <ul class="db-list">
+                <li><span class="bullet-chk">✓</span> Windows Authentication &amp; SQL Server Native credentials</li>
+                <li><span class="bullet-chk">✓</span> T-SQL dialect translation (<code>TOP</code>, <code>DATEADD</code>, <code>CROSS APPLY</code>)</li>
+                <li><span class="bullet-chk">✓</span> Automatic multi-schema table discovery</li>
+              </ul>
+            </div>
+
+            <!-- MySQL & SQLite -->
+            <div class="db-panel">
+              <div class="db-title-row">
+                <div class="db-title">MySQL &amp; SQLite</div>
+                <span class="badge-pill">Embedded &amp; Cloud Relational</span>
+              </div>
+              <ul class="db-list">
+                <li><span class="bullet-chk">✓</span> Zero-configuration local development sandbox (<code>sandbox.db</code>)</li>
+                <li><span class="bullet-chk">✓</span> MySQL 8.0+ CTE &amp; window function dialects</li>
+                <li><span class="bullet-chk">✓</span> In-memory shadow replicas for prompt conditioning</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 7: Modern Web Interface & User Experience             -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-7" data-topic="Web Interface Capabilities">
+        <div class="slide-inner">
+          <div class="section-badge">
+            USER EXPERIENCE // FRONTEND DESIGN SYSTEM
+          </div>
+          <h2 class="slide-title">Enterprise Web Interface &amp; Capabilities</h2>
+          <p class="slide-subtitle">
+            A minimalist enterprise workspace built with Vite and React, engineered for data analysts, engineers, and executives.
+          </p>
+
+          <div class="ui-feature-grid">
+            <div class="ui-feature-box">
+              <strong>Relational Data Grid</strong>
+              <p>Sticky column headers, grid dividers, monospace highlighting for IDs (<code>#2563EB</code>), and one-click <code>Copy CSV</code> export.</p>
+            </div>
+
+            <div class="ui-feature-box">
+              <strong>Execution Trace Bar</strong>
+              <p>Real-time visual telemetry displaying intent categorization (<code>text_to_sql</code>), execution status badge (<code>SUCCESS</code>), and latency timer.</p>
+            </div>
+
+            <div class="ui-feature-box">
+              <strong>Interactive Schema Explorer</strong>
+              <p>Live schema inspector modal showcasing connected tables, column data types, primary/foreign keys, and real-time synthetic data preview.</p>
+            </div>
+
+            <div class="ui-feature-box">
+              <strong>Monochrome Light Palette</strong>
+              <p>Tailored Deep Slate (<code>#0F172A</code>) and Clean White (<code>#FFFFFF</code>) palette with smooth transitions, zero generic colors, and high contrast ratios.</p>
+            </div>
+          </div>
+
+          <!-- Session Mockup -->
+          <div class="mockup-frame">
+            <div class="mockup-top">
+              <div class="mockup-tabs">
+                <span class="mockup-tab-title">Session: Customer Record Lookup</span>
+                <span class="mockup-db-tag">SNOWFLAKE: BANKING_DB / BANKING_SCHEMA</span>
+              </div>
+              <span class="badge-pill green">CONNECTED</span>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-trace-bar">
+                <span>Intent: <strong style="color: var(--accent-blue);">text_to_sql</strong></span>
+                <span>Status: <strong style="color: var(--accent-green);">● SUCCESS</strong></span>
+                <span>Latency: <strong>998ms</strong></span>
+              </div>
+              <div class="mockup-sql-box">
+                <code>SELECT CUSTOMER_ID, FIRST_NAME, LAST_NAME, EMAIL FROM CUSTOMERS WHERE CUSTOMER_ID = 1003 LIMIT 1;</code>
+              </div>
+              <div class="mockup-table-wrap">
+                <table class="mockup-data-table">
+                  <thead>
+                    <tr><th>CUSTOMER_ID</th><th>FIRST_NAME</th><th>LAST_NAME</th><th>EMAIL</th><th>STATUS</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="num">1003</td><td>Amit</td><td>Verma</td><td>amit.verma@email.com</td><td>PREMIUM</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 8: Enterprise REST API & Security Engine              -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-8" data-topic="Enterprise REST API">
+        <div class="slide-inner">
+          <div class="section-badge">
+            PRODUCTION REST API // CLICK ENDPOINT TO TEST
+          </div>
+          <h2 class="slide-title">Enterprise REST API &amp; Key Security Engine</h2>
+          <p class="slide-subtitle">
+            High-concurrency asynchronous API server powered by FastAPI, featuring tiered token authentication, rate limiting, and telemetry.
+          </p>
+
+          <div class="grid-2col">
+            <!-- Left: Clickable API Routes -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <span>REST API Endpoints (Port 8000)</span>
+                <span class="badge-pill green">Click to Preview</span>
+              </div>
+              <div class="api-routes-list" id="apiRoutesList">
+                <div class="api-route-row active" data-endpoint="query">
+                  <span class="verb-tag post">POST</span>
+                  <code class="route-endpoint">/v1/agent/query</code>
+                  <span class="route-info">Text-to-SQL + Execution</span>
+                </div>
+                <div class="api-route-row" data-endpoint="schema">
+                  <span class="verb-tag get">GET</span>
+                  <code class="route-endpoint">/v1/schema/detailed</code>
+                  <span class="route-info">Live DB Schema &amp; Catalog</span>
+                </div>
+                <div class="api-route-row" data-endpoint="adapt">
+                  <span class="verb-tag post">POST</span>
+                  <code class="route-endpoint">/v1/schema/adapt</code>
+                  <span class="route-info">Trigger Schema Adaptation</span>
+                </div>
+                <div class="api-route-row" data-endpoint="connect">
+                  <span class="verb-tag post">POST</span>
+                  <code class="route-endpoint">/v1/database/connect</code>
+                  <span class="route-info">Switch DB connection</span>
+                </div>
+                <div class="api-route-row" data-endpoint="keys">
+                  <span class="verb-tag post">POST</span>
+                  <code class="route-endpoint">/v1/keys/generate</code>
+                  <span class="route-info">Mint Tiered API Keys</span>
+                </div>
+                <div class="api-route-row" data-endpoint="analytics">
+                  <span class="verb-tag get">GET</span>
+                  <code class="route-endpoint">/v1/keys/analytics</code>
+                  <span class="route-info">Quota telemetry</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Interactive Security & cURL -->
+            <div class="card-panel">
+              <div class="card-panel-header">
+                <span id="curlEndpointTitle">POST /v1/agent/query</span>
+                <span class="badge-pill blue" id="curlAuthBadge">SHA-256 Hashed</span>
+              </div>
+              <div class="tiers-row">
+                <span class="tier-badge">Admin Tier (Unlimited)</span>
+                <span class="tier-badge">Enterprise (100k req/mo)</span>
+                <span class="tier-badge">Developer (10k req/mo)</span>
+              </div>
+
+              <div class="curl-block">
+                <div class="curl-bar">
+                  <span>cURL Command</span>
+                  <button class="curl-btn" id="copyCurlBtn">Copy cURL</button>
+                </div>
+                <pre class="curl-text" id="curlSnippet"><code>curl -X POST http://localhost:8000/v1/agent/query \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your-api-key-here" \
+  -d '{
+    "question": "show top 5 customers by loan amount",
+    "execute": true
+  }'</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 9: Tree of Intelligence: Roots to Enterprise Canopy    -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-9" data-topic="Tree of Intelligence &amp; Future Vision">
+        <div class="slide-inner">
+          <div class="section-badge">
+            ARCHITECTURE ROOT SYSTEM // CLICK ANY ROOT, TRUNK OR BRANCH TO INSPECT
+          </div>
+          <h2 class="slide-title">Tree of Intelligence: From Neural Roots to Multi-Agent Canopy</h2>
+          <p class="slide-subtitle">
+            A bottom-to-top architecture showing how foundational language model pre-training powers an autonomous agent trunk, branches into enterprise workspaces, and eliminates costly cloud LLMs.
+          </p>
+
+          <div class="tree-architecture-wrapper">
+            <!-- Left: Interactive Tree & Roots Visualizer -->
+            <div class="tree-visualizer-container" id="treeVisualizerContainer">
+              
+              <!-- TIER 4: Top Crown / Strategic Impact -->
+              <div class="tree-tier-label">
+                <span>STAGE 04 // STRATEGIC IMPACT</span>
+              </div>
+              <div class="tree-level-crown active" data-tree-node="crown">
+                <div class="crown-left">
+                  <span class="crown-tag">CROWN IMPACT</span>
+                  <span class="crown-title">100% Elimination of Generic Cloud LLMs for SQL</span>
+                </div>
+                <span class="crown-metric">$0 Cloud API Fees • &lt;50ms CPU</span>
+              </div>
+
+              <!-- Tier Connector 3 to 4 -->
+              <div class="tree-tier-connector">
+                <span class="connector-arrow">▲</span>
+                <span class="connector-label">Delivers Complete On-Premise Enterprise Sovereignty</span>
+                <span class="connector-arrow">▲</span>
+              </div>
+
+              <!-- TIER 3: Branches Canopy -->
+              <div class="tree-tier-label">
+                <span>STAGE 03 // ENTERPRISE ECOSYSTEM (CANOPY BRANCHES)</span>
+              </div>
+              <div class="tree-branches-grid">
+                <!-- Branch 1 -->
+                <div class="tree-node-branch" data-tree-node="b_workspace">
+                  <span class="branch-tag">BRANCH 01</span>
+                  <span class="branch-title">Web Workspace</span>
+                  <span class="branch-sub">Relational Grid &amp; CSV</span>
+                </div>
+
+                <!-- Branch 2 -->
+                <div class="tree-node-branch" data-tree-node="b_api">
+                  <span class="branch-tag" style="color: var(--accent-amber);">BRANCH 02</span>
+                  <span class="branch-title">REST API Gateway</span>
+                  <span class="branch-sub">FastAPI Port 8000</span>
+                </div>
+
+                <!-- Branch 3 -->
+                <div class="tree-node-branch" data-tree-node="b_snowflake">
+                  <span class="branch-tag" style="color: var(--accent-cyan);">BRANCH 03</span>
+                  <span class="branch-title">Snowflake Hub</span>
+                  <span class="branch-sub">ODBC, JDBC, SSO</span>
+                </div>
+
+                <!-- Branch 4 -->
+                <div class="tree-node-branch" data-tree-node="b_future">
+                  <span class="branch-tag" style="color: var(--accent-purple);">BRANCH 04</span>
+                  <span class="branch-title">Future Vision</span>
+                  <span class="branch-sub">Autonomous DBA</span>
+                </div>
+              </div>
+
+              <!-- Tier Connector 2 to 3 -->
+              <div class="tree-tier-connector">
+                <span class="connector-arrow">▲</span>
+                <span class="connector-label">Dual-Brain Engine Branches Out to Connectors &amp; Workspaces</span>
+                <span class="connector-arrow">▲</span>
+              </div>
+
+              <!-- TIER 2: Central Trunk -->
+              <div class="tree-tier-label">
+                <span>STAGE 02 // CENTRAL REASONING CORE (TRUNK)</span>
+              </div>
+              <div class="tree-trunk-wrapper">
+                <div class="tree-node-trunk" data-tree-node="trunk">
+                  <div>
+                    <div class="trunk-title">Autonomous Dual-Brain Agent Core</div>
+                    <div class="trunk-sub">Intent Router • ChromaDB Vector RAG • sqlglot AST 3-Attempt Self-Repair</div>
+                  </div>
+                  <span class="trunk-badge">CORE TRUNK</span>
+                </div>
+              </div>
+
+              <!-- Tier Connector 1 to 2 -->
+              <div class="tree-tier-connector">
+                <span class="connector-arrow">▲</span>
+                <span class="connector-label">Neural Foundation Nourishes Central Intelligence Core</span>
+                <span class="connector-arrow">▲</span>
+              </div>
+
+              <!-- TIER 1: Neural Roots -->
+              <div class="tree-tier-label">
+                <span>STAGE 01 // FOUNDATIONAL NEURAL MODEL (ROOTS)</span>
+              </div>
+              <div class="tree-roots-grid">
+                <!-- Root 1 -->
+                <div class="tree-node-root" data-tree-node="r_transformer">
+                  <span class="root-tag">ROOT 01 // WEIGHTS</span>
+                  <span class="root-title">6.16M Transformer</span>
+                  <span class="root-sub">RoPE &amp; SwiGLU FFN</span>
+                </div>
+
+                <!-- Root 2 -->
+                <div class="tree-node-root" data-tree-node="r_tokenizer">
+                  <span class="root-tag">ROOT 02 // VOCAB</span>
+                  <span class="root-title">SQL-BPE Tokenizer</span>
+                  <span class="root-sub">4,096 Atomic Tokens</span>
+                </div>
+
+                <!-- Root 3 -->
+                <div class="tree-node-root" data-tree-node="r_training">
+                  <span class="root-tag">ROOT 03 // TUNING</span>
+                  <span class="root-title">4-Stage SFT Pipeline</span>
+                  <span class="root-sub">Adversarial Hard Negatives</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Right: Dynamic Tree Inspector -->
+            <div class="tree-inspector-panel">
+              <div class="inspector-header">
+                <span id="treeInspectorTitle">Crown Impact: 100% Elimination of Generic Cloud LLMs</span>
+                <span class="badge-pill green" id="treeInspectorBadge">Zero Cloud Costs</span>
+              </div>
+              <p id="treeInspectorDesc">
+                By grounding execution in custom 6.16M neural weights, an autonomous dual-brain agent, and native database drivers, Tiny SQL LLM makes 70B+ general cloud LLMs (GPT-4 / Claude / Gemini) obsolete for SQL operations.
+              </p>
+              <div class="tree-cap-list" id="treeInspectorCaps">
+                <div class="tree-cap-item">
+                  <span class="icon">✓</span>
+                  <span><strong>Zero API Subscription Bills:</strong> Saves thousands in monthly token costs ($0/month).</span>
+                </div>
+                <div class="tree-cap-item">
+                  <span class="icon">✓</span>
+                  <span><strong>100% Data Sovereignty:</strong> Banking and healthcare data never leaves private VPCs.</span>
+                </div>
+                <div class="tree-cap-item">
+                  <span class="icon">✓</span>
+                  <span><strong>Sub-50ms CPU Execution:</strong> 40x faster than cloud network roundtrips.</span>
+                </div>
+              </div>
+              <div class="inspector-highlight-box" style="margin-top: auto;">
+                <strong id="treeInspectorHighlightTitle">Tree System Synergy:</strong>
+                <span id="treeInspectorHighlightText">Deep neural roots feed the central agent trunk, which branches seamlessly into UI, REST API, Snowflake, and future autonomous agents.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- SLIDE 10: Strategic Summary & Key Takeaways                  -->
+      <!-- ============================================================ -->
+      <section class="slide" id="slide-10" data-topic="Summary & Takeaways">
+        <div class="slide-inner">
+          <div class="section-badge">
+            ENTERPRISE VALUE // STRATEGIC SUMMARY
+          </div>
+          <h2 class="slide-title">Why Tiny SQL LLM is Built for the Enterprise</h2>
+          <p class="slide-subtitle">
+            High performance, absolute data security, zero cloud compute dependency, and deterministic SQL synthesis.
+          </p>
+
+          <div class="summary-grid">
+            <div class="summary-box">
+              <h3>100% On-Premises Privacy</h3>
+              <p>All neural inference and database execution happens locally or within your private VPC. No customer queries or schemas are ever transmitted to third-party cloud LLM APIs.</p>
+            </div>
+
+            <div class="summary-box highlight">
+              <h3>99% Compute Cost Reduction</h3>
+              <p>Eliminates costly GPU cloud clusters. The 6.16M parameter architecture runs seamlessly on ordinary enterprise CPU hardware with sub-50ms latency.</p>
+            </div>
+
+            <div class="summary-box">
+              <h3>Deterministic Accuracy</h3>
+              <p>Dual-brain intent router, exact foreign key mapping, and AST self-repair ensure syntactically precise queries without column hallucinations.</p>
+            </div>
+          </div>
+
+          <div class="cta-banner">
+            <div>
+              <strong>Ready to test Tiny SQL LLM live on your database?</strong>
+              <span>Open the web workspace or connect via the REST API at <code>http://localhost:8000/docs</code></span>
+            </div>
+            <button class="nav-btn primary" onclick="window.presentationApp.goToSlide(0)">Restart Presentation ↺</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Slide Index Drawer Modal -->
+  <div class="drawer-overlay" id="drawerOverlay">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <h3>Presentation Slide Index</h3>
+        <button class="drawer-close-btn" id="closeDrawerBtn">✕</button>
+      </div>
+      <div class="drawer-items" id="drawerSlideList">
+        <!-- Injected by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
