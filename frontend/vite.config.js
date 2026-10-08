@@ -4,4 +4,8 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    host: true, // Exposes on all local IPv4 and prints Network URL
+    port: 5173,
+  },
 })

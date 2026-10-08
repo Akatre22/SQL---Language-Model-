@@ -106,6 +106,14 @@ class SQLIntentRouter:
             if not any(k in q_lower for k in ["select ", "from customers", "from employees", "from orders", "group by", "order by", "where salary", "top 5"]):
                 return SQLIntent.GENERAL_CHAT, {"query": q_clean}
 
+        # 0.5 Business Intelligence & Report Advisory Queries (e.g. "what KPIs can be considered", "recommend metrics for dashboard", "how to build a report")
+        advisory_pattern = re.compile(
+            r"\b(?:what\s+(?:kpis?|metrics?)|which\s+(?:kpis?|metrics?)|kpis?\s+(?:can|should|to)|recommend\s+(?:kpis?|metrics?|reports?)|report\s+(?:ideas?|design|guidelines?)|dashboard\s+(?:ideas?|metrics?)|best\s+practices\s+for\s+(?:reporting|analytics|kpis?))\b",
+            re.IGNORECASE
+        )
+        if advisory_pattern.search(q_lower):
+            return SQLIntent.CONCEPT_EXPLANATION, {"query": q_clean}
+
         # 1. Metadata Inspection (e.g., "list all tables", "show database tables")
         if self.metadata_pattern.search(q_lower):
             if not re.search(r"\b(?:where|group\s+by|order\s+by|sum\(|avg\(|having)\b", q_lower):
@@ -123,10 +131,10 @@ class SQLIntentRouter:
             "processed", "user", "users", "employee", "employees", "customer", "customers",
             "order", "orders", "product", "products", "department", "departments",
             "branch", "branches", "loan", "loans", "account", "accounts", "transaction", "transactions",
-            "table", "tables", "database", "salary", "spent", "spending", "revenue", "budget", "amount", "price",
+            "table", "tables", "database", "salary", "spent", "spending", "revenue", "budget", "amount", "price", "balance",
             "last ", "past ", "days", "yesterday", "today", "this month", "which user",
             "who processed", "who earned", "whose", "how many", "count", "maximum number",
-            "total number", "average number", "most documents", "highest", "whose id", "id is", "id = "
+            "total number", "average number", "most documents", "highest", "whose id", "id is", "id = ", "id=", "id "
         ]) or bool(re.search(r"\b(?:id\s*(?:is|=|:)?\s*\d+|from\s+\w+)\b", q_lower))
 
         # Check for explicit query generation commands (e.g., "give me sql query to left join branch and loan table", "write a query to find...")

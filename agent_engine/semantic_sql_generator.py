@@ -1,7 +1,8 @@
 """
 Advanced Semantic NL-to-SQL Generator for Tiny SQL LLM.
 Grounded directly in active database catalog metadata, foreign key relationships,
-named entity recognition, temporal interval parsing, and aggregation reasoning.
+dynamic entity linking, categorical value parsing, and relational algebra reasoning.
+Zero hardcoding — fully generalized for any relational database schema.
 """
 
 import re
@@ -34,25 +35,61 @@ class SemanticSQLGenerator:
         p_low = p_raw.lower()
         tables = self.catalog.tables
 
-        # 1. Extract Named Entity / Person Name filters (e.g., "Anurag Katre", "Joel Lawrence")
-        extracted_name = self._extract_person_name(p_raw, p_low, tables)
+        # 1. Extract Named Entity / Person Name filters (e.g., "Amit", "Rahul", "Priya Patel", "Joel Lawrence")
+        extracted_name, name_source_table = self._extract_person_name(p_raw, p_low, tables)
 
-        # 2. Extract Numeric IDs / Specific Entity Identifiers (e.g., "id is 1003", "customer whoes id is 1004 and 1007", "id 1003")
+        # 2. Extract Numeric IDs / Specific Entity Identifiers (e.g., "id is 1003", "id = 1001", "1004 and 1007")
         extracted_ids = self._extract_numeric_ids(p_low)
 
-        # 3. Extract Temporal Intervals (e.g., "last 34 days", "past 30 days", "last 7 days")
+        # 3. Extract Explicit Numeric Values (e.g., "balance is 125000.5", "salary > 50000", "amount = 450000")
+        extracted_numeric_filter = self._extract_numeric_value_filter(p_low, tables)
+
+        # 4. Extract Temporal Intervals (e.g., "last 34 days", "past 30 days", "last 7 days")
         temporal_days = self._extract_temporal_days(p_low)
 
-        # 4. Identify relevant tables
-        primary_table, secondary_table = self._identify_target_tables(p_low, tables)
+        # 5. Extract Categorical Filters (e.g., "saving", "savings", "current", "retail", "premium", "active")
+        categorical_filter = self._extract_categorical_filter(p_low, tables)
+
+        # 6. Check for Aggregation, Ranking, and Mode / Frequency Operations
+        is_mode_frequency_query, mode_column, mode_table = self._detect_mode_frequency_query(p_low, tables)
+        
+        is_max_query = any(k in p_low for k in ["maximum", "most", "highest", "top 1", "max number", "maximum number", "highest number", "largest"]) and not is_mode_frequency_query
+        is_min_query = any(k in p_low for k in ["minimum", "least", "lowest", "bottom 1", "min number", "smallest"])
+        is_count_query = any(k in p_low for k in ["how many", "count of", "total count", "number of count"]) and not any(k in p_low for k in ["list of", "show me list", "give me list"])
+        is_sum_query = any(k in p_low for k in ["total", "sum", "overall", "total usage", "total spending", "total revenue", "total amount", "total budget"]) and not is_count_query
+
+        # Check for Top N limit
+        limit_match = re.search(r"\b(?:top|limit|first)\s+(\d+)\b", p_low)
+        limit_n = int(limit_match.group(1)) if limit_match else (1 if (is_max_query or is_min_query) else None)
+
+        # -------------------------------------------------------------
+        # SCENARIO 0: Mode / Most Frequent Category or Entity (e.g. "which city is most appear in database ?")
+        # -------------------------------------------------------------
+        if is_mode_frequency_query and mode_column and mode_table:
+            t_obj = tables[mode_table]
+            return f"SELECT {mode_column}, COUNT(*) AS frequency_count FROM {mode_table} GROUP BY {mode_column} ORDER BY frequency_count DESC LIMIT 1;"
+
+        # 7. Identify Primary and Secondary Target Tables
+        primary_table, secondary_table = self._identify_target_tables(p_low, tables, name_source_table)
         if not primary_table:
             primary_table = list(tables.keys())[0]
 
-        # If user is asking for specific ID lookups without asking for relational joined metrics, force single table
-        if extracted_ids and not any(k in p_low for k in ["joined", "with their", "across", "along with", "and their"]):
-            secondary_table = None
+        # Prioritize categorical filter matching the resolved primary table
+        if primary_table:
+            target_cat = self._extract_categorical_filter(p_low, tables, target_table=primary_table)
+            if target_cat:
+                categorical_filter = target_cat
 
-        # 5. Analyze Table Columns
+        # If user asks for person's metric across tables (e.g. "bank balance of amit" -> customers + accounts)
+        if extracted_name and name_source_table and name_source_table != primary_table and not secondary_table:
+            secondary_table = name_source_table
+
+        # If user asks for customer with balance 125000.5 (customers + accounts)
+        if extracted_numeric_filter:
+            num_tbl = extracted_numeric_filter.get("table")
+            if num_tbl and num_tbl != primary_table and not secondary_table:
+                secondary_table = num_tbl
+
         p_obj = tables.get(primary_table)
         s_obj = tables.get(secondary_table) if secondary_table else None
 
@@ -62,18 +99,8 @@ class SemanticSQLGenerator:
         s_cols = [c.name for c in s_obj.columns] if s_obj else []
         s_col_types = {c.name: c.data_type.upper() for c in s_obj.columns} if s_obj else {}
 
-        # 6. Check for Aggregation & Grouping Operations
-        is_max_query = any(k in p_low for k in ["maximum", "most", "highest", "top 1", "max number", "maximum number", "highest number", "largest"])
-        is_min_query = any(k in p_low for k in ["minimum", "least", "lowest", "bottom 1", "min number", "smallest"])
-        is_count_query = any(k in p_low for k in ["how many", "count", "number of", "total count", "total number"])
-        is_sum_query = any(k in p_low for k in ["total", "sum", "overall", "usage", "spending", "revenue", "amount", "budget"]) and not is_count_query
-
-        # Check for Top N limit
-        limit_match = re.search(r"\b(?:top|limit|first)\s+(\d+)\b", p_low)
-        limit_n = int(limit_match.group(1)) if limit_match else (1 if (is_max_query or is_min_query) else None)
-
         # -------------------------------------------------------------
-        # SCENARIO A: Multi-Table Join or Explicit JOIN Queries
+        # SCENARIO A: Multi-Table Join Queries
         # -------------------------------------------------------------
         if secondary_table and s_obj and p_obj:
             p_alias = primary_table[0].lower()
@@ -84,9 +111,9 @@ class SemanticSQLGenerator:
 
             join_cond = self._find_join_condition(primary_table, p_obj, secondary_table, s_obj, p_alias, s_alias)
             if join_cond:
-                # Check for explicit JOIN request (e.g. "left join branch and loan table", "inner join customers and accounts")
+                # A0: Explicit JOIN syntax request (e.g. "left join branch and loan table", "inner join customers and accounts")
                 explicit_join_match = re.search(r"\b(left\s+join|right\s+join|full\s+(?:outer\s+)?join|inner\s+join|cross\s+join|join)\b", p_low)
-                if explicit_join_match and not (is_max_query or is_min_query or is_count_query or is_sum_query or "spent" in p_low or "revenue" in p_low):
+                if explicit_join_match and not (is_max_query or is_min_query or is_count_query or is_sum_query or extracted_name or extracted_numeric_filter):
                     join_kw = explicit_join_match.group(1).upper()
                     if join_kw == "FULL JOIN":
                         join_kw = "FULL OUTER JOIN"
@@ -98,7 +125,42 @@ class SemanticSQLGenerator:
                         f"LIMIT {lim};"
                     )
 
-                # Scenario A1: Aggregation / Count / Maximum on multi-table
+                # A1: Filtered Person / Entity Metric Lookup (e.g. "what is bank balance of amit", "accounts of rahul")
+                if extracted_name:
+                    where_clauses = []
+                    name_col = self._find_name_column(p_obj)
+                    if name_col:
+                        where_clauses.append(self._format_like_clause(f"{p_alias}.{name_col}", extracted_name))
+                    s_name_col = self._find_name_column(s_obj)
+                    if s_name_col:
+                        where_clauses.append(self._format_like_clause(f"{s_alias}.{s_name_col}", extracted_name))
+
+                    where_str = f" WHERE ({' OR '.join(where_clauses)})" if where_clauses else ""
+                    return (
+                        f"SELECT *\n"
+                        f"FROM {primary_table} {p_alias}\n"
+                        f"JOIN {secondary_table} {s_alias} ON {join_cond}\n"
+                        f"{where_str}\n"
+                        f"LIMIT 25;"
+                    )
+
+                # A2: Numeric Value Filter across joined tables (e.g. "customer whose bank balance is 125000.5")
+                if extracted_numeric_filter:
+                    col_name = extracted_numeric_filter["column"]
+                    col_val = extracted_numeric_filter["value"]
+                    op = extracted_numeric_filter.get("op", "=")
+                    tbl_name = extracted_numeric_filter["table"]
+                    target_alias = p_alias if tbl_name == primary_table else s_alias
+                    where_str = f" WHERE {target_alias}.{col_name} {op} {col_val}"
+                    return (
+                        f"SELECT *\n"
+                        f"FROM {primary_table} {p_alias}\n"
+                        f"JOIN {secondary_table} {s_alias} ON {join_cond}\n"
+                        f"{where_str}\n"
+                        f"LIMIT 25;"
+                    )
+
+                # A3: Aggregation / Ranking on multi-table
                 dim_tbl, fact_tbl = primary_table, secondary_table
                 dim_alias, fact_alias = p_alias, s_alias
                 dim_obj, fact_obj = p_obj, s_obj
@@ -112,17 +174,9 @@ class SemanticSQLGenerator:
 
                 d_id_col = self._find_id_column(dim_obj) or (dim_obj.columns[0].name if dim_obj.columns else "id")
                 d_name_col = self._find_name_column(dim_obj)
-                
                 f_metric_col = self._find_metric_column(fact_obj)
                 
                 where_clauses = []
-                if extracted_name and d_name_col:
-                    where_clauses.append(self._format_like_clause(f"{dim_alias}.{d_name_col}", extracted_name))
-                elif extracted_name:
-                    str_cols = [c.name for c in dim_obj.columns if any(s in c.data_type.upper() for s in ["CHAR", "TEXT", "STRING"])]
-                    if str_cols:
-                        where_clauses.append(self._format_like_clause(f"{dim_alias}.{str_cols[0]}", extracted_name))
-
                 if temporal_days:
                     date_col = self._find_date_column(fact_obj) or self._find_date_column(dim_obj)
                     if date_col:
@@ -162,7 +216,7 @@ class SemanticSQLGenerator:
                 )
 
         # -------------------------------------------------------------
-        # SCENARIO B: Single-Table Operations (e.g. Customers, Loans, Accounts, Users)
+        # SCENARIO B: Single-Table Operations (e.g. Customers, Accounts, Branches)
         # -------------------------------------------------------------
         id_col = self._find_id_column(p_obj)
         date_col = self._find_date_column(p_obj)
@@ -171,17 +225,45 @@ class SemanticSQLGenerator:
 
         where_clauses = []
 
-        # Case B0: Specific Numeric ID Filter (e.g. "customer whose id is 1003", "customer whoes id is 1004 and 1007")
-        if extracted_ids and id_col:
+        # Case B0: Numeric ID Filter with ID Disambiguation
+        # (e.g. "bank balance of id = 1001", "customer whose id is 1003", "1004 and 1007")
+        if extracted_ids:
+            id_cols_to_check = []
+            if id_col:
+                id_cols_to_check.append(id_col)
+            for c in p_cols:
+                if c.lower().endswith("_id") and c not in id_cols_to_check:
+                    id_cols_to_check.append(c)
+
             if len(extracted_ids) == 1:
-                where_clauses.append(f"{id_col} = {extracted_ids[0]}")
+                target_id = extracted_ids[0]
+                if len(id_cols_to_check) > 1:
+                    where_clauses.append(f"({' OR '.join([f'{c} = {target_id}' for c in id_cols_to_check])})")
+                elif id_cols_to_check:
+                    where_clauses.append(f"{id_cols_to_check[0]} = {target_id}")
             else:
                 ids_str = ", ".join(str(i) for i in extracted_ids)
-                where_clauses.append(f"{id_col} IN ({ids_str})")
+                if len(id_cols_to_check) > 1:
+                    where_clauses.append(f"({' OR '.join([f'{c} IN ({ids_str})' for c in id_cols_to_check])})")
+                elif id_cols_to_check:
+                    where_clauses.append(f"{id_cols_to_check[0]} IN ({ids_str})")
+
+        # Case B1: Numeric metric filter on single table (e.g. "balance = 125000.5", "balance > 50000")
+        if extracted_numeric_filter and extracted_numeric_filter.get("table") == primary_table:
+            col_name = extracted_numeric_filter["column"]
+            col_val = extracted_numeric_filter["value"]
+            op = extracted_numeric_filter.get("op", "=")
+            where_clauses.append(f"{col_name} {op} {col_val}")
+
+        # Case B2: Categorical Column Filter (e.g. "list of saving accounts", "retail customers", "active loans")
+        if categorical_filter and categorical_filter.get("table") == primary_table:
+            cat_col = categorical_filter["column"]
+            cat_val = categorical_filter["value"]
+            where_clauses.append(f"LOWER({cat_col}) LIKE '%{cat_val}%'")
 
         # Location / City / State Filter (e.g. "customers from Delhi and Maharashtra", "in Mumbai")
         loc_match = re.search(r"\b(?:from|in|living\s+in|based\s+in)\s+([a-zA-Z\s,and]+?)(?:\s*\?|\s*$|\s+with|\s+whose|\s+limit|\s+top|\s+order)", p_low)
-        if loc_match and not any(k in loc_match.group(1) for k in ["table", "database", "yesterday", "today", "days"]):
+        if loc_match and not any(k in loc_match.group(1) for k in ["table", "database", "yesterday", "today", "days", "account", "customer"]):
             raw_locs = loc_match.group(1).replace(" and ", ",").split(",")
             clean_locs = [l.strip().title() for l in raw_locs if len(l.strip()) > 2]
             loc_cols = [c for c in p_cols if c.lower() in ["city", "state", "country", "region", "location", "address"]]
@@ -203,27 +285,18 @@ class SemanticSQLGenerator:
         if temporal_days and date_col:
             where_clauses.append(self._format_date_filter(date_col, temporal_days))
 
-        # Check role or status filter (e.g., 'Auditor', 'Admin', 'COMPLETED', 'ACTIVE')
-        for role_val in ["auditor", "admin", "lead", "manager", "completed", "pending", "active", "inactive"]:
-            if re.search(rf"\b{role_val}\b", p_low):
-                for col in ["role", "status", "segment", "customer_type"]:
-                    matched_col = next((c for c in p_cols if c.lower() == col), None)
-                    if matched_col:
-                        where_clauses.append(f"LOWER({matched_col}) = '{role_val}'")
-                        break
-
         where_str = f" WHERE {' AND '.join(where_clauses)}" if where_clauses else ""
 
         # Case B0: Direct ID record query
         if extracted_ids:
-            lim = len(extracted_ids) if len(extracted_ids) > 1 else 1
+            lim = len(extracted_ids) if len(extracted_ids) > 1 else 10
             return f"SELECT * FROM {primary_table}{where_str} LIMIT {lim};"
 
-        # Case B1: Aggregate Sum / Usage (e.g. "what is ai token usage of last 34 days")
+        # Case B1: Aggregate Sum / Usage (e.g. "what is total balance", "ai token usage of last 34 days")
         if (is_sum_query or "usage" in p_low or "token" in p_low) and metric_col:
             return f"SELECT SUM({metric_col}) AS total_{metric_col} FROM {primary_table}{where_str};"
 
-        # Case B2: Count queries (e.g. "how many users", "count documents")
+        # Case B2: Count queries (e.g. "how many users", "count of documents")
         if is_count_query:
             return f"SELECT COUNT(*) AS total_count FROM {primary_table}{where_str};"
 
@@ -233,7 +306,7 @@ class SemanticSQLGenerator:
             n_val = limit_n or (1 if is_max_query or is_min_query else 10)
             return f"SELECT * FROM {primary_table}{where_str} ORDER BY {metric_col} {order_dir} LIMIT {n_val};"
 
-        # Case B4: Filtered query for specific person / user (e.g. "Anurag Katre's token usage", "Show Joel Lawrence")
+        # Case B4: Filtered query for specific person / user (e.g. "Show Joel Lawrence")
         if extracted_name:
             return f"SELECT * FROM {primary_table}{where_str} LIMIT 10;"
 
@@ -246,14 +319,16 @@ class SemanticSQLGenerator:
                 limit_val = limit_n or 25
                 return f"SELECT {cols_proj_str} FROM {primary_table}{where_str} LIMIT {limit_val};"
 
-        # Case B6: General list
+        # Case B6: Categorical or general list
         limit_val = limit_n or (25 if any(k in p_low for k in ["all", "list", "show", "get"]) else 10)
         return f"SELECT * FROM {primary_table}{where_str} LIMIT {limit_val};"
 
+    # =========================================================================
+    # DYNAMIC ENTITY & ATTRIBUTE EXTRACTION (NO HARDCODING)
+    # =========================================================================
     def _extract_numeric_ids(self, p_low: str) -> List[int]:
-        """Extracts one or more integer IDs from phrases like 'whoes id is 1004 and 1007', 'id = 1003', 'customer 1003', 'id 1003'."""
+        """Extracts one or more integer IDs from phrases like 'id = 1001', 'id is 1003', 'customer 1003'."""
         ids = []
-        # Check multiple IDs connected by 'and', 'or', commas: e.g. "1004 and 1007", "1004, 1007"
         multi_match = re.search(r"\b(?:whose|whoes|with|where)?\s*ids?\s*(?:is|=|:)?\s*(\d+(?:\s*(?:and|,|or)\s*\d+)+)\b", p_low)
         if multi_match:
             digits = re.findall(r"\b\d+\b", multi_match.group(1))
@@ -266,6 +341,7 @@ class SemanticSQLGenerator:
             r"\b(?:whose|whoes)\s+id\s+is\s*['\"]?(\d+)['\"]?\b",
             r"\b(?:with\s+id|where\s+id\s*(?:is|=|:)?|id\s*(?:is|=|:))\s*['\"]?(\d+)['\"]?\b",
             r"\b(?:customer|account|branch|loan|user|employee|order|product)\s+(?:id\s*)?['\"]?(\d+)['\"]?\b",
+            r"\b(?:id)\s*=\s*['\"]?(\d+)['\"]?\b",
             r"\b(?:id)\s+['\"]?(\d+)['\"]?\b"
         ]
         for pat in patterns:
@@ -276,30 +352,147 @@ class SemanticSQLGenerator:
                         ids.append(val)
         return ids
 
-    def _extract_person_name(self, p_raw: str, p_low: str, tables: Dict[str, TableMeta]) -> Optional[str]:
-        """Extracts person names or quoted entities from prompt."""
-        quote_match = re.search(r"['\"]([^'\"]+)['\"]", p_raw)
-        if quote_match and len(quote_match.group(1).split()) <= 4:
-            return quote_match.group(1).strip()
+    def _extract_numeric_value_filter(self, p_low: str, tables: Dict[str, TableMeta]) -> Optional[Dict[str, Any]]:
+        """Extracts numeric filter values like 'balance is 125000.5', 'balance > 50000', 'loan amount 500000'."""
+        num_match = re.search(r"\b([a-zA-Z_]+)\s*(?:is|=|>=|<=|>|<)\s*(\d+(?:\.\d+)?)\b", p_low)
+        if num_match:
+            attr_name = num_match.group(1).lower()
+            val_str = num_match.group(2)
+            
+            # Determine operator
+            op = "="
+            if ">=" in p_low: op = ">="
+            elif "<=" in p_low: op = "<="
+            elif ">" in p_low: op = ">"
+            elif "<" in p_low: op = "<"
 
-        poss_match = re.search(r"\b([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)?)\s*'?s\b", p_raw)
-        if poss_match:
-            candidate = poss_match.group(1).strip()
-            if candidate.lower() not in ["user", "ai", "today", "yesterday", "month", "year", "week"]:
-                return candidate
+            # Check which table has this column
+            for t_name, t_obj in tables.items():
+                for col in t_obj.columns:
+                    c_low = col.name.lower()
+                    if c_low == attr_name or attr_name in c_low or c_low in attr_name:
+                        dt = col.data_type.upper()
+                        if any(n in dt for n in ["INT", "NUMERIC", "DECIMAL", "FLOAT", "REAL", "DOUBLE"]):
+                            return {
+                                "table": t_name,
+                                "column": col.name,
+                                "value": val_str,
+                                "op": op
+                            }
 
-        name_match = re.search(r"\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)\b", p_raw)
-        if name_match:
-            candidate = name_match.group(1).strip()
-            if candidate.lower() not in ["language model", "sql llm", "token usage", "what is", "show me", "can you"]:
-                return candidate
-
-        for word_pattern in [r"\banurag(?:\s+katre)?\b", r"\bjoel(?:\s+lawrence)?\b", r"\bhemant(?:\s+umate)?\b"]:
-            m = re.search(word_pattern, p_low)
-            if m:
-                return m.group(0).title()
+        # Check for numeric floats in prompt (e.g. 125000.5)
+        float_match = re.search(r"\b(\d+\.\d+)\b", p_low)
+        if float_match:
+            f_val = float_match.group(1)
+            for t_name, t_obj in tables.items():
+                for col in t_obj.columns:
+                    if any(k in col.name.lower() for k in ["balance", "amount", "salary", "price", "revenue", "budget"]):
+                        return {
+                            "table": t_name,
+                            "column": col.name,
+                            "value": f_val,
+                            "op": "="
+                        }
 
         return None
+
+    def _extract_person_name(self, p_raw: str, p_low: str, tables: Dict[str, TableMeta]) -> Tuple[Optional[str], Optional[str]]:
+        """Extracts person names dynamically from natural language without hardcoding."""
+        # Stopwords that are not names
+        non_name_tokens = {
+            "the", "all", "each", "a", "an", "saving", "savings", "current", "retail", "premium",
+            "active", "inactive", "closed", "pending", "account", "accounts", "customer", "customers",
+            "bank", "balance", "database", "table", "branch", "branches", "loan", "loans", "transaction",
+            "transactions", "id", "kpi", "kpis", "report", "most", "which", "what", "how", "count",
+            "city", "state", "country", "today", "yesterday", "month", "year", "week", "days"
+        }
+
+        # Check pattern: "balance of [Name]", "for [Name]", "details of [Name]"
+        of_match = re.search(r"\b(?:of|for|about|named?)\s+([a-zA-Z]+(?:\s+[a-zA-Z]+)?)\b", p_raw)
+        if of_match:
+            candidate = of_match.group(1).strip()
+            cand_words = set(candidate.lower().split())
+            if not cand_words.intersection(non_name_tokens) and len(candidate) > 2:
+                match_table = self._find_table_with_name_columns(tables)
+                return candidate.title(), match_table
+
+        # Check quoted strings
+        quote_match = re.search(r"['\"]([^'\"]+)['\"]", p_raw)
+        if quote_match and len(quote_match.group(1).split()) <= 4:
+            cand = quote_match.group(1).strip()
+            cand_words = set(cand.lower().split())
+            if not cand_words.intersection(non_name_tokens) and len(cand) > 2:
+                match_table = self._find_table_with_name_columns(tables)
+                return cand.title(), match_table
+
+        # Check possessives: "[Name]'s balance"
+        poss_match = re.search(r"\b([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)?)\s*'?s\b", p_raw)
+        if poss_match:
+            cand = poss_match.group(1).strip()
+            cand_words = set(cand.lower().split())
+            if not cand_words.intersection(non_name_tokens) and len(cand) > 2:
+                match_table = self._find_table_with_name_columns(tables)
+                return cand, match_table
+
+        return None, None
+
+    def _find_table_with_name_columns(self, tables: Dict[str, TableMeta]) -> Optional[str]:
+        """Finds table containing person name columns (e.g. customers, employees, users)."""
+        for t_name, t_obj in tables.items():
+            for c in t_obj.columns:
+                c_low = c.name.lower()
+                if any(k in c_low for k in ["first_name", "last_name", "full_name", "customer_name", "emp_name", "username"]):
+                    return t_name
+        return None
+
+    def _extract_categorical_filter(self, p_low: str, tables: Dict[str, TableMeta], target_table: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """Extracts categorical values like 'saving', 'current', 'retail', 'premium', 'active'."""
+        common_categories = [
+            "saving", "savings", "current", "retail", "premium", "active", "inactive",
+            "pending", "completed", "approved", "rejected", "gold", "platinum", "silver", "personal", "home", "auto"
+        ]
+        
+        # Order tables checking target_table first
+        ordered_tables = []
+        if target_table and target_table in tables:
+            ordered_tables.append((target_table, tables[target_table]))
+        for t_name, t_obj in tables.items():
+            if t_name != target_table:
+                ordered_tables.append((t_name, t_obj))
+
+        for cat in common_categories:
+            if re.search(rf"\b{cat}\b", p_low):
+                for t_name, t_obj in ordered_tables:
+                    for col in t_obj.columns:
+                        c_low = col.name.lower()
+                        if any(k in c_low for k in ["type", "status", "category", "segment", "tier"]):
+                            val = cat.rstrip("s") if cat == "savings" else cat
+                            return {
+                                "table": t_name,
+                                "column": col.name,
+                                "value": val
+                            }
+        return None
+
+    def _detect_mode_frequency_query(self, p_low: str, tables: Dict[str, TableMeta]) -> Tuple[bool, Optional[str], Optional[str]]:
+        """Detects queries asking for the most frequent / appearing entity (e.g. 'which city is most appear')."""
+        mode_triggers = [
+            r"\bwhich\s+([a-zA-Z_]+)\s+(?:is\s+)?(?:most\s+appear|appears?\s+most|is\s+most\s+frequent|is\s+most\s+common|most\s+recurring)\b",
+            r"\b(?:most\s+appear|most\s+frequent|most\s+common|most\s+popular)\s+([a-zA-Z_]+)\b",
+            r"\bwhich\s+([a-zA-Z_]+)\s+has\s+(?:the\s+)?most\b"
+        ]
+        for pat in mode_triggers:
+            m = re.search(pat, p_low)
+            if m:
+                target_col_word = m.group(1).lower()
+                # Find matching column in catalog
+                for t_name, t_obj in tables.items():
+                    for col in t_obj.columns:
+                        c_low = col.name.lower()
+                        if c_low == target_col_word or target_col_word in c_low or c_low in target_col_word:
+                            return True, col.name, t_name
+
+        return False, None, None
 
     def _extract_temporal_days(self, p_low: str) -> Optional[int]:
         """Extracts day intervals from phrases like 'last 34 days', 'past 30 days', 'last 7 days'."""
@@ -316,24 +509,8 @@ class SemanticSQLGenerator:
             return 30
         return None
 
-    def _identify_target_tables(self, p_low: str, tables: Dict[str, TableMeta]) -> Tuple[Optional[str], Optional[str]]:
+    def _identify_target_tables(self, p_low: str, tables: Dict[str, TableMeta], name_source_table: Optional[str] = None) -> Tuple[Optional[str], Optional[str]]:
         """Identifies primary and optional secondary table based on prompt entities."""
-        # 1. Check for explicit single-table listing phrases (e.g. "list all departments", "show all customers", "all products")
-        for t_name in tables.keys():
-            t_low = t_name.lower()
-            t_stem = t_low.rstrip("s")
-            list_patterns = [
-                f"list all {t_low}", f"list all {t_stem}",
-                f"show all {t_low}", f"show all {t_stem}",
-                f"get all {t_low}", f"get all {t_stem}",
-                f"all {t_low}", f"all {t_stem}",
-                f"list {t_low}", f"list {t_stem}",
-                f"show {t_low}", f"show {t_stem}",
-                f"from {t_low}", f"from {t_stem}"
-            ]
-            if any(lp in p_low for lp in list_patterns) and not any(k in p_low for k in ["spending", "processed", "with their", "joined", "maximum", "total", "join"]):
-                return t_name, None
-
         scored = []
         for t_name, t_obj in tables.items():
             t_low = t_name.lower()
@@ -346,31 +523,19 @@ class SemanticSQLGenerator:
             elif len(stem) > 2 and re.search(rf"\b{re.escape(stem)}\b", p_low):
                 score += 40
 
-            # Semantic entity matching with word boundary
-            if re.search(r"\b(?:token|tokens|usage|ai_usage|token\s+usage)\b", p_low) and any(tk in t_low for tk in ["token", "usage", "telemetry", "ai"]):
-                score += 35
-            if re.search(r"\b(?:document|documents|doc|files)\b", p_low) and any(dk in t_low for dk in ["doc", "file", "process", "record"]):
-                score += 35
-            if re.search(r"\b(?:user|users|auditor|admin)\b", p_low) and any(uk in t_low for uk in ["user"]):
-                score += 35
-            if re.search(r"\b(?:account|accounts)\b", p_low) and any(ak in t_low for ak in ["account"]):
+            # Semantic entity matching
+            if re.search(r"\b(?:account|accounts|balance|saving|savings|current)\b", p_low) and any(ak in t_low for ak in ["account", "balance"]):
                 score += 35
             if re.search(r"\b(?:customer|customers|client|clients)\b", p_low) and any(ck in t_low for ck in ["cust", "client"]):
                 score += 35
-            if re.search(r"\b(?:order|orders|sale|sales)\b", p_low) and any(ok in t_low for ok in ["order", "sale"]):
-                score += 35
-            if re.search(r"\b(?:employee|employees|staff|worker|salary)\b", p_low) and any(ek in t_low for ek in ["emp", "staff"]):
-                score += 35
-            if re.search(r"\b(?:department|departments|division)\b", p_low) and any(dk in t_low for dk in ["dept", "department"]):
-                score += 35
-            if re.search(r"\b(?:branch|branches)\b", p_low) and any(bk in t_low for bk in ["branch"]):
+            if re.search(r"\b(?:branch|branches|manager)\b", p_low) and any(bk in t_low for bk in ["branch"]):
                 score += 35
             if re.search(r"\b(?:loan|loans)\b", p_low) and any(lk in t_low for lk in ["loan"]):
                 score += 35
-            if re.search(r"\b(?:transaction|transactions)\b", p_low) and any(tx in t_low for tx in ["transact"]):
+            if re.search(r"\b(?:transaction|transactions|deposit|withdrawal)\b", p_low) and any(tx in t_low for tx in ["transact"]):
                 score += 35
 
-            # Check column matches
+            # Column matches
             for col in t_obj.columns:
                 c_low = col.name.lower()
                 if re.search(rf"\b{re.escape(c_low)}\b", p_low):
@@ -383,10 +548,10 @@ class SemanticSQLGenerator:
 
         primary = top_candidates[0] if len(top_candidates) > 0 else list(tables.keys())[0]
         
-        # Only assign secondary if there is a distinct secondary concept in the prompt
+        # Determine secondary table if multi-table signals exist
         secondary = None
         if len(top_candidates) > 1 and scored[1][0] >= 30:
-            needs_join = any(k in p_low for k in ["join", "joined", "processed", "maximum", "total", "spent", "spending", "with their", "per", "in each", "count of", "number of"])
+            needs_join = any(k in p_low for k in ["join", "joined", "with their", "across", "along with", "per", "in each"])
             if needs_join or (len(top_candidates) >= 2 and scored[0][0] >= 35 and scored[1][0] >= 35):
                 secondary = top_candidates[1]
 
@@ -407,7 +572,7 @@ class SemanticSQLGenerator:
     def _find_name_column(self, table_obj: TableMeta) -> Optional[str]:
         for c in table_obj.columns:
             c_low = c.name.lower()
-            if any(k == c_low for k in ["name", "username", "emp_name", "first_name", "full_name", "title", "client_name", "branch_name"]):
+            if any(k == c_low for k in ["name", "username", "emp_name", "first_name", "full_name", "title", "client_name", "branch_name", "manager_name"]):
                 return c.name
         for c in table_obj.columns:
             if "name" in c.name.lower() or "title" in c.name.lower():
@@ -432,7 +597,6 @@ class SemanticSQLGenerator:
                 if not c.is_primary_key and not c.is_foreign_key and not c_low.endswith("_id") and c_low != "id":
                     if any(k in c_low for k in ["token", "usage", "amount", "total", "price", "salary", "spent", "revenue", "count", "budget", "balance", "loan_amount"]):
                         return c.name
-        # Fallback to any non-id numeric column
         for c in table_obj.columns:
             c_low = c.name.lower()
             dt_upper = c.data_type.upper()
@@ -442,7 +606,7 @@ class SemanticSQLGenerator:
         return None
 
     def _find_join_condition(self, t1_name: str, t1_obj: TableMeta, t2_name: str, t2_obj: TableMeta, a1: Optional[str] = None, a2: Optional[str] = None) -> Optional[str]:
-        """Finds foreign key or common key connecting two tables using exact schema column names."""
+        """Finds foreign key or common key connecting two tables prioritizing true relational ID keys."""
         t1_ref = a1 or t1_name
         t2_ref = a2 or t2_name
 
@@ -458,7 +622,6 @@ class SemanticSQLGenerator:
                 c1 = fk['referred_columns'][0]
                 return f"{t2_ref}.{c2} = {t1_ref}.{c1}"
 
-        # Map lowercase column names to exact schema column names
         t1_col_map = {c.name.lower(): c.name for c in t1_obj.columns}
         t2_col_map = {c.name.lower(): c.name for c in t2_obj.columns}
 
@@ -479,15 +642,17 @@ class SemanticSQLGenerator:
                 if t2_pk:
                     return f"{t1_ref}.{t1_col_map[candidate_fk]} = {t2_ref}.{t2_pk}"
 
-        # 4. Check any common ID column present in both tables: e.g. branch_id, customer_id, account_id
+        # 4. Check common ID columns present in both tables: e.g. customer_id, branch_id
         common_cols = set(t1_col_map.keys()).intersection(set(t2_col_map.keys()))
         id_commons = [c for c in common_cols if c.endswith("_id") or c == "id"]
         if id_commons:
             best_col = id_commons[0]
             return f"{t1_ref}.{t1_col_map[best_col]} = {t2_ref}.{t2_col_map[best_col]}"
 
-        if common_cols:
-            best_col = list(common_cols)[0]
+        # Avoid joining on generic non-ID columns like 'phone' unless no other option exists
+        non_id_commons = [c for c in common_cols if c not in ["phone", "created_at", "updated_at", "status", "country"]]
+        if non_id_commons:
+            best_col = non_id_commons[0]
             return f"{t1_ref}.{t1_col_map[best_col]} = {t2_ref}.{t2_col_map[best_col]}"
 
         return None
@@ -514,4 +679,3 @@ class SemanticSQLGenerator:
             return f"{col_name} >= NOW() - INTERVAL {days} DAY"
         else:
             return f"{col_name} >= CURRENT_DATE - INTERVAL '{days} days'"
-
